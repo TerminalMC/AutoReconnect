@@ -15,7 +15,7 @@
 
   "entrypoints": {
     "main": [],
-    "client": ["${mod_group}.${mod_id}.${mod_name}Fabric"],
+    "client": ["${mod_group}.${mod_id}.AutoReconnectFabric"],
     "server": [],
     "modmenu": ["${mod_group}.${mod_id}.gui.screen.ModMenuIntegration"]
   },

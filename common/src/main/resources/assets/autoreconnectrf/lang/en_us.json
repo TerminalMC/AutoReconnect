@@ -1,0 +1,30 @@
+{
+  "screen.${mod_id}.default": "AutoReconnect-Reforged",
+  "screen.${mod_id}.options": "AutoReconnect-Reforged Options",
+
+  "message.${mod_id}.install_cloth": "Install Cloth Config API to access mod options.",
+  "message.${mod_id}.go_modrinth": "View on Modrinth",
+
+  "message.${mod_id}.reconnect": "Reconnect",
+  "message.${mod_id}.reconnect_in": "Reconnect in %d...",
+  "message.${mod_id}.reconnect_failed": "Could not reconnect!",
+
+  "option.${mod_id}.general": "Options",
+  "option.${mod_id}.delays": "Delays",
+  "option.${mod_id}.delays.tooltip": "Delays between attempts in seconds",
+  "option.${mod_id}.infinite": "Infinite",
+  "option.${mod_id}.infinite.tooltip": "Whether to repeat reconnecting with the last configured delay",
+  "option.${mod_id}.automessages": "AutoMessages",
+  "option.${mod_id}.automessages.tooltip": "Messages to send after a successful automatic reconnect",
+  "option.${mod_id}.automessage": "AutoMessages object",
+  "option.${mod_id}.automessage.tooltip": "Single AutoMessages object for a specific world, server or realm",
+  "option.${mod_id}.automessage.name": "Name",
+  "option.${mod_id}.automessage.name.tooltip": "Name of the singleplayer world, server entry or realm",
+  "option.${mod_id}.automessage.messages": "Messages",
+  "option.${mod_id}.automessage.messages.tooltip": "Messages to be sent after automatically reconnecting",
+  "option.${mod_id}.automessage.delay": "Delay",
+  "option.${mod_id}.automessage.delay.tooltip": "Delay between messages and before the first one in milliseconds\"",
+
+  "option.${mod_id}.error.empty_list": "Empty list!",
+  "option.${mod_id}.error.empty_string": "Empty text field!"
+}

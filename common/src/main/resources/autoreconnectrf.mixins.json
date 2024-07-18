@@ -1,12 +1,14 @@
 {
-  "required" : true,
-  "minVersion" : "0.8",
-  "package" : "dev.terminalmc.autoreconnectrf.mixin",
-  "refmap" : "${mod_id}.refmap.json",
-  "compatibilityLevel" : "JAVA_${java_version}",
-  "mixins" : [
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.terminalmc.autoreconnectrf.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_${java_version}",
+  "mixins": [
+    "accessor.DisconnectedScreenAccessor",
+    "accessor.YACLScreenAccessor"
   ],
-  "client" : [
+  "client": [
     "MixinClientPacketListener",
     "MixinConnectScreen",
     "MixinDisconnectedScreen",
@@ -14,9 +16,9 @@
     "MixinMinecraft",
     "MixinRealmsConnect"
   ],
-  "server" : [
+  "server": [
   ],
-  "injectors" : {
-    "defaultRequire" : 1
+  "injectors": {
+    "defaultRequire": 1
   }
 }

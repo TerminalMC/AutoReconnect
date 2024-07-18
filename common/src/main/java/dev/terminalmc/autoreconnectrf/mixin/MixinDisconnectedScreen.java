@@ -40,23 +40,32 @@ public class MixinDisconnectedScreen extends Screen {
             method = "<init>(Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V",
             at = @At("RETURN")
     )
-    private void constructor(Screen parent, Component title, Component reason, Component buttonLabel, CallbackInfo info) {
+    private void constructor(Screen parent, Component title, Component reason,
+                             Component buttonLabel, CallbackInfo info) {
         if (AutoReconnect.isPlayingSingleplayer()) {
             // make back button redirect to SelectWorldScreen instead of MultiPlayerScreen (https://bugs.mojang.com/browse/MC-45602)
             this.parent = new SelectWorldScreen(new TitleScreen());
         }
     }
 
-    @Inject(at = @At("RETURN"), method = "init")
+    @Inject(
+            method = "init",
+            at = @At("RETURN")
+    )
     private void init(CallbackInfo info) {
         if (AutoReconnect.isPlayingSingleplayer()) {
             // change back button text to "Back" instead of "Back to World List" bcs of bug fix above
-            AutoReconnect.findBackButton(this).ifPresent(btn -> btn.setMessage(Component.translatable("gui.toWorld")));
+            AutoReconnect.findBackButton(this).ifPresent(
+                    btn -> btn.setMessage(Component.translatable("gui.toWorld")));
         }
     }
 
     // make this screen closable by pressing escape
-    @Inject(at = @At("RETURN"), method = "shouldCloseOnEsc", cancellable = true)
+    @Inject(
+            method = "shouldCloseOnEsc",
+            at = @At("RETURN"),
+            cancellable = true
+    )
     private void shouldCloseOnEsc(CallbackInfoReturnable<Boolean> info) {
         info.setReturnValue(true);
     }

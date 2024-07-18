@@ -36,7 +36,7 @@
 
   "recommends": {
     "modmenu": [$modmenu_versions_list],
-    "cloth-config": [$clothconfig_versions_fabric_list]
+    "yacl": [$yacl_versions_fabric_list]
   },
 
   "suggests": {},

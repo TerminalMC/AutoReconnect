@@ -27,13 +27,9 @@ You can also add messages or commands to be sent upon successful automatic recon
 
 ### Dependencies
 
-Fabric:
-- [Fabric API](https://modrinth.com/mod/P7dR8mSH) (required)
-- [ModMenu](https://modrinth.com/mod/mOgUt4GM) (required for configuration)
-- [Cloth Config API](https://modrinth.com/mod/9s6osm5g) (required for configuration)
+Fabric [Fabric API](https://modrinth.com/mod/P7dR8mSH), [ModMenu](https://modrinth.com/mod/mOgUt4GM), [YACL](https://modrinth.com/mod/1eAoo2KR)
 
-NeoForge:
-- [Cloth Config API](https://modrinth.com/mod/9s6osm5g) (required for configuration)
+NeoForge: [YACL](https://modrinth.com/mod/1eAoo2KR)
 
 ### Credits
 

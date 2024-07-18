@@ -17,15 +17,15 @@ import net.minecraft.network.chat.CommonComponents;
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
 /**
- * <p>Wraps {@link ClothConfigScreenProvider} and provides a backup screen for
- * use when the Cloth Config mod is not loaded. This allows the dependency on
- * Cloth Config to be defined as optional.</p>
+ * <p>Wraps {@link YaclScreenProvider} and provides a backup screen for use when
+ * the YACL mod is not loaded. This allows the dependency on YACL to be defined
+ * as optional.</p>
  */
 public class ConfigScreenProvider {
 
     public static Screen getConfigScreen(Screen parent) {
         try {
-            return ClothConfigScreenProvider.getConfigScreen(parent);
+            return YaclScreenProvider.getConfigScreen(parent);
         }
         catch (NoClassDefFoundError ignored) {
             return new BackupScreen(parent);
@@ -41,18 +41,19 @@ public class ConfigScreenProvider {
         public void init() {
             MultiLineTextWidget messageWidget = new MultiLineTextWidget(
                     width / 2 - 120, height / 2 - 40,
-                    localized("message", "install_cloth"),
+                    localized("message", "install_yacl"),
                     minecraft.font);
             messageWidget.setMaxWidth(240);
             messageWidget.setCentered(true);
             addRenderableWidget(messageWidget);
 
+            String link = "https://modrinth.com/mod/1eAoo2KR";
             Button openLinkButton = Button.builder(localized("message", "go_modrinth"),
                             (button) -> minecraft.setScreen(new ConfirmLinkScreen(
                                     (open) -> {
-                                        if (open) Util.getPlatform().openUri("https://modrinth.com/mod/9s6osm5g");
+                                        if (open) Util.getPlatform().openUri(link);
                                         minecraft.setScreen(lastScreen);
-                                    }, "https://modrinth.com/mod/9s6osm5g", true)))
+                                    }, link, true)))
                     .pos(width / 2 - 120, height / 2)
                     .size(115, 20)
                     .build();

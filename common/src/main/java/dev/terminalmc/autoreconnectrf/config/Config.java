@@ -25,10 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Config {
     private static final Path DIR_PATH = Path.of("config");
@@ -41,23 +38,33 @@ public class Config {
 
     public static class Options {
         public static final List<Integer> defaultDelays = List.of(3, 10, 30, 60);
-        public static final int defaultDelay = 10;
         public List<Integer> delays = defaultDelays;
 
         public static final boolean defaultInfinite = false;
         public boolean infinite = defaultInfinite;
 
-        public static final List<AutoMessage> defaultAutoMessages = List.of();
+        public static final boolean defaultConditionType = false;
+        public boolean conditionType = defaultConditionType;
+
+        public static final List<String> defaultConditionKeys = new ArrayList<>(
+                List.of("multiplayer.disconnect.banned"));
+        public List<String> conditionKeys = defaultConditionKeys;
+
+        public static final List<String> defaultConditionPatterns = new ArrayList<>();
+        public List<String> conditionPatterns = defaultConditionPatterns;
+
+        public static final List<AutoMessage> defaultAutoMessages = new ArrayList<>();
         public List<AutoMessage> autoMessages = defaultAutoMessages;
     }
 
     public static final class AutoMessage {
         public static final String defaultName = "";
-        public static final List<String> defaultMessages = List.of();
-        public static final int defaultDelay = 1000;
-
         public String name = defaultName;
+
+        public static final List<String> defaultMessages = new ArrayList<>();
         public List<String> messages = defaultMessages;
+
+        public static final int defaultDelay = 1000;
         public int delay = defaultDelay;
 
         public Iterator<String> getMessages() {

@@ -29,8 +29,10 @@ import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -40,6 +42,68 @@ public class AutoReconnect {
     public static final String MOD_ID = "autoreconnectrf";
     public static final String MOD_NAME = "AutoReconnect-Reforged";
     public static final ModLogger LOG = new ModLogger(MOD_NAME);
+    public static final List<String> DISCONNECT_KEYS = List.of(
+            "disconnect.closed",
+            "disconnect.disconnected",
+            "disconnect.endOfStream",
+            "disconnect.exceeded_packet_rate",
+            "disconnect.genericReason", // arg
+            "disconnect.ignoring_status_request",
+            "disconnect.loginFailed",
+            "disconnect.loginFailedInfo", // arg
+            "disconnect.loginFailedInfo.insufficientPrivileges",
+            "disconnect.loginFailedInfo.invalidSession",
+            "disconnect.loginFailedInfo.serversUnavailable",
+            "disconnect.loginFailedInfo.userBanned",
+            "disconnect.lost",
+            "disconnect.overflow",
+            "disconnect.packetError",
+            "disconnect.spam",
+            "disconnect.timeout",
+            "disconnect.transfer",
+            "disconnect.unknownHost",
+
+            "multiplayer.disconnect.authservers_down",
+            "multiplayer.disconnect.banned",
+            "multiplayer.disconnect.banned_ip.reason", // arg
+            "multiplayer.disconnect.banned.reason", // arg
+            "multiplayer.disconnect.chat_validation_failed",
+            "multiplayer.disconnect.duplicate_login",
+            "multiplayer.disconnect.expired_public_key",
+            "multiplayer.disconnect.flying",
+            "multiplayer.disconnect.generic",
+            "multiplayer.disconnect.idling",
+            "multiplayer.disconnect.illegal_characters",
+            "multiplayer.disconnect.incompatible", // arg
+            "multiplayer.disconnect.invalid_entity_attacked",
+            "multiplayer.disconnect.invalid_packet",
+            "multiplayer.disconnect.invalid_player_data",
+            "multiplayer.disconnect.invalid_player_movement",
+            "multiplayer.disconnect.invalid_public_key_signature",
+            "multiplayer.disconnect.invalid_public_key_signature",
+            "multiplayer.disconnect.invalid_vehicle_movement",
+            "multiplayer.disconnect.ip_banned",
+            "multiplayer.disconnect.kicked",
+            "multiplayer.disconnect.missing_tags",
+            "multiplayer.disconnect.name_taken",
+            "multiplayer.disconnect.not_whitelisted",
+            "multiplayer.disconnect.out_of_order_chat",
+            "multiplayer.disconnect.outdated_client", // arg
+            "multiplayer.disconnect.outdated_server", // arg
+            "multiplayer.disconnect.server_full",
+            "multiplayer.disconnect.server_shutdown",
+            "multiplayer.disconnect.slow_login",
+            "multiplayer.disconnect.too_many_pending_chats",
+            "multiplayer.disconnect.transfers_disabled",
+            "multiplayer.disconnect.unexpected_query_response",
+            "multiplayer.disconnect.unsigned_chat",
+            "multiplayer.disconnect.unverified_username",
+
+            "multiplayer.requiredTexturePrompt.disconnect"
+    );
+
+    public static @Nullable String lastDcReasonStr = null;
+    public static @Nullable String lastDcReasonKey = null;
 
     public static void init() {
         Config.getAndSave();

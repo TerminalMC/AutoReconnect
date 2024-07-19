@@ -1,1 +1,1 @@
-- Safe check condition patterns
+- Add an error indicator for condition patterns

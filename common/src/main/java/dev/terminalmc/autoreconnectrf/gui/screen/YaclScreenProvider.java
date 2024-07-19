@@ -14,17 +14,30 @@
 package dev.terminalmc.autoreconnectrf.gui.screen;
 
 import dev.isxander.yacl3.api.*;
-import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
-import dev.isxander.yacl3.api.controller.DropdownStringControllerBuilder;
-import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
-import dev.isxander.yacl3.api.controller.StringControllerBuilder;
+import dev.isxander.yacl3.api.controller.*;
+import dev.isxander.yacl3.api.utils.Dimension;
+import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
+import dev.isxander.yacl3.gui.controllers.string.IStringController;
+import dev.isxander.yacl3.gui.controllers.string.StringController;
+import dev.isxander.yacl3.gui.controllers.string.StringControllerElement;
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
 import dev.terminalmc.autoreconnectrf.config.Config;
 import dev.terminalmc.autoreconnectrf.mixin.accessor.YACLScreenAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.WidgetTooltipHolder;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
@@ -54,7 +67,7 @@ public class YaclScreenProvider {
                 .binding(Config.Options.defaultDelays,
                         () -> options.delays,
                         val -> options.delays = val)
-                .controller(val -> IntegerFieldControllerBuilder.create(val).min(1))
+                .controller(option -> IntegerFieldControllerBuilder.create(option).min(1))
                 .initial(0)
                 .insertEntriesAtEnd(true)
                 .minimumNumberOfEntries(1)
@@ -86,7 +99,7 @@ public class YaclScreenProvider {
                 .binding(Config.Options.defaultConditionType,
                         () -> options.conditionType,
                         val -> options.conditionType = val)
-                .controller(val -> BooleanControllerBuilder.create(val)
+                .controller(option -> BooleanControllerBuilder.create(option)
                         .formatValue(val2 -> val2
                                 ? localized("option", "conditions.type.positive")
                                 : localized("option", "conditions.type.negative"))
@@ -102,7 +115,7 @@ public class YaclScreenProvider {
                 .binding(Config.Options.defaultConditionKeys,
                         () -> options.conditionKeys,
                         val -> options.conditionKeys = val)
-                .controller(val -> DropdownStringControllerBuilder.create(val)
+                .controller(option -> DropdownStringControllerBuilder.create(option)
                         .values(AutoReconnect.DISCONNECT_KEYS)
                         .allowAnyValue(true)
                         .allowEmptyValue(false))
@@ -119,7 +132,16 @@ public class YaclScreenProvider {
                 .binding(Config.Options.defaultConditionPatterns,
                         () -> options.conditionPatterns,
                         val -> options.conditionPatterns = val)
-                .controller(StringControllerBuilder::create)
+                .controller(option -> IRestrictedStringControllerBuilder
+                        .create(option)
+                        .validator(val -> {
+                            try {
+                                Pattern.compile(val);
+                                return Optional.empty();
+                            } catch (PatternSyntaxException e) {
+                                return Optional.of(e.getMessage().replaceAll("\\u000D", ""));
+                            }
+                        }))
                 .initial("")
                 .insertEntriesAtEnd(true)
                 .build());
@@ -163,7 +185,7 @@ public class YaclScreenProvider {
                     .binding(Config.AutoMessage.defaultDelay,
                             () -> am.delay,
                             val -> am.delay = val)
-                    .controller(val -> IntegerFieldControllerBuilder.create(val).min(0))
+                    .controller(option -> IntegerFieldControllerBuilder.create(option).min(0))
                     .build());
 
             messagesCat.group(amGroup.build());
@@ -212,6 +234,105 @@ public class YaclScreenProvider {
         } catch (IndexOutOfBoundsException e) {
             AutoReconnect.LOG.warn("YACL reload hack attempted to set tab to index {} but max index was {}.",
                     tab, newScreen.tabNavigationBar.getTabs().size() - 1);
+        }
+    }
+
+    // Various shenanigans to implement a custom string option validator, of sorts
+    // If you're overly concerned about code quality, turn back now
+
+    public interface IRestrictedStringControllerBuilder extends ControllerBuilder<String> {
+        static IRestrictedStringControllerBuilder create(Option<String> option) {
+            return new RestrictedStringControllerBuilder(option);
+        }
+
+        IRestrictedStringControllerBuilder validator(Function<String, Optional<String>> validator);
+    }
+
+    public static abstract class CustomAbstractControllerBuilder<T> implements ControllerBuilder<T> {
+        protected final Option<T> option;
+        protected CustomAbstractControllerBuilder(Option<T> option) {
+            this.option = option;
+        }
+    }
+
+    public static class RestrictedStringControllerBuilder extends CustomAbstractControllerBuilder<String>
+            implements IRestrictedStringControllerBuilder {
+        private Function<String, Optional<String>> validator;
+
+        public RestrictedStringControllerBuilder(Option<String> option) {
+            super(option);
+        }
+
+        public RestrictedStringControllerBuilder validator(Function<String, Optional<String>> validator) {
+            this.validator = validator;
+            return this;
+        }
+
+        public Controller<String> build() {
+            return new RestrictedStringController(this.option, validator);
+        }
+    }
+
+    private static class RestrictedStringController extends StringController {
+        private final @Nullable Function<String, Optional<String>> validator;
+        private @Nullable String displayValue;
+        private @Nullable YaclScreenProvider.RestrictedStringControllerElement widget;
+
+        public RestrictedStringController(Option<String> option,
+                                          @Nullable Function<String, Optional<String>> validator) {
+            super(option);
+            this.validator = validator;
+        }
+
+        @Override
+        public Component formatValue() {
+            if (displayValue == null) {
+                return super.formatValue();
+            } else {
+                return Component.literal(displayValue).withStyle(ChatFormatting.RED);
+            }
+        }
+
+        @Override
+        public void setFromString(String value) {
+            if (validator != null) {
+                Optional<String> error = validator.apply(value);
+                if (error.isPresent()) {
+                    displayValue = value;
+                    if (widget != null) {
+                        widget.setTooltip(Tooltip.create(Component.literal(error.get())));
+                    }
+                    return;
+                }
+            }
+            displayValue = null;
+            if (widget != null) widget.setTooltip(null);
+            super.setFromString(value);
+        }
+
+        @Override
+        public AbstractWidget provideWidget(YACLScreen screen, Dimension<Integer> widgetDimension) {
+            widget = new RestrictedStringControllerElement(this, screen, widgetDimension, true);
+            return widget;
+        }
+    }
+
+    private static class RestrictedStringControllerElement extends StringControllerElement {
+        private final WidgetTooltipHolder tooltip = new WidgetTooltipHolder();
+
+        public RestrictedStringControllerElement(IStringController<?> control, YACLScreen screen, Dimension<Integer> dim, boolean instantApply) {
+            super(control, screen, dim, instantApply);
+        }
+
+        public void setTooltip(@Nullable Tooltip tooltip) {
+            this.tooltip.set(tooltip);
+        }
+
+        @Override
+        public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+            super.render(graphics, mouseX, mouseY, delta);
+            this.tooltip.refreshTooltipForNextRenderPass(super.isMouseOver(mouseX, mouseY),
+                    super.isFocused(), super.getRectangle());
         }
     }
 }

@@ -31,12 +31,15 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntConsumer;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class AutoReconnect {
     public static final String MOD_ID = "autoreconnectrf";
@@ -102,6 +105,8 @@ public class AutoReconnect {
             "multiplayer.requiredTexturePrompt.disconnect"
     );
 
+    public static final List<Pattern> conditionPatterns = new ArrayList<>();
+
     public static @Nullable String lastDcReasonStr = null;
     public static @Nullable String lastDcReasonKey = null;
 
@@ -113,6 +118,12 @@ public class AutoReconnect {
     }
 
     public static void onConfigSaved(Config config) {
+        conditionPatterns.clear();
+        for (String s : config.options.conditionPatterns) {
+            try {
+                conditionPatterns.add(Pattern.compile(s));
+            } catch (PatternSyntaxException ignored) {}
+        }
     }
 
     // Legacy

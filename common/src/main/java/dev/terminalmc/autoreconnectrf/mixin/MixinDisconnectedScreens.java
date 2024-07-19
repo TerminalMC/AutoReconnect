@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -64,17 +63,12 @@ public class MixinDisconnectedScreens extends Screen {
             AutoReconnect.lastDcReasonKey = null;
             boolean match = false;
 
-            for (String condition : Config.get().options.conditionPatterns) {
-                try {
-                    if (Pattern.compile(condition).matcher(reasonStr).find()) {
-                        AutoReconnect.LOG.info("Matched pattern '{}' against reason '{}'",
-                                condition, reasonStr);
-                        match = true;
-                        break;
-                    }
-                } catch (PatternSyntaxException e) {
-                    AutoReconnect.LOG.error(String.format("Invalid pattern: %s\n%s", condition,
-                            e.getMessage()));
+            for (Pattern condition : AutoReconnect.conditionPatterns) {
+                if (condition.matcher(reasonStr).find()) {
+                    AutoReconnect.LOG.info("Matched pattern '{}' against reason '{}'",
+                            condition, reasonStr);
+                    match = true;
+                    break;
                 }
             }
             if (!match && reason.getContents() instanceof TranslatableContents tc) {

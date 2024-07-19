@@ -1,2 +1,1 @@
-- Support conditional reconnecting
-- Use YACL in place of Cloth Config
+- Safe check condition patterns

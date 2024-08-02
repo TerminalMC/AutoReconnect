@@ -25,8 +25,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RealmsConnect.class)
 public class MixinRealmsConnect {
-    @Inject(at = @At("HEAD"), method = "connect")
+    @Inject(
+            at = @At("HEAD"),
+            method = "connect"
+    )
     private void connect(RealmsServer server, ServerAddress address, CallbackInfo info) {
-        AutoReconnect.setReconnectHandler(new RealmsReconnectStrategy(server));
+        AutoReconnect.setReconnectStrategy(new RealmsReconnectStrategy(server));
     }
 }

@@ -1,35 +1,18 @@
-/*
- * AutoReconnect-Reforged
- *
- * Copyright 2020-2023 Bstn1802
- * Copyright 2024 NotRyken
- *
- * The following code is a derivative work of the code from the AutoReconnect
- * project, which is licensed LGPLv3. This code therefore is also licensed under
- * the terms of the GNU Lesser Public License, version 3.
- *
- * SPDX-License-Identifier: LGPL-3.0-only
- */
-
 package dev.terminalmc.autoreconnectrf.mixin;
 
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
-import dev.terminalmc.autoreconnectrf.mixin.accessor.DisconnectedScreenAccessor;
 import dev.terminalmc.autoreconnectrf.util.ScreenMixinUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.layouts.LinearLayout;
-import net.minecraft.client.gui.screens.DisconnectedScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.network.chat.Component;
-import org.spongepowered.asm.mixin.*;
+import net.minecraft.realms.DisconnectedRealmsScreen;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +21,16 @@ import java.util.concurrent.TimeUnit;
 
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
-@Mixin(DisconnectedScreen.class)
-public class MixinDisconnectedScreen extends Screen {
-    @Shadow
-    @Mutable
-    private @Final Screen parent;
+@Mixin(DisconnectedRealmsScreen.class)
+public class MixinDisconnectedRealmsScreen extends Screen {
+    @Unique
+    private boolean autoReconnect$firstInit = true;
     @Unique
     private boolean autoReconnect$shouldAutoReconnect;
     @Unique
     private Runnable autoReconnect$cancelCountdown;
 
-    protected MixinDisconnectedScreen(Component title) {
+    protected MixinDisconnectedRealmsScreen(Component title) {
         super(title);
     }
 
@@ -57,30 +39,17 @@ public class MixinDisconnectedScreen extends Screen {
             at = @At("RETURN")
     )
     private void init(CallbackInfo info) {
-        if (AutoReconnect.isPlayingSingleplayer()) {
-            // Change back button text to "Back" instead of "Back to World List" bcs of bug fix above
-            ScreenMixinUtil.findBackButton(this).ifPresent(
-                    btn -> btn.setMessage(Component.translatable("gui.toWorld")));
-        }
-
-        if (AutoReconnect.isPlayingSingleplayer()) {
-            // Make back button redirect to SelectWorldScreen instead of MultiPlayerScreen
-            // (https://bugs.mojang.com/browse/MC-45602)
-            this.parent = new SelectWorldScreen(new TitleScreen());
-        }
-
         if (!AutoReconnect.canReconnect()) {
             autoReconnect$shouldAutoReconnect = false;
         }
         else {
             autoReconnect$shouldAutoReconnect = ScreenMixinUtil.checkConditions(this);
 
-            List<Button> buttons = autoReconnect$addButtons(
-                    ((DisconnectedScreenAccessor)this).getLayout(), autoReconnect$shouldAutoReconnect);
+            List<Button> buttons = autoReconnect$addButtons(autoReconnect$shouldAutoReconnect);
             Button reconnectButton = buttons.getFirst();
             Button cancelButton = buttons.size() == 2 ? buttons.getLast() : null;
 
-            if (autoReconnect$shouldAutoReconnect) {
+            if (!autoReconnect$firstInit && autoReconnect$shouldAutoReconnect) {
                 AutoReconnect.startCountdown(
                         (seconds) -> ScreenMixinUtil.countdownCallback(reconnectButton, seconds));
             }
@@ -93,10 +62,11 @@ public class MixinDisconnectedScreen extends Screen {
                 reconnectButton.setMessage(localized("message", "reconnect"));
             };
         }
+        autoReconnect$firstInit = false;
     }
 
     @Unique
-    private List<Button> autoReconnect$addButtons(LinearLayout layout, boolean canCancel) {
+    private List<Button> autoReconnect$addButtons(boolean canCancel) {
         List<Button> buttons = new ArrayList<>();
 
         Button backButton = ScreenMixinUtil.findBackButton(this)
@@ -107,8 +77,10 @@ public class MixinDisconnectedScreen extends Screen {
                         localized("message", "reconnect"),
                         btn -> AutoReconnect.schedule(() -> Minecraft.getInstance().execute(
                                 AutoReconnect::manualReconnect), 100, TimeUnit.MILLISECONDS))
-                .bounds(0, 0, backButton.getWidth(), backButton.getHeight()).build();
-        layout.addChild(reconnectButton);
+                .bounds(backButton.getX(), backButton.getY() + backButton.getHeight() + 4,
+                        backButton.getWidth(), backButton.getHeight())
+                .build();
+        addRenderableWidget(reconnectButton);
         buttons.add(reconnectButton);
 
         if (canCancel) {
@@ -117,20 +89,20 @@ public class MixinDisconnectedScreen extends Screen {
                             Component.literal("✕")
                                     .withStyle(s -> s.withColor(ChatFormatting.RED)),
                             btn -> {
-                                if (autoReconnect$cancelCountdown != null) {
-                                    autoReconnect$cancelCountdown.run();
-                                }
+                                AutoReconnect.cancelActiveReconnect();
+                                autoReconnect$shouldAutoReconnect = false;
+                                removeWidget(this);
+                                reconnectButton.active = true; // in case it was deactivated after running out of attempts
+                                reconnectButton.setMessage(localized("message", "reconnect"));
+                                reconnectButton.setWidth(backButton.getWidth()); // reset to full width
                             })
-                    .bounds(0, 0, backButton.getWidth(), backButton.getHeight()).build();
+                    .bounds(reconnectButton.getX(), reconnectButton.getY() + reconnectButton.getHeight() + 4,
+                            backButton.getWidth(), backButton.getHeight())
+                    .build();
 
-            layout.addChild(cancelButton);
+            addRenderableWidget(cancelButton);
             buttons.add(cancelButton);
         }
-
-        layout.arrangeElements();
-        repositionElements();
-        clearWidgets();
-        layout.visitWidgets(this::addRenderableWidget);
 
         return buttons;
     }
@@ -145,21 +117,5 @@ public class MixinDisconnectedScreen extends Screen {
         } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
         }
-    }
-
-    // Make this screen closable by pressing escape
-    @Inject(
-            method = "shouldCloseOnEsc",
-            at = @At("RETURN"),
-            cancellable = true
-    )
-    private void shouldCloseOnEsc(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(true);
-    }
-
-    // Actually return to parent screen and not to the title screen
-    @Override
-    public void onClose() {
-        this.minecraft.setScreen(parent);
     }
 }

@@ -27,9 +27,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ConnectScreen.class)
 public class MixinConnectScreen {
-    @Inject(at = @At("HEAD"), method = "connect")
-    private void connect(Minecraft client, ServerAddress address, ServerData serverInfo, TransferState cookieStorage, CallbackInfo ci) {
-        if (serverInfo == null) return;
-        AutoReconnect.setReconnectHandler(new MultiplayerReconnectStrategy(serverInfo, cookieStorage));
+    @Inject(
+            at = @At("HEAD"),
+            method = "connect"
+    )
+    private void connect(Minecraft client, ServerAddress address, ServerData data,
+                         TransferState transferState, CallbackInfo ci) {
+        if (data != null) {
+            AutoReconnect.setReconnectStrategy(new MultiplayerReconnectStrategy(data, transferState));
+        }
     }
 }

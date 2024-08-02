@@ -16,7 +16,6 @@ package dev.terminalmc.autoreconnectrf.reconnect;
 public abstract class ReconnectStrategy {
     private int attempt = -1;
 
-    // package-private constructor
     ReconnectStrategy() { }
 
     public abstract void reconnect();

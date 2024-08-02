@@ -16,5 +16,14 @@ public class AutoReconnectFabric implements ClientModInitializer {
 
         // Main initialization
         AutoReconnect.init();
+
+        // Debug
+//        KeyMapping key = new KeyMapping("AutoReconnect", InputConstants.KEY_H, "Disconnect");
+//        KeyBindingHelper.registerKeyBinding(key);
+//        ClientTickEvents.END_CLIENT_TICK.register((mc) -> {
+//            while (key.consumeClick()) {
+//                mc.player.connection.getConnection().disconnect(Component.literal("adios"));
+//            }
+//        });
     }
 }

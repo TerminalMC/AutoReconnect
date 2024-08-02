@@ -35,8 +35,11 @@ public class MixinMinecraft {
             method = "doWorldLoad",
             at = @At("HEAD")
     )
-    private void startIntegratedServer(LevelStorageSource.LevelStorageAccess session, PackRepository dataPackManager, WorldStem saveLoader, boolean newWorld, CallbackInfo info) {
-        AutoReconnect.setReconnectHandler(new SingleplayerReconnectStrategy(saveLoader.worldData().getLevelName()));
+    private void startIntegratedServer(LevelStorageSource.LevelStorageAccess session,
+                                       PackRepository dataPackManager, WorldStem saveLoader,
+                                       boolean newWorld, CallbackInfo info) {
+        AutoReconnect.setReconnectStrategy(new SingleplayerReconnectStrategy(
+                saveLoader.worldData().getLevelName()));
     }
 
     @Inject(

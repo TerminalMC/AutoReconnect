@@ -22,17 +22,17 @@ import net.minecraft.client.multiplayer.TransferState;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 
 public class MultiplayerReconnectStrategy extends ReconnectStrategy {
-    private final ServerData serverInfo;
+    private final ServerData serverData;
     private final TransferState cookieStorage;
 
-    public MultiplayerReconnectStrategy(ServerData serverInfo, TransferState cookieStorage) {
-        this.serverInfo = serverInfo;
+    public MultiplayerReconnectStrategy(ServerData serverData, TransferState cookieStorage) {
+        this.serverData = serverData;
         this.cookieStorage = cookieStorage;
     }
 
     @Override
     public String getName() {
-        return serverInfo.name;
+        return serverData.name;
     }
 
     /**
@@ -43,8 +43,8 @@ public class MultiplayerReconnectStrategy extends ReconnectStrategy {
         ConnectScreen.startConnecting(
                 new JoinMultiplayerScreen(new TitleScreen()),
                 Minecraft.getInstance(),
-                ServerAddress.parseString(serverInfo.ip),
-                serverInfo,
+                ServerAddress.parseString(serverData.ip),
+                serverData,
                 false,
                 cookieStorage);
     }

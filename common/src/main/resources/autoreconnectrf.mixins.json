@@ -5,14 +5,15 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
+    "ScreenAccessor",
     "accessor.DisconnectedScreenAccessor",
     "accessor.YACLScreenAccessor"
   ],
   "client": [
     "MixinClientPacketListener",
     "MixinConnectScreen",
+    "MixinDisconnectedRealmsScreen",
     "MixinDisconnectedScreen",
-    "MixinDisconnectedScreens",
     "MixinMinecraft",
     "MixinRealmsConnect"
   ],

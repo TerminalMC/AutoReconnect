@@ -34,6 +34,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -116,7 +117,7 @@ public class YaclScreenProvider {
                         () -> options.conditionKeys,
                         val -> options.conditionKeys = val)
                 .controller(option -> DropdownStringControllerBuilder.create(option)
-                        .values(AutoReconnect.DISCONNECT_KEYS)
+                        .values(DISCONNECT_KEYS)
                         .allowAnyValue(true)
                         .allowEmptyValue(false))
                 .initial("")
@@ -238,7 +239,7 @@ public class YaclScreenProvider {
     }
 
     // Various shenanigans to implement a custom string option validator, of sorts
-    // If you're overly concerned about code quality, turn back now
+    // If you're overly concerned about code quality, look away
 
     public interface IRestrictedStringControllerBuilder extends ControllerBuilder<String> {
         static IRestrictedStringControllerBuilder create(Option<String> option) {
@@ -335,4 +336,64 @@ public class YaclScreenProvider {
                     super.isFocused(), super.getRectangle());
         }
     }
+
+    public static final List<String> DISCONNECT_KEYS = List.of(
+            "disconnect.closed",
+            "disconnect.disconnected",
+            "disconnect.endOfStream",
+            "disconnect.exceeded_packet_rate",
+            "disconnect.genericReason", // arg
+            "disconnect.ignoring_status_request",
+            "disconnect.loginFailed",
+            "disconnect.loginFailedInfo", // arg
+            "disconnect.loginFailedInfo.insufficientPrivileges",
+            "disconnect.loginFailedInfo.invalidSession",
+            "disconnect.loginFailedInfo.serversUnavailable",
+            "disconnect.loginFailedInfo.userBanned",
+            "disconnect.lost",
+            "disconnect.overflow",
+            "disconnect.packetError",
+            "disconnect.spam",
+            "disconnect.timeout",
+            "disconnect.transfer",
+            "disconnect.unknownHost",
+
+            "multiplayer.disconnect.authservers_down",
+            "multiplayer.disconnect.banned",
+            "multiplayer.disconnect.banned_ip.reason", // arg
+            "multiplayer.disconnect.banned.reason", // arg
+            "multiplayer.disconnect.chat_validation_failed",
+            "multiplayer.disconnect.duplicate_login",
+            "multiplayer.disconnect.expired_public_key",
+            "multiplayer.disconnect.flying",
+            "multiplayer.disconnect.generic",
+            "multiplayer.disconnect.idling",
+            "multiplayer.disconnect.illegal_characters",
+            "multiplayer.disconnect.incompatible", // arg
+            "multiplayer.disconnect.invalid_entity_attacked",
+            "multiplayer.disconnect.invalid_packet",
+            "multiplayer.disconnect.invalid_player_data",
+            "multiplayer.disconnect.invalid_player_movement",
+            "multiplayer.disconnect.invalid_public_key_signature",
+            "multiplayer.disconnect.invalid_public_key_signature",
+            "multiplayer.disconnect.invalid_vehicle_movement",
+            "multiplayer.disconnect.ip_banned",
+            "multiplayer.disconnect.kicked",
+            "multiplayer.disconnect.missing_tags",
+            "multiplayer.disconnect.name_taken",
+            "multiplayer.disconnect.not_whitelisted",
+            "multiplayer.disconnect.out_of_order_chat",
+            "multiplayer.disconnect.outdated_client", // arg
+            "multiplayer.disconnect.outdated_server", // arg
+            "multiplayer.disconnect.server_full",
+            "multiplayer.disconnect.server_shutdown",
+            "multiplayer.disconnect.slow_login",
+            "multiplayer.disconnect.too_many_pending_chats",
+            "multiplayer.disconnect.transfers_disabled",
+            "multiplayer.disconnect.unexpected_query_response",
+            "multiplayer.disconnect.unsigned_chat",
+            "multiplayer.disconnect.unverified_username",
+
+            "multiplayer.requiredTexturePrompt.disconnect"
+    );
 }

@@ -1,3 +1,1 @@
-- Adjust screens to fix misalignment issues
-- Fix returning to server list from singleplayer disconnect screen
-- Add a method for other mods to pre-emptively cancel reconnection
+- Fix config on recent NeoForge versions

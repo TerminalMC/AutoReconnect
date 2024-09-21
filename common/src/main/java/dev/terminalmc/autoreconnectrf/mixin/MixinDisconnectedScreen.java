@@ -114,8 +114,7 @@ public class MixinDisconnectedScreen extends Screen {
         if (canCancel) {
             Button cancelButton;
             cancelButton = Button.builder(
-                            Component.literal("✕")
-                                    .withStyle(s -> s.withColor(ChatFormatting.RED)),
+                            Component.literal("x").withStyle(ChatFormatting.RED),
                             btn -> {
                                 if (autoReconnect$cancelCountdown != null) {
                                     autoReconnect$cancelCountdown.run();

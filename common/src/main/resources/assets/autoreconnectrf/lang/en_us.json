@@ -1,13 +1,12 @@
 {
-  "screen.autoreconnectrf.default": "AutoReconnect",
-  "screen.autoreconnectrf.options": "AutoReconnect Options",
+  "autoreconnectrf.name": "AutoReconnect",
 
-  "message.autoreconnectrf.install_yacl": "Install Yet Another Config Lib (YACL) to access mod options.",
-  "message.autoreconnectrf.go_modrinth": "View on Modrinth",
+  "message.framework.viewModrinth": "View on Modrinth",
+  "message.framework.installYacl": "Install Yet Another Config Lib to access mod options",
 
   "message.autoreconnectrf.reconnect": "Reconnect",
-  "message.autoreconnectrf.reconnect_in": "Reconnect in %d...",
-  "message.autoreconnectrf.reconnect_failed": "Could not reconnect!",
+  "message.autoreconnectrf.reconnectIn": "Reconnect in %d...",
+  "message.autoreconnectrf.reconnectFailed": "Could not reconnect!",
 
   "option.autoreconnectrf.attempts": "Attempts",
   "option.autoreconnectrf.attempts.delays": "Delays",
@@ -25,7 +24,6 @@
   "option.autoreconnectrf.conditions.patterns": "Condition Patterns",
   "option.autoreconnectrf.conditions.patterns.tooltip": "Regex patterns to check against the disconnect reason string, to determine whether to reconnect.\n\nLast disconnect reason string:\n%s",
   "option.autoreconnectrf.conditions.last.none": "[None]",
-
 
   "option.autoreconnectrf.messages": "AutoMessages",
   "option.autoreconnectrf.messages.tooltip": "Messages to send after a successful automatic reconnect.",

@@ -14,7 +14,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
     modImplementation("maven.modrinth:mOgUt4GM:${modmenu_version}")
-    modImplementation("maven.modrinth:1eAoo2KR:${yacl_version_fabric}")
+    modApi("dev.isxander:yet-another-config-lib:${yacl_version}-fabric")
 }
 
 loom {

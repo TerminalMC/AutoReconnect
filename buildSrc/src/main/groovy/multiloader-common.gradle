@@ -42,6 +42,10 @@ repositories {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
     }
+    maven {
+        name = "isXander"
+        url = "https://maven.isxander.dev/releases"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.
@@ -120,7 +124,7 @@ processResources {
             // Dependencies
             "yacl_versions_fabric_list": asJsonList(yacl_versions_fabric),
             "yacl_versions_neoforge": yacl_versions_neoforge,
-            "modmenu_versions_fabric_list": asJsonList(modmenu_versions),
+            "modmenu_versions_fabric_list": asJsonList(modmenu_versions_fabric),
     ]
     filesMatching(["pack.mcmeta", "*.mod.json", "META-INF/*mods.toml", "*.mixins.json"]) {
         expand expandProps

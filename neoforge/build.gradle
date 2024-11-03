@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation("maven.modrinth:1eAoo2KR:${yacl_version_neoforge}")
+    api("dev.isxander:yet-another-config-lib:${yacl_version}-neoforge")
 }
 
 neoForge {

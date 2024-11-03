@@ -103,11 +103,11 @@ public class ScreenMixinUtil {
     public static void countdownCallback(Button reconnectButton, int seconds) {
         if (seconds < 0) {
             // indicates that we're out of attempts
-            reconnectButton.setMessage(localized("message", "reconnect_failed")
+            reconnectButton.setMessage(localized("message", "reconnectFailed")
                     .withStyle(s -> s.withColor(ChatFormatting.RED)));
             reconnectButton.active = false;
         } else {
-            reconnectButton.setMessage(localized("message", "reconnect_in", seconds)
+            reconnectButton.setMessage(localized("message", "reconnectIn", seconds)
                     .withStyle(s -> s.withColor(ChatFormatting.GREEN)));
         }
     }

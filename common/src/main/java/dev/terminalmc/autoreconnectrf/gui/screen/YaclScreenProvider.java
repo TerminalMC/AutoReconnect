@@ -59,7 +59,7 @@ public class YaclScreenProvider {
         Config.Options options = Config.get().options;
 
         YetAnotherConfigLib.Builder builder = YetAnotherConfigLib.createBuilder()
-                .title(localized("screen", "options"))
+                .title(localized("name"))
                 .save(Config::save);
 
         // Attempts

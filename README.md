@@ -2,7 +2,7 @@
 
 <img alt="Icon" width=100 src="https://raw.githubusercontent.com/TerminalMC/AutoReconnect/HEAD/common/src/main/resources/assets/autoreconnectrf/icon.png">
 
-## AutoReconnect-Reforged
+## AutoReconnect (Reforged)
 
 A multi-loader update of Bstn1802's [AutoReconnect](https://github.com/Bstn1802/AutoReconnect).
 
@@ -32,7 +32,7 @@ NeoForge: [YACL](https://modrinth.com/mod/1eAoo2KR)
 
 ### Credits
 
-AutoReconnect-Reforged is based on AutoReconnect by Bstn1802, and includes code reused under license.
+AutoReconnect (Reforged) is based on AutoReconnect by Bstn1802, and includes code reused under license.
 
 Bstn1802's AutoReconnect is available on [Modrinth](https://modrinth.com/mod/A9rziLV4) and [GitHub](https://github.com/Bstn1802/AutoReconnect).
 

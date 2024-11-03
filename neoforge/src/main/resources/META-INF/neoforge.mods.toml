@@ -21,11 +21,6 @@ issueTrackerURL="${issues_url}" #optional:none
   displayURL="${homepage_url}" #optional: none
   #displayTest="" #optional:"MATCH_VERSION"
 
-[[mixins]]
-  config="${mod_id}.mixins.json"
-[[mixins]]
-  config="${mod_id}.neoforge.mixins.json"
-
 [[dependencies."${mod_id}"]]
   modId="minecraft"
   #type="" #optional:"required" #options:"required","optional","incompatible","discouraged"
@@ -34,6 +29,11 @@ issueTrackerURL="${issues_url}" #optional:none
   #ordering="" #optional:"NONE" #options:"BEFORE","AFTER"
   #side="" #optional:"BOTH" #options:"CLIENT","SERVER","BOTH"
   #referralUrl="" #optional:none
+
+[[mixins]]
+  config="${mod_id}.mixins.json"
+[[mixins]]
+  config="${mod_id}.neoforge.mixins.json"
 
 [[dependencies."${mod_id}"]]
   modId="neoforge"

@@ -1,1 +1,1 @@
-- Fix config on recent NeoForge versions
+- Initial full release

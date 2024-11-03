@@ -9,13 +9,13 @@
   "contributors": [$mod_contributors_list],
   "license": "${mod_license}",
 
-  "environment": "${mod_environment}",
+  "environment": "client",
 
   "provides": [],
 
   "entrypoints": {
     "main": [],
-    "client": ["${mod_group}.${mod_id}.AutoReconnectFabric"],
+    "client": ["${mod_group}.${mod_id}.${mod_name}Fabric"],
     "server": [],
     "modmenu": ["${mod_group}.${mod_id}.gui.screen.ModMenuIntegration"]
   },

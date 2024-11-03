@@ -1,14 +1,20 @@
 /*
- * AutoReconnect-Reforged
+ * AutoReconnect
+ * Copyright (C) 2023 Bstn1802
+ * Copyright (C) 2024 TerminalMC
  *
- * Copyright 2020-2023 Bstn1802
- * Copyright 2024 NotRyken
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * The following code is a derivative work of the code from the AutoReconnect
- * project, which is licensed LGPLv3. This code therefore is also licensed under
- * the terms of the GNU Lesser Public License, version 3.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * SPDX-License-Identifier: LGPL-3.0-only
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package dev.terminalmc.autoreconnectrf.gui.screen;

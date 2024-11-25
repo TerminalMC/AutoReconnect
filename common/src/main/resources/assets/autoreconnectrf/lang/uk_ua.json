@@ -1,0 +1,40 @@
+{
+  "autoreconnectrf.name": "AutoReconnect",
+
+  "message.framework.viewModrinth": "Переглянути на Modrinth",
+  "message.framework.installYacl": "Встановіть Yet Another Config Lib для доступу до налаштувань моду",
+
+  "message.autoreconnectrf.reconnect": "Перепід'єднатися",
+  "message.autoreconnectrf.reconnectIn": "Перепід'єднання через %d...",
+  "message.autoreconnectrf.reconnectFailed": "Не вдалося перепід'єднатися!",
+
+  "option.autoreconnectrf.attempts": "Спроби",
+  "option.autoreconnectrf.attempts.delays": "Затримки",
+  "option.autoreconnectrf.attempts.delays.tooltip": "Затримки між спробами в секундах.",
+  "option.autoreconnectrf.attempts.infinite": "Нескінченно",
+  "option.autoreconnectrf.attempts.infinite.tooltip": "Чи повторювати перепід'єднання з останньою налаштованою затримкою.",
+
+  "option.autoreconnectrf.conditions": "Умови",
+  "option.autoreconnectrf.conditions.type": "Тип",
+  "option.autoreconnectrf.conditions.type.positive": "Позитивний",
+  "option.autoreconnectrf.conditions.type.negative": "Негативний",
+  "option.autoreconnectrf.conditions.type.tooltip": "%s: Перепід'єднуватися лише якщо хоча б одна умова збігається.\n%s: Перепід'єднуватися лише якщо жодна умова не збігається.",
+  "option.autoreconnectrf.conditions.keys": "Ключі умов",
+  "option.autoreconnectrf.conditions.keys.tooltip": "Ключі для перевірки проти ключа причини від'єднання, щоб визначити, чи потрібно перепід'єднуватися.\n\nОстанній ключ причини від'єднання:\n%s",
+  "option.autoreconnectrf.conditions.patterns": "Шаблони умов",
+  "option.autoreconnectrf.conditions.patterns.tooltip": "Регулярні вирази для перевірки проти рядка причини від'єднання, щоб визначити, чи потрібно перепід'єднуватися.\n\nОстанній рядок причини від'єднання:\n%s",
+  "option.autoreconnectrf.conditions.last.none": "[Немає]",
+
+  "option.autoreconnectrf.messages": "АвтоПовідомлення",
+  "option.autoreconnectrf.messages.tooltip": "Повідомлення для надсилання після успішного автоматичного перепід'єднання.",
+  "option.autoreconnectrf.messages.instance": "Об'єкт АвтоПовідомлень %d",
+  "option.autoreconnectrf.messages.instance.tooltip": "Окремий об'єкт АвтоПовідомлень для конкретного світу, сервера чи реалму.",
+  "option.autoreconnectrf.messages.instance.name": "Назва",
+  "option.autoreconnectrf.messages.instance.name.tooltip": "Назва світу одиночної гри, запису сервера або реалму.",
+  "option.autoreconnectrf.messages.instance.delay": "Затримка",
+  "option.autoreconnectrf.messages.instance.delay.tooltip": "Затримка між повідомленнями та перед першим, у мілісекундах.",
+  "option.autoreconnectrf.messages.instance.messages": "Повідомлення",
+  "option.autoreconnectrf.messages.instance.messages.tooltip": "Повідомлення або команди, які будуть надіслані після автоматичного перепід'єднання.",
+  "option.autoreconnectrf.messages.instance.add": "Додати",
+  "option.autoreconnectrf.messages.instance.delete": "Видалити"
+}

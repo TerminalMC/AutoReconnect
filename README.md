@@ -36,12 +36,10 @@ AutoReconnect (Reforged) is based on AutoReconnect by Bstn1802, and includes cod
 
 Bstn1802's AutoReconnect is available on [Modrinth](https://modrinth.com/mod/A9rziLV4) and [GitHub](https://github.com/Bstn1802/AutoReconnect).
 
-### License
-
-[LGPL-3.0-only](https://www.gnu.org/licenses/lgpl-3.0.txt)
-
 ### Contact
 
 [![Discord Server](https://img.shields.io/discord/1103153365216669797?logo=discord&label=Discord%20Server&color=%235865F2)](https://discord.terminalmc.dev)
 
 [![GitHub Issues](https://img.shields.io/github/issues/TerminalMC/AutoReconnect?logo=github&label=GitHub%20Issues)](https://github.com/TerminalMC/AutoReconnect/issues)
+
+[![License](https://img.shields.io/github/license/TerminalMC/AutoReconnect?label=License&logo=github&logoColor=white)](https://github.com/TerminalMC/AutoReconnect/blob/HEAD/LICENSE.txt)

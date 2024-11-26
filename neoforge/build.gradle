@@ -4,6 +4,10 @@ plugins {
 }
 
 dependencies {
+    // JiJ MixinExtras if required to be newer than minimum loader-provided version
+//    implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:${mixinextras_version}"))
+    
+    // YACL
     api("dev.isxander:yet-another-config-lib:${yacl_version}-neoforge")
 }
 

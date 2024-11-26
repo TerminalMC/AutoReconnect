@@ -1,0 +1,1 @@
+- Added Ukrainian translation (ttrafford7)

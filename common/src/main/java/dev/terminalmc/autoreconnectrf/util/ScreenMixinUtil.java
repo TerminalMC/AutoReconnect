@@ -61,7 +61,7 @@ public class ScreenMixinUtil {
             if (!match && reason.getContents() instanceof TranslatableContents tc) {
                 String key = tc.getKey();
                 AutoReconnect.lastDcReasonKey = key;
-                for (String condition : Config.get().options.conditionKeys) {
+                for (String condition : Config.options().conditionKeys) {
                     if (key.contains(condition)) {
                         AutoReconnect.LOG.info("Matched key '{}' against reason key '{}'",
                                 condition, key);
@@ -70,7 +70,7 @@ public class ScreenMixinUtil {
                     }
                 }
             }
-            if (Config.get().options.conditionType) {
+            if (Config.options().conditionType) {
                 return match;
             } else {
                 return !match;

@@ -41,7 +41,7 @@ issueTrackerURL="${issues_url}" #optional:none
   side="CLIENT"
 
 [[dependencies."${mod_id}"]]
-  modId="yacl"
+  modId="yet_another_config_lib_v3"
   type="optional"
   versionRange="${yacl_versions_neoforge}"
   side="CLIENT"

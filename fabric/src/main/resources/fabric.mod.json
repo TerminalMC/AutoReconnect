@@ -36,7 +36,7 @@
 
   "recommends": {
     "modmenu": [$modmenu_versions_fabric_list],
-    "yacl": [$yacl_versions_fabric_list]
+    "yet_another_config_lib_v3": [$yacl_versions_fabric_list]
   },
 
   "suggests": {},

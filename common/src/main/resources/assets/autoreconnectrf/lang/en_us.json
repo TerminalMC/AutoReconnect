@@ -29,7 +29,7 @@
   "option.autoreconnectrf.messages.tooltip": "Messages to send after a successful automatic reconnect.",
   "option.autoreconnectrf.messages.instance": "AutoMessages Object %d",
   "option.autoreconnectrf.messages.instance.tooltip": "Single AutoMessages object for a specific world, server or realm.",
-  "option.autoreconnectrf.messages.instance.name": "Name",
+  "option.autoreconnectrf.messages.instance.name": "World/Server Name",
   "option.autoreconnectrf.messages.instance.name.tooltip": "Name of the singleplayer world, server entry or realm.",
   "option.autoreconnectrf.messages.instance.delay": "Delay",
   "option.autoreconnectrf.messages.instance.delay.tooltip": "Delay between messages and before the first one, in milliseconds.",

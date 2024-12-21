@@ -3,6 +3,7 @@
 ## 1.0.3
 
 - Fixed realms reconnection
+- Fixed backup screen translation keys
 
 ## 1.0.2
 

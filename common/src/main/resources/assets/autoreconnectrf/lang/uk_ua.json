@@ -1,8 +1,8 @@
 {
   "autoreconnectrf.name": "AutoReconnect",
 
-  "message.framework.viewModrinth": "Переглянути на Modrinth",
-  "message.framework.installYacl": "Встановіть Yet Another Config Lib для доступу до налаштувань моду",
+  "message.autoreconnectrf.viewModrinth": "Переглянути на Modrinth",
+  "message.autoreconnectrf.installYacl": "Встановіть Yet Another Config Lib для доступу до налаштувань моду",
 
   "message.autoreconnectrf.reconnect": "Перепід'єднатися",
   "message.autoreconnectrf.reconnectIn": "Перепід'єднання через %d...",

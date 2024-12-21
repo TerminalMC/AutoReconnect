@@ -1,0 +1,40 @@
+{
+  "autoreconnectrf.name": "AutoReconnect",
+
+  "message.framework.viewModrinth": "Посмотреть на Modrinth",
+  "message.framework.installYacl": "Установите Yet Another Config Lib для доступа к параметрам мода",
+
+  "message.autoreconnectrf.reconnect": "Переподключиться",
+  "message.autoreconnectrf.reconnectIn": "Переподключение через %d...",
+  "message.autoreconnectrf.reconnectFailed": "Не удалось переподключиться!",
+
+  "option.autoreconnectrf.attempts": "Попытки",
+  "option.autoreconnectrf.attempts.delays": "Задержки",
+  "option.autoreconnectrf.attempts.delays.tooltip": "Задержки между попытками в секундах.",
+  "option.autoreconnectrf.attempts.infinite": "Бесконечно",
+  "option.autoreconnectrf.attempts.infinite.tooltip": "Повторять переподключение с последней настроенной задержкой.",
+
+  "option.autoreconnectrf.conditions": "Условия",
+  "option.autoreconnectrf.conditions.type": "Тип",
+  "option.autoreconnectrf.conditions.type.positive": "Положительный",
+  "option.autoreconnectrf.conditions.type.negative": "Отрицательный",
+  "option.autoreconnectrf.conditions.type.tooltip": "%s: Переподключаться только если хотя бы одно условие совпадает.\n%s: Переподключаться только если ни одно условие не совпадает.",
+  "option.autoreconnectrf.conditions.keys": "Ключи условий",
+  "option.autoreconnectrf.conditions.keys.tooltip": "Ключи для проверки соответствия причине отключения, чтобы определить, нужно ли переподключаться.\n\nПоследний ключ причины отключения:\n%s",
+  "option.autoreconnectrf.conditions.patterns": "Шаблоны условий",
+  "option.autoreconnectrf.conditions.patterns.tooltip": "Регулярные выражения для проверки соответствия строке причины отключения, чтобы определить, нужно ли переподключаться.\n\nПоследняя строка причины отключения:\n%s",
+  "option.autoreconnectrf.conditions.last.none": "[Нет]",
+
+  "option.autoreconnectrf.messages": "АвтоСообщения",
+  "option.autoreconnectrf.messages.tooltip": "Сообщения для отправки после успешного автоматического переподключения.",
+  "option.autoreconnectrf.messages.instance": "Объект Автосообщений %d",
+  "option.autoreconnectrf.messages.instance.tooltip": "Одиночный объект Автосообщений для конкретного мира, сервера или реалма.",
+  "option.autoreconnectrf.messages.instance.name": "Имя",
+  "option.autoreconnectrf.messages.instance.name.tooltip": "Имя однопользовательского мира, названия сервера или реалма.",
+  "option.autoreconnectrf.messages.instance.delay": "Задержка",
+  "option.autoreconnectrf.messages.instance.delay.tooltip": "Задержка между сообщениями и перед первым сообщением, в миллисекундах.",
+  "option.autoreconnectrf.messages.instance.messages": "Сообщения",
+  "option.autoreconnectrf.messages.instance.messages.tooltip": "Сообщения или команды для отправки после автоматического переподключения.",
+  "option.autoreconnectrf.messages.instance.add": "Добавить",
+  "option.autoreconnectrf.messages.instance.delete": "Удалить"
+}

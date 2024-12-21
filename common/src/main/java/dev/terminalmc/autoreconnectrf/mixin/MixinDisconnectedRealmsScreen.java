@@ -42,8 +42,6 @@ import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 @Mixin(DisconnectedRealmsScreen.class)
 public class MixinDisconnectedRealmsScreen extends Screen {
     @Unique
-    private boolean autoReconnect$firstInit = true;
-    @Unique
     private boolean autoReconnect$shouldAutoReconnect;
     @Unique
     private Runnable autoReconnect$cancelCountdown;
@@ -67,7 +65,7 @@ public class MixinDisconnectedRealmsScreen extends Screen {
             Button reconnectButton = buttons.getFirst();
             Button cancelButton = buttons.size() == 2 ? buttons.getLast() : null;
 
-            if (!autoReconnect$firstInit && autoReconnect$shouldAutoReconnect) {
+            if (autoReconnect$shouldAutoReconnect) {
                 AutoReconnect.startCountdown(
                         (seconds) -> ScreenMixinUtil.countdownCallback(reconnectButton, seconds));
             }
@@ -80,7 +78,6 @@ public class MixinDisconnectedRealmsScreen extends Screen {
                 reconnectButton.setMessage(localized("message", "reconnect"));
             };
         }
-        autoReconnect$firstInit = false;
     }
 
     @Unique

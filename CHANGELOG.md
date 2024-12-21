@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Fixed realms reconnection
+
 ## 1.0.2
 
 - Fixed YACL dependency ID

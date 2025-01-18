@@ -96,12 +96,12 @@ processResources {
             "mod_id": mod_id,
             "mod_name": mod_name,
             "mod_description": mod_description,
-            "mod_icon": "assets/" + mod_id + "/icon.png",
+            "mod_icon": "assets/${mod_id}/icon.png",
             "mod_owner": mod_owner,
             "mod_authors_list": asJsonList(mod_authors),
-            "mod_contributors_list": asJsonList(mod_contributors),
-            "mod_authors_string": mod_authors.replace(",", ", "),
-            "mod_contributors_string": mod_contributors.replace(",", ", "),
+            "mod_authors_string": mod_authors.split(",").join(", "),
+            "mod_contributors_list": asJsonList("${mod_contributors},${mod_translators}"),
+            "mod_contributors_string": "${mod_contributors},${mod_translators}".split(",").join(", "),
             "mod_license": mod_license,
             // Links
             "homepage_url": homepage_url,
@@ -126,7 +126,7 @@ processResources {
             "yacl_versions_neoforge": yacl_versions_neoforge,
             "modmenu_versions_fabric_list": asJsonList(modmenu_versions_fabric),
     ]
-    filesMatching(["pack.mcmeta", "*.mod.json", "META-INF/*mods.toml", "*.mixins.json", "assets/"+mod_id+"/lang/*.json"]) {
+    filesMatching(["pack.mcmeta", "*.mod.json", "META-INF/*mods.toml", "*.mixins.json"]) {
         expand expandProps
     }
     inputs.properties(expandProps)

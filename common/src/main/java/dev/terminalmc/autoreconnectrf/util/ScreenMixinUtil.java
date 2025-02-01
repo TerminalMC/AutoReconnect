@@ -47,20 +47,15 @@ public class ScreenMixinUtil {
             AutoReconnect.lastDcReasonStr = reasonStr;
             AutoReconnect.lastDcReasonKey = null;
             boolean match = false;
-
-            // Check regex conditions
-            for (Pattern condition : AutoReconnect.conditionPatterns) {
-                if (condition.matcher(reasonStr).find()) {
-                    AutoReconnect.LOG.info("Matched pattern '{}' against reason '{}'",
-                            condition, reasonStr);
-                    match = true;
-                    break;
-                }
-            }
-            // Check key conditions
-            if (!match && reason.getContents() instanceof TranslatableContents tc) {
+            
+            if (reason.getContents() instanceof TranslatableContents tc) {
                 String key = tc.getKey();
                 AutoReconnect.lastDcReasonKey = key;
+                
+                // Check for transfer packet
+                if (key.equals("disconnect.transfer")) return false;
+                
+                // Check key conditions
                 for (String condition : Config.options().conditionKeys) {
                     if (key.contains(condition)) {
                         AutoReconnect.LOG.info("Matched key '{}' against reason key '{}'",
@@ -70,6 +65,19 @@ public class ScreenMixinUtil {
                     }
                 }
             }
+            
+            if (!match) {
+                // Check regex conditions
+                for (Pattern condition : AutoReconnect.conditionPatterns) {
+                    if (condition.matcher(reasonStr).find()) {
+                        AutoReconnect.LOG.info("Matched pattern '{}' against reason '{}'",
+                                condition, reasonStr);
+                        match = true;
+                        break;
+                    }
+                }
+            }
+            
             if (Config.options().conditionType) {
                 return match;
             } else {

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Added exception to prevent reconnecting when disconnected by transfer packet
+
 ## 1.0.2
 
 - Fixed YACL dependency ID

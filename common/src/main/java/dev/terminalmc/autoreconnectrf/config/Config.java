@@ -55,7 +55,7 @@ public class Config {
         public boolean conditionType = defaultConditionType;
 
         public static final List<String> defaultConditionKeys = new ArrayList<>(
-                List.of("multiplayer.disconnect.banned"));
+                List.of("multiplayer.disconnect.banned", "disconnect.transfer"));
         public List<String> conditionKeys = defaultConditionKeys;
 
         public static final List<String> defaultConditionPatterns = new ArrayList<>();

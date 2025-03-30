@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+
+- Added Simplified Chinese translation (Lithum-12)
+
 ## 1.0.3
 
 - Added exception to prevent reconnecting when disconnected by transfer packet

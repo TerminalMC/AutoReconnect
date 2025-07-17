@@ -408,6 +408,10 @@ public class YaclScreenProvider {
         }
     }
 
+    /**
+     * A list of disconnect reason keys, obtained by searching for "disconnect." and ".disconnect"
+     * in 1.21.1 and 1.21.6 lang files.
+     */
     public static final List<String> DISCONNECT_KEYS = List.of(
             "disconnect.closed",
             "disconnect.disconnected",
@@ -415,6 +419,7 @@ public class YaclScreenProvider {
             "disconnect.exceeded_packet_rate",
             "disconnect.genericReason", // arg
             "disconnect.ignoring_status_request",
+//            "disconnect.kicked",
             "disconnect.loginFailed",
             "disconnect.loginFailedInfo", // arg
             "disconnect.loginFailedInfo.insufficientPrivileges",
@@ -424,14 +429,20 @@ public class YaclScreenProvider {
             "disconnect.lost",
             "disconnect.overflow",
             "disconnect.packetError",
+//            "disconnect.quitting",
             "disconnect.spam",
             "disconnect.timeout",
             "disconnect.transfer",
             "disconnect.unknownHost",
 
+            "menu.custom_screen_info.disconnect",
+
             "multiplayer.disconnect.authservers_down",
+            "multiplayer.disconnect.bad_chat_index",
             "multiplayer.disconnect.banned",
+//            "multiplayer.disconnect.banned_ip.expiration", // arg
             "multiplayer.disconnect.banned_ip.reason", // arg
+//            "multiplayer.disconnect.banned.expiration", // arg
             "multiplayer.disconnect.banned.reason", // arg
             "multiplayer.disconnect.chat_validation_failed",
             "multiplayer.disconnect.duplicate_login",
@@ -446,7 +457,7 @@ public class YaclScreenProvider {
             "multiplayer.disconnect.invalid_player_data",
             "multiplayer.disconnect.invalid_player_movement",
             "multiplayer.disconnect.invalid_public_key_signature",
-            "multiplayer.disconnect.invalid_public_key_signature",
+            "multiplayer.disconnect.invalid_public_key_signature.new",
             "multiplayer.disconnect.invalid_vehicle_movement",
             "multiplayer.disconnect.ip_banned",
             "multiplayer.disconnect.kicked",

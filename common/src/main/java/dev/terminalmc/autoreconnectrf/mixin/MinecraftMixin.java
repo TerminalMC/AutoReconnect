@@ -32,7 +32,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
-public class MixinMinecraft {
+public class MinecraftMixin {
+
     @Shadow
     public Screen screen;
 
@@ -40,11 +41,15 @@ public class MixinMinecraft {
             method = "doWorldLoad",
             at = @At("HEAD")
     )
-    private void startIntegratedServer(LevelStorageSource.LevelStorageAccess session,
-                                       PackRepository dataPackManager, WorldStem saveLoader,
-                                       boolean newWorld, CallbackInfo info) {
-        AutoReconnect.setReconnectStrategy(new SingleplayerReconnectStrategy(
-                saveLoader.worldData().getLevelName()));
+    private void startIntegratedServer(
+            LevelStorageSource.LevelStorageAccess session,
+            PackRepository dataPackManager,
+            WorldStem saveLoader,
+            boolean newWorld,
+            CallbackInfo info
+    ) {
+        AutoReconnect.setReconnectStrategy(new SingleplayerReconnectStrategy(saveLoader.worldData()
+                .getLevelName()));
     }
 
     @Inject(

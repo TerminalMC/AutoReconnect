@@ -7,15 +7,14 @@
   "mixins": [
   ],
   "client": [
-    "MixinClientPacketListener",
-    "MixinConnectScreen",
-    "MixinDisconnectedRealmsScreen",
-    "MixinDisconnectedScreen",
-    "MixinMinecraft",
-    "MixinRealmsConnect",
+    "ClientPacketListenerMixin",
+    "ConnectScreenMixin",
+    "DisconnectedRealmsScreenMixin",
+    "DisconnectedScreenMixin",
+    "MinecraftMixin",
+    "RealmsConnectMixin",
     "accessor.DisconnectedScreenAccessor",
-    "accessor.ScreenAccessor",
-    "accessor.YACLScreenAccessor"
+    "accessor.ScreenAccessor"
   ],
   "server": [
   ],

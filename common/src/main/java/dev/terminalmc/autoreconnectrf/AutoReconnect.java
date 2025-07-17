@@ -23,6 +23,7 @@ import dev.terminalmc.autoreconnectrf.config.Config;
 import dev.terminalmc.autoreconnectrf.reconnect.ReconnectStrategy;
 import dev.terminalmc.autoreconnectrf.reconnect.SingleplayerReconnectStrategy;
 import dev.terminalmc.autoreconnectrf.util.ModLogger;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DisconnectedScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -30,6 +31,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,9 +45,15 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class AutoReconnect {
+
     public static final String MOD_ID = "autoreconnectrf";
     public static final String MOD_NAME = "AutoReconnect";
     public static final ModLogger LOG = new ModLogger(MOD_NAME);
+    public static final Component PREFIX = Component.empty()
+            .append(Component.literal("[").withStyle(ChatFormatting.DARK_GRAY))
+            .append(Component.literal(MOD_NAME).withStyle(ChatFormatting.GOLD))
+            .append(Component.literal("] ").withStyle(ChatFormatting.DARK_GRAY))
+            .withStyle(ChatFormatting.GRAY);
 
     // Condition vars
     public static final List<Pattern> conditionPatterns = new ArrayList<>();
@@ -53,34 +61,48 @@ public class AutoReconnect {
     public static @Nullable String lastDcReasonKey = null;
 
     // Reconnect vars
-    private static final ScheduledThreadPoolExecutor EXECUTOR_SERVICE = new ScheduledThreadPoolExecutor(1);
-    static { EXECUTOR_SERVICE.setRemoveOnCancelPolicy(true); }
-    private static final AtomicReference<ScheduledFuture<?>> countdown = new AtomicReference<>(null);
+    private static final ScheduledThreadPoolExecutor EXECUTOR_SERVICE =
+            new ScheduledThreadPoolExecutor(1);
+
+    static {
+        EXECUTOR_SERVICE.setRemoveOnCancelPolicy(true);
+    }
+
+    private static final AtomicReference<ScheduledFuture<?>> countdown =
+            new AtomicReference<>(null);
     private static @Nullable ReconnectStrategy reconnectStrategy = null;
 
-    // Mod lifecycle methods
-
+    /**
+     * Client initialization.
+     */
     public static void init() {
         Config.getAndSave();
     }
 
-    public static void onEndTick(Minecraft mc) {
+    /**
+     * Client after-tick event listener.
+     */
+    public static void afterClientTick(Minecraft mc) {
     }
 
+    /**
+     * Config save listener.
+     */
     public static void onConfigSaved(Config config) {
         conditionPatterns.clear();
         for (String s : config.options.conditionPatterns) {
             try {
                 conditionPatterns.add(Pattern.compile(s));
-            } catch (PatternSyntaxException ignored) {}
+            } catch (PatternSyntaxException ignored) {
+            }
         }
     }
 
     // Reconnect methods
 
     /**
-     * Stops any active reconnection, and removes the saved strategy to prevent
-     * future reconnection.
+     * Stops any active reconnection, and removes the saved strategy to prevent future
+     * reconnection.
      *
      * <p>Any mods wanting to prevent automatic reconnection should invoke this
      * method at any time after the player has joined a world/server/realm.</p>
@@ -105,8 +127,7 @@ public class AutoReconnect {
     }
 
     /**
-     * @return {@code true} if the mod has a reconnection strategy,
-     * {@code false} otherwise.
+     * @return {@code true} if the mod has a reconnection strategy, {@code false} otherwise.
      */
     public static boolean canReconnect() {
         return reconnectStrategy != null;
@@ -137,13 +158,13 @@ public class AutoReconnect {
      * Stops attempting reconnection but retains strategy for manual reconnect.
      */
     public static void cancelActiveReconnect() {
-        if (reconnectStrategy != null) reconnectStrategy.resetAttempts();
+        if (reconnectStrategy != null)
+            reconnectStrategy.resetAttempts();
         cancelCountdown();
     }
 
     /**
-     * Resets the reconnect countdown and attempts to reconnect using the saved
-     * strategy.
+     * Resets the reconnect countdown and attempts to reconnect using the saved strategy.
      */
     public static void manualReconnect() {
         AutoReconnect.cancelActiveReconnect();
@@ -151,7 +172,8 @@ public class AutoReconnect {
     }
 
     public static void onScreenChanged(Screen current, Screen next) {
-        if (sameType(current, next)) return;
+        if (sameType(current, next))
+            return;
         // TODO condition could use some improvement, shouldn't cause any issues
         if (!isMainScreen(current) && isMainScreen(next) || isReAuthenticating(current, next)) {
             cancelAutoReconnect();
@@ -159,19 +181,21 @@ public class AutoReconnect {
     }
 
     public static void onGameJoined() {
-        if (reconnectStrategy == null) return; // should not happen
-        if (!reconnectStrategy.isAttempting()) return; // manual (re)connect
+        if (reconnectStrategy == null)
+            return; // should not happen
+        if (!reconnectStrategy.isAttempting())
+            return; // manual (re)connect
 
         reconnectStrategy.resetAttempts();
 
         // Send automatic messages if configured for the current context
-        Config.get().getAutoMessagesForName(reconnectStrategy.getName()).ifPresent(
-                autoMessages -> sendAutomatedMessages(
+        Config.get()
+                .getAutoMessagesForName(reconnectStrategy.getName())
+                .ifPresent(autoMessages -> sendAutomatedMessages(
                         Minecraft.getInstance().player,
                         autoMessages.getMessages(),
                         autoMessages.getDelay()
-                )
-        );
+                ));
     }
 
     public static boolean isPlayingSingleplayer() {
@@ -180,14 +204,16 @@ public class AutoReconnect {
 
     private static void cancelCountdown() {
         synchronized (countdown) { // just to be sure
-            if (countdown.get() == null) return;
+            if (countdown.get() == null)
+                return;
             countdown.getAndSet(null).cancel(true); // should stop the timer
         }
     }
 
     // simulated timer using delayed recursion
     private static void countdown(int seconds, final IntConsumer callback) {
-        if (reconnectStrategy == null) return; // should not happen
+        if (reconnectStrategy == null)
+            return; // should not happen
         if (seconds == 0) {
             Minecraft.getInstance().execute(AutoReconnect::reconnect);
             return;
@@ -206,16 +232,22 @@ public class AutoReconnect {
      * @param messages String Iterator of messages to send.
      * @param delay    Delay in milliseconds before the first and between each following message.
      */
-    private static void sendAutomatedMessages(LocalPlayer player, Iterator<String> messages, int delay) {
+    private static void sendAutomatedMessages(
+            LocalPlayer player,
+            Iterator<String> messages,
+            int delay
+    ) {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleWithFixedDelay(() -> {
-            if (!messages.hasNext()) {
-                executorService.shutdown();
-                return;
-            }
+        executorService.scheduleWithFixedDelay(
+                () -> {
+                    if (!messages.hasNext()) {
+                        executorService.shutdown();
+                        return;
+                    }
 
-            sendMessage(player, messages.next());
-        }, delay, delay, TimeUnit.MILLISECONDS);
+                    sendMessage(player, messages.next());
+                }, delay, delay, TimeUnit.MILLISECONDS
+        );
     }
 
     /**
@@ -233,20 +265,22 @@ public class AutoReconnect {
     }
 
     private static boolean sameType(Object a, Object b) {
-        if (a == null && b == null) return true;
-        if (a != null && b != null) return a.getClass().equals(b.getClass());
+        if (a == null && b == null)
+            return true;
+        if (a != null && b != null)
+            return a.getClass().equals(b.getClass());
         return false;
     }
 
     private static boolean isMainScreen(Screen screen) {
-        return screen instanceof TitleScreen || screen instanceof SelectWorldScreen ||
-                screen instanceof JoinMultiplayerScreen || screen instanceof RealmsMainScreen;
+        return screen instanceof TitleScreen || screen instanceof SelectWorldScreen
+                || screen instanceof JoinMultiplayerScreen || screen instanceof RealmsMainScreen;
     }
 
     private static boolean isReAuthenticating(Screen current, Screen next) {
-        return current instanceof DisconnectedScreen
-                && next != null
-                && next.getClass().getName().startsWith("me.axieum.mcmod.authme");
+        return current instanceof DisconnectedScreen && next != null && next.getClass()
+                .getName()
+                .startsWith("me.axieum.mcmod.authme");
     }
 
     private static @NotNull ReconnectStrategy checkStrategy() {

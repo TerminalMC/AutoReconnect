@@ -27,6 +27,7 @@ import net.minecraft.client.multiplayer.TransferState;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 
 public class MultiplayerReconnectStrategy extends ReconnectStrategy {
+
     private final ServerData serverData;
     private final TransferState cookieStorage;
 
@@ -43,6 +44,7 @@ public class MultiplayerReconnectStrategy extends ReconnectStrategy {
     /**
      * @see net.minecraft.client.quickplay.QuickPlay#joinMultiplayerWorld(Minecraft, String)
      */
+    @SuppressWarnings("JavadocReference")
     @Override
     public void reconnect() {
         ConnectScreen.startConnecting(
@@ -51,6 +53,7 @@ public class MultiplayerReconnectStrategy extends ReconnectStrategy {
                 ServerAddress.parseString(serverData.ip),
                 serverData,
                 false,
-                cookieStorage);
+                cookieStorage
+        );
     }
 }

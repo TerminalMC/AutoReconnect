@@ -44,16 +44,19 @@ import java.util.concurrent.TimeUnit;
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
 @Mixin(DisconnectedScreen.class)
-public class MixinDisconnectedScreen extends Screen {
+public class DisconnectedScreenMixin extends Screen {
+
     @Shadow
     @Mutable
     private @Final Screen parent;
-    @Unique
-    private boolean autoReconnect$shouldAutoReconnect;
-    @Unique
-    private Runnable autoReconnect$cancelCountdown;
 
-    protected MixinDisconnectedScreen(Component title) {
+    @Unique
+    private boolean autoreconnectrf$shouldAutoReconnect;
+
+    @Unique
+    private Runnable autoreconnectrf$cancelCountdown;
+
+    protected DisconnectedScreenMixin(Component title) {
         super(title);
     }
 
@@ -64,8 +67,8 @@ public class MixinDisconnectedScreen extends Screen {
     private void init(CallbackInfo info) {
         if (AutoReconnect.isPlayingSingleplayer()) {
             // Change back button text to "Back" instead of "Back to World List" bcs of bug fix above
-            ScreenMixinUtil.findBackButton(this).ifPresent(
-                    btn -> btn.setMessage(Component.translatable("gui.toWorld")));
+            ScreenMixinUtil.findBackButton(this)
+                    .ifPresent(btn -> btn.setMessage(Component.translatable("gui.toWorld")));
         }
 
         if (AutoReconnect.isPlayingSingleplayer()) {
@@ -75,33 +78,38 @@ public class MixinDisconnectedScreen extends Screen {
         }
 
         if (!AutoReconnect.canReconnect()) {
-            autoReconnect$shouldAutoReconnect = false;
-        }
-        else {
-            autoReconnect$shouldAutoReconnect = ScreenMixinUtil.checkConditions(this);
+            autoreconnectrf$shouldAutoReconnect = false;
+        } else {
+            autoreconnectrf$shouldAutoReconnect = ScreenMixinUtil.checkConditions(this);
 
-            List<Button> buttons = autoReconnect$addButtons(
-                    ((DisconnectedScreenAccessor)this).getLayout(), autoReconnect$shouldAutoReconnect);
+            List<Button> buttons = autoreconnectrf$addButtons(
+                    ((DisconnectedScreenAccessor) this).autoreconnectrf$getLayout(),
+                    autoreconnectrf$shouldAutoReconnect
+            );
             Button reconnectButton = buttons.getFirst();
             Button cancelButton = buttons.size() == 2 ? buttons.getLast() : null;
 
-            if (autoReconnect$shouldAutoReconnect) {
-                AutoReconnect.startCountdown(
-                        (seconds) -> ScreenMixinUtil.countdownCallback(reconnectButton, seconds));
+            if (autoreconnectrf$shouldAutoReconnect) {
+                AutoReconnect.startCountdown((seconds) -> ScreenMixinUtil.countdownCallback(
+                        reconnectButton,
+                        seconds
+                ));
             }
 
-            autoReconnect$cancelCountdown = () -> {
+            autoreconnectrf$cancelCountdown = () -> {
                 AutoReconnect.cancelActiveReconnect();
-                autoReconnect$shouldAutoReconnect = false;
-                if (cancelButton != null) removeWidget(cancelButton);
-                reconnectButton.active = true; // in case it was deactivated after running out of attempts
+                autoreconnectrf$shouldAutoReconnect = false;
+                if (cancelButton != null)
+                    removeWidget(cancelButton);
+                reconnectButton.active =
+                        true; // in case it was deactivated after running out of attempts
                 reconnectButton.setMessage(localized("message", "reconnect"));
             };
         }
     }
 
     @Unique
-    private List<Button> autoReconnect$addButtons(LinearLayout layout, boolean canCancel) {
+    private List<Button> autoreconnectrf$addButtons(LinearLayout layout, boolean canCancel) {
         List<Button> buttons = new ArrayList<>();
 
         Button backButton = ScreenMixinUtil.findBackButton(this)
@@ -109,23 +117,25 @@ public class MixinDisconnectedScreen extends Screen {
                         "Couldn't find the back button on the disconnect screen"));
 
         Button reconnectButton = Button.builder(
-                        localized("message", "reconnect"),
-                        btn -> AutoReconnect.schedule(() -> Minecraft.getInstance().execute(
-                                AutoReconnect::manualReconnect), 100, TimeUnit.MILLISECONDS))
-                .bounds(0, 0, backButton.getWidth(), backButton.getHeight()).build();
+                localized("message", "reconnect"),
+                btn -> AutoReconnect.schedule(
+                        () -> Minecraft.getInstance().execute(AutoReconnect::manualReconnect),
+                        100,
+                        TimeUnit.MILLISECONDS
+                )
+        ).bounds(0, 0, backButton.getWidth(), backButton.getHeight()).build();
         layout.addChild(reconnectButton);
         buttons.add(reconnectButton);
 
         if (canCancel) {
             Button cancelButton;
             cancelButton = Button.builder(
-                            Component.literal("x").withStyle(ChatFormatting.RED),
-                            btn -> {
-                                if (autoReconnect$cancelCountdown != null) {
-                                    autoReconnect$cancelCountdown.run();
-                                }
-                            })
-                    .bounds(0, 0, backButton.getWidth(), backButton.getHeight()).build();
+                    Component.literal("x").withStyle(ChatFormatting.RED), btn -> {
+                        if (autoreconnectrf$cancelCountdown != null) {
+                            autoreconnectrf$cancelCountdown.run();
+                        }
+                    }
+            ).bounds(0, 0, backButton.getWidth(), backButton.getHeight()).build();
 
             layout.addChild(cancelButton);
             buttons.add(cancelButton);
@@ -141,9 +151,9 @@ public class MixinDisconnectedScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 256 && autoReconnect$shouldAutoReconnect) {
-            if (autoReconnect$cancelCountdown != null) {
-                autoReconnect$cancelCountdown.run();
+        if (keyCode == 256 && autoreconnectrf$shouldAutoReconnect) {
+            if (autoreconnectrf$cancelCountdown != null) {
+                autoreconnectrf$cancelCountdown.run();
             }
             return true;
         } else {
@@ -164,6 +174,6 @@ public class MixinDisconnectedScreen extends Screen {
     // Actually return to parent screen and not to the title screen
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        Minecraft.getInstance().setScreen(parent);
     }
 }

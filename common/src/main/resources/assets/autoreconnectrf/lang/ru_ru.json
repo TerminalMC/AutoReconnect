@@ -8,6 +8,8 @@
   "message.autoreconnectrf.reconnectIn": "Переподключение через %d...",
   "message.autoreconnectrf.reconnectFailed": "Не удалось переподключиться!",
 
+  "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",
+
   "option.autoreconnectrf.attempts": "Попытки",
   "option.autoreconnectrf.attempts.delays": "Задержки",
   "option.autoreconnectrf.attempts.delays.tooltip": "Задержки между попытками в секундах.",

@@ -24,6 +24,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 
 public class SingleplayerReconnectStrategy extends ReconnectStrategy {
+
     private final String worldName;
 
     public SingleplayerReconnectStrategy(String worldName) {
@@ -38,11 +39,15 @@ public class SingleplayerReconnectStrategy extends ReconnectStrategy {
     /**
      * @see net.minecraft.client.quickplay.QuickPlay#joinSingleplayerWorld(Minecraft, String)
      */
+    @SuppressWarnings("JavadocReference")
     @Override
     public void reconnect() {
         Minecraft client = Minecraft.getInstance();
-        if (!client.getLevelSource().levelExists(getName())) return;
-        client.forceSetScreen(new GenericMessageScreen(Component.translatable("selectWorld.data_read")));
-        client.createWorldOpenFlows().openWorld(getName(), () -> client.setScreen(new TitleScreen()));
+        if (!client.getLevelSource().levelExists(getName()))
+            return;
+        client.forceSetScreen(new GenericMessageScreen(Component.translatable(
+                "selectWorld.data_read")));
+        client.createWorldOpenFlows()
+                .openWorld(getName(), () -> client.setScreen(new TitleScreen()));
     }
 }

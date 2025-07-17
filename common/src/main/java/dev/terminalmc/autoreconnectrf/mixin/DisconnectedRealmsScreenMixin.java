@@ -40,13 +40,15 @@ import java.util.concurrent.TimeUnit;
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
 @Mixin(DisconnectedRealmsScreen.class)
-public class MixinDisconnectedRealmsScreen extends Screen {
-    @Unique
-    private boolean autoReconnect$shouldAutoReconnect;
-    @Unique
-    private Runnable autoReconnect$cancelCountdown;
+public class DisconnectedRealmsScreenMixin extends Screen {
 
-    protected MixinDisconnectedRealmsScreen(Component title) {
+    @Unique
+    private boolean autoreconnectrf$shouldAutoReconnect;
+
+    @Unique
+    private Runnable autoreconnectrf$cancelCountdown;
+
+    protected DisconnectedRealmsScreenMixin(Component title) {
         super(title);
     }
 
@@ -56,32 +58,35 @@ public class MixinDisconnectedRealmsScreen extends Screen {
     )
     private void init(CallbackInfo info) {
         if (!AutoReconnect.canReconnect()) {
-            autoReconnect$shouldAutoReconnect = false;
-        }
-        else {
-            autoReconnect$shouldAutoReconnect = ScreenMixinUtil.checkConditions(this);
+            autoreconnectrf$shouldAutoReconnect = false;
+        } else {
+            autoreconnectrf$shouldAutoReconnect = ScreenMixinUtil.checkConditions(this);
 
-            List<Button> buttons = autoReconnect$addButtons(autoReconnect$shouldAutoReconnect);
+            List<Button> buttons = autoreconnectrf$addButtons(autoreconnectrf$shouldAutoReconnect);
             Button reconnectButton = buttons.getFirst();
             Button cancelButton = buttons.size() == 2 ? buttons.getLast() : null;
 
-            if (autoReconnect$shouldAutoReconnect) {
-                AutoReconnect.startCountdown(
-                        (seconds) -> ScreenMixinUtil.countdownCallback(reconnectButton, seconds));
+            if (autoreconnectrf$shouldAutoReconnect) {
+                AutoReconnect.startCountdown((seconds) -> ScreenMixinUtil.countdownCallback(
+                        reconnectButton,
+                        seconds
+                ));
             }
 
-            autoReconnect$cancelCountdown = () -> {
+            autoreconnectrf$cancelCountdown = () -> {
                 AutoReconnect.cancelActiveReconnect();
-                autoReconnect$shouldAutoReconnect = false;
-                if (cancelButton != null) removeWidget(cancelButton);
-                reconnectButton.active = true; // in case it was deactivated after running out of attempts
+                autoreconnectrf$shouldAutoReconnect = false;
+                if (cancelButton != null)
+                    removeWidget(cancelButton);
+                reconnectButton.active =
+                        true; // in case it was deactivated after running out of attempts
                 reconnectButton.setMessage(localized("message", "reconnect"));
             };
         }
     }
 
     @Unique
-    private List<Button> autoReconnect$addButtons(boolean canCancel) {
+    private List<Button> autoreconnectrf$addButtons(boolean canCancel) {
         List<Button> buttons = new ArrayList<>();
 
         Button backButton = ScreenMixinUtil.findBackButton(this)
@@ -89,30 +94,39 @@ public class MixinDisconnectedRealmsScreen extends Screen {
                         "Couldn't find the back button on the disconnect screen"));
 
         Button reconnectButton = Button.builder(
-                        localized("message", "reconnect"),
-                        btn -> AutoReconnect.schedule(() -> Minecraft.getInstance().execute(
-                                AutoReconnect::manualReconnect), 100, TimeUnit.MILLISECONDS))
-                .bounds(backButton.getX(), backButton.getY() + backButton.getHeight() + 4,
-                        backButton.getWidth(), backButton.getHeight())
-                .build();
+                localized("message", "reconnect"),
+                btn -> AutoReconnect.schedule(
+                        () -> Minecraft.getInstance().execute(AutoReconnect::manualReconnect),
+                        100,
+                        TimeUnit.MILLISECONDS
+                )
+        ).bounds(
+                backButton.getX(),
+                backButton.getY() + backButton.getHeight() + 4,
+                backButton.getWidth(),
+                backButton.getHeight()
+        ).build();
         addRenderableWidget(reconnectButton);
         buttons.add(reconnectButton);
 
         if (canCancel) {
             Button cancelButton;
             cancelButton = Button.builder(
-                            Component.literal("x").withStyle(ChatFormatting.RED),
-                            btn -> {
-                                AutoReconnect.cancelActiveReconnect();
-                                autoReconnect$shouldAutoReconnect = false;
-                                removeWidget(this);
-                                reconnectButton.active = true; // in case it was deactivated after running out of attempts
-                                reconnectButton.setMessage(localized("message", "reconnect"));
-                                reconnectButton.setWidth(backButton.getWidth()); // reset to full width
-                            })
-                    .bounds(reconnectButton.getX(), reconnectButton.getY() + reconnectButton.getHeight() + 4,
-                            backButton.getWidth(), backButton.getHeight())
-                    .build();
+                    Component.literal("x").withStyle(ChatFormatting.RED), btn -> {
+                        AutoReconnect.cancelActiveReconnect();
+                        autoreconnectrf$shouldAutoReconnect = false;
+                        removeWidget(this);
+                        reconnectButton.active =
+                                true; // in case it was deactivated after running out of attempts
+                        reconnectButton.setMessage(localized("message", "reconnect"));
+                        reconnectButton.setWidth(backButton.getWidth()); // reset to full width
+                    }
+            ).bounds(
+                    reconnectButton.getX(),
+                    reconnectButton.getY() + reconnectButton.getHeight() + 4,
+                    backButton.getWidth(),
+                    backButton.getHeight()
+            ).build();
 
             addRenderableWidget(cancelButton);
             buttons.add(cancelButton);
@@ -123,9 +137,9 @@ public class MixinDisconnectedRealmsScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 256 && autoReconnect$shouldAutoReconnect) {
-            if (autoReconnect$cancelCountdown != null) {
-                autoReconnect$cancelCountdown.run();
+        if (keyCode == 256 && autoreconnectrf$shouldAutoReconnect) {
+            if (autoreconnectrf$cancelCountdown != null) {
+                autoreconnectrf$cancelCountdown.run();
             }
             return true;
         } else {

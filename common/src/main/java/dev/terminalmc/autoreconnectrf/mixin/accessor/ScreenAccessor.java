@@ -24,9 +24,12 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 
+/**
+ * Inexplicably, NeoForge crashes claiming "java.lang.NoClassDefFoundError:
+ * dev.terminalmc.autoreconnectrf.mixin.MixinDisconnectedScreen is invalid" if this mixin is
+ * removed.
+ */
 @Mixin(Screen.class)
 public interface ScreenAccessor<T extends GuiEventListener & Renderable & NarratableEntry> {
-    // Inexplicably, NeoForge crashes claiming "java.lang.NoClassDefFoundError: 
-    // dev.terminalmc.autoreconnectrf.mixin.MixinDisconnectedScreen is invalid"
-    // if this mixin is removed.
+
 }

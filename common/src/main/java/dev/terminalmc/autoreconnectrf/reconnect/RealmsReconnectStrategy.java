@@ -27,6 +27,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 
 public class RealmsReconnectStrategy extends ReconnectStrategy {
+
     private final RealmsServer realmsServer;
 
     public RealmsReconnectStrategy(RealmsServer realmsServer) {
@@ -39,14 +40,19 @@ public class RealmsReconnectStrategy extends ReconnectStrategy {
     }
 
     /**
-     * @see net.minecraft.client.quickplay.QuickPlay#joinRealmsWorld(Minecraft, RealmsClient, String)
+     * @see net.minecraft.client.quickplay.QuickPlay#joinRealmsWorld(Minecraft, RealmsClient,
+     * String)
      */
+    @SuppressWarnings("JavadocReference")
     @Override
     public void reconnect() {
         TitleScreen titleScreen = new TitleScreen();
-        GetServerDetailsTask realmsPrepareConnectionTask = new GetServerDetailsTask(
-                new RealmsMainScreen(titleScreen), realmsServer);
-        Minecraft.getInstance().setScreen(new RealmsLongRunningMcoTaskScreen(
-                titleScreen, realmsPrepareConnectionTask));
+        GetServerDetailsTask realmsPrepareConnectionTask =
+                new GetServerDetailsTask(new RealmsMainScreen(titleScreen), realmsServer);
+        Minecraft.getInstance()
+                .setScreen(new RealmsLongRunningMcoTaskScreen(
+                        titleScreen,
+                        realmsPrepareConnectionTask
+                ));
     }
 }

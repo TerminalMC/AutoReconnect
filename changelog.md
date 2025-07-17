@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- TBD
+
 ## 1.0.4
 
 - Added Simplified Chinese translation (Lithum-12)

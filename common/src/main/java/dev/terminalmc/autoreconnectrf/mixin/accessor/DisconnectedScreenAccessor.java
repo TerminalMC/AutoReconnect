@@ -26,9 +26,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(DisconnectedScreen.class)
 public interface DisconnectedScreenAccessor {
-    @Accessor
-    DisconnectionDetails getDetails();
 
-    @Accessor
-    LinearLayout getLayout();
+    @Accessor("details")
+    DisconnectionDetails autoreconnectrf$getDetails();
+
+    @Accessor("layout")
+    LinearLayout autoreconnectrf$getLayout();
 }

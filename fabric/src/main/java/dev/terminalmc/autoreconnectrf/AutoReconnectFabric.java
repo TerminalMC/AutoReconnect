@@ -17,25 +17,28 @@
 
 package dev.terminalmc.autoreconnectrf;
 
+import dev.terminalmc.autoreconnectrf.command.Commands;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
+@SuppressWarnings("unused")
 public class AutoReconnectFabric implements ClientModInitializer {
+
     @Override
     public void onInitializeClient() {
-        // Tick events
-        ClientTickEvents.END_CLIENT_TICK.register(AutoReconnect::onEndTick);
+        // Register client commands
+        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, buildContext) ->
+                new Commands<FabricClientCommandSource>().register(
+                        dispatcher,
+                        buildContext
+                )));
 
-        // Main initialization
+        // Register client after-tick event
+        ClientTickEvents.END_CLIENT_TICK.register(AutoReconnect::afterClientTick);
+
+        // Initialize client
         AutoReconnect.init();
-
-        // Debug
-//        KeyMapping key = new KeyMapping("AutoReconnect", InputConstants.KEY_H, "Disconnect");
-//        KeyBindingHelper.registerKeyBinding(key);
-//        ClientTickEvents.END_CLIENT_TICK.register((mc) -> {
-//            while (key.consumeClick()) {
-//                mc.player.connection.getConnection().disconnect(Component.literal("adios"));
-//            }
-//        });
     }
 }

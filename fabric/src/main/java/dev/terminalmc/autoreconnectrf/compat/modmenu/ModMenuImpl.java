@@ -1,6 +1,5 @@
 /*
  * AutoReconnect
- * Copyright (C) 2023 Bstn1802
  * Copyright (C) 2025 TerminalMC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.terminalmc.autoreconnectrf.mixin.accessor;
+package dev.terminalmc.autoreconnectrf.compat.modmenu;
 
-import dev.isxander.yacl3.gui.YACLScreen;
-import net.minecraft.client.gui.screens.Screen;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
+import dev.terminalmc.autoreconnectrf.gui.screen.ConfigScreenProvider;
 
-@Pseudo
-@Mixin(YACLScreen.class)
-public interface YACLScreenAccessor {
-    @Accessor
-    Screen getParent();
+@SuppressWarnings("unused")
+public class ModMenuImpl implements ModMenuApi {
+
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return ConfigScreenProvider::getConfigScreen;
+    }
 }

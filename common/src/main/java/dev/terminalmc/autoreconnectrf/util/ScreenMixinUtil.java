@@ -39,45 +39,54 @@ import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
  * Yeah, I know it's bad practice.
  */
 public class ScreenMixinUtil {
+
     public static boolean checkConditions(Screen screen) {
         if (screen instanceof DisconnectedScreen ds) {
             // Doesn't work with realms disconnect screen
-            Component reason = ((DisconnectedScreenAccessor)ds).getDetails().reason();
+            Component reason =
+                    ((DisconnectedScreenAccessor) ds).autoreconnectrf$getDetails().reason();
             String reasonStr = reason.getString();
             AutoReconnect.lastDcReasonStr = reasonStr;
             AutoReconnect.lastDcReasonKey = null;
             boolean match = false;
-            
+
             if (reason.getContents() instanceof TranslatableContents tc) {
                 String key = tc.getKey();
                 AutoReconnect.lastDcReasonKey = key;
-                
+
                 // Check for transfer packet
-                if (key.equals("disconnect.transfer")) return false;
-                
+                if (key.equals("disconnect.transfer"))
+                    return false;
+
                 // Check key conditions
                 for (String condition : Config.options().conditionKeys) {
                     if (key.contains(condition)) {
-                        AutoReconnect.LOG.info("Matched key '{}' against reason key '{}'",
-                                condition, key);
+                        AutoReconnect.LOG.info(
+                                "Matched key '{}' against reason key '{}'",
+                                condition,
+                                key
+                        );
                         match = true;
                         break;
                     }
                 }
             }
-            
+
             if (!match) {
                 // Check regex conditions
                 for (Pattern condition : AutoReconnect.conditionPatterns) {
                     if (condition.matcher(reasonStr).find()) {
-                        AutoReconnect.LOG.info("Matched pattern '{}' against reason '{}'",
-                                condition, reasonStr);
+                        AutoReconnect.LOG.info(
+                                "Matched pattern '{}' against reason '{}'",
+                                condition,
+                                reasonStr
+                        );
                         match = true;
                         break;
                     }
                 }
             }
-            
+
             if (Config.options().conditionType) {
                 return match;
             } else {
@@ -89,14 +98,17 @@ public class ScreenMixinUtil {
 
     public static Optional<Button> findBackButton(Screen screen) {
         for (GuiEventListener element : screen.children()) {
-            if (!(element instanceof Button button)) continue;
+            if (!(element instanceof Button button))
+                continue;
 
             String translatableKey;
             if (button.getMessage() instanceof TranslatableContents translatable) {
                 translatableKey = translatable.getKey();
-            } else if (button.getMessage().getContents() instanceof TranslatableContents translatable) {
+            } else if (button.getMessage()
+                    .getContents() instanceof TranslatableContents translatable) {
                 translatableKey = translatable.getKey();
-            } else continue;
+            } else
+                continue;
 
             // check for gui.back, gui.toMenu, gui.toRealms, gui.toTitle, gui.toWorld (only ones starting with "gui.to")
             if (translatableKey.equals("gui.back") || translatableKey.startsWith("gui.to")) {
@@ -110,12 +122,17 @@ public class ScreenMixinUtil {
     public static void countdownCallback(Button reconnectButton, int seconds) {
         if (seconds < 0) {
             // indicates that we're out of attempts
-            reconnectButton.setMessage(localized("message", "reconnectFailed")
-                    .withStyle(s -> s.withColor(ChatFormatting.RED)));
+            reconnectButton.setMessage(localized(
+                    "message",
+                    "reconnectFailed"
+            ).withStyle(s -> s.withColor(ChatFormatting.RED)));
             reconnectButton.active = false;
         } else {
-            reconnectButton.setMessage(localized("message", "reconnectIn", seconds)
-                    .withStyle(s -> s.withColor(ChatFormatting.GREEN)));
+            reconnectButton.setMessage(localized(
+                    "message",
+                    "reconnectIn",
+                    seconds
+            ).withStyle(s -> s.withColor(ChatFormatting.GREEN)));
         }
     }
 }

@@ -19,20 +19,39 @@
 package dev.terminalmc.autoreconnectrf.mixin;
 
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.network.protocol.game.ClientboundLoginPacket;
+import dev.terminalmc.autoreconnectrf.reconnect.MultiplayerReconnectStrategy;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ConnectScreen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.TransferState;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientPacketListener.class)
-public class MixinClientPacketListener {
+@Mixin(ConnectScreen.class)
+public class ConnectScreenMixin {
+
+    /**
+     * Multiplayer connection event notifier.
+     */
     @Inject(
-            at = @At("TAIL"),
-            method = "handleLogin"
+            at = @At("HEAD"),
+            method = "connect"
     )
-    private void onGameJoin(ClientboundLoginPacket packet, CallbackInfo info) {
-        AutoReconnect.onGameJoined();
+    private void connect(
+            Minecraft client,
+            ServerAddress address,
+            ServerData data,
+            TransferState transferState,
+            CallbackInfo ci
+    ) {
+        if (data != null) {
+            AutoReconnect.setReconnectStrategy(new MultiplayerReconnectStrategy(
+                    data,
+                    transferState
+            ));
+        }
     }
 }

@@ -8,6 +8,8 @@
   "message.autoreconnectrf.reconnectIn": "在 %d 秒后重新连接...",
   "message.autoreconnectrf.reconnectFailed": "无法重新连接！",
 
+  "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",
+
   "option.autoreconnectrf.attempts": "重连次数/延迟",
   "option.autoreconnectrf.attempts.delays": "延迟",
   "option.autoreconnectrf.attempts.delays.tooltip": "依次尝试以下的延迟（以秒为单位）。",

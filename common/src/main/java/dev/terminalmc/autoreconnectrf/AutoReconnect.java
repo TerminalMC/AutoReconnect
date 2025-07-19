@@ -21,7 +21,8 @@ package dev.terminalmc.autoreconnectrf;
 import com.mojang.realmsclient.RealmsMainScreen;
 import dev.terminalmc.autoreconnectrf.config.Config;
 import dev.terminalmc.autoreconnectrf.reconnect.ReconnectStrategy;
-import dev.terminalmc.autoreconnectrf.reconnect.SingleplayerReconnectStrategy;
+import dev.terminalmc.autoreconnectrf.reconnect.WorldReconnectStrategy;
+import dev.terminalmc.autoreconnectrf.util.MessageUtil;
 import dev.terminalmc.autoreconnectrf.util.ModLogger;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -30,15 +31,15 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntConsumer;
 import java.util.regex.Pattern;
@@ -55,12 +56,10 @@ public class AutoReconnect {
             .append(Component.literal("] ").withStyle(ChatFormatting.DARK_GRAY))
             .withStyle(ChatFormatting.GRAY);
 
-    // Condition vars
     public static final List<Pattern> conditionPatterns = new ArrayList<>();
     public static @Nullable String lastDcReasonStr = null;
     public static @Nullable String lastDcReasonKey = null;
 
-    // Reconnect vars
     private static final ScheduledThreadPoolExecutor EXECUTOR_SERVICE =
             new ScheduledThreadPoolExecutor(1);
 
@@ -70,6 +69,7 @@ public class AutoReconnect {
 
     private static final AtomicReference<ScheduledFuture<?>> countdown =
             new AtomicReference<>(null);
+
     private static @Nullable ReconnectStrategy reconnectStrategy = null;
 
     /**
@@ -98,32 +98,47 @@ public class AutoReconnect {
         }
     }
 
-    // Reconnect methods
+    /**
+     * Screen change listener.
+     */
+    public static void onScreenChanged(@Nullable Screen current, @Nullable Screen next) {
+        if (isSameType(current, next))
+            return;
+        if (!isMainScreen(current) && isMainScreen(next) || isReAuthenticating(current, next)) {
+            cancelAutoReconnect();
+        }
+    }
 
     /**
-     * Stops any active reconnection, and removes the saved strategy to prevent future
-     * reconnection.
-     *
-     * <p>Any mods wanting to prevent automatic reconnection should invoke this
-     * method at any time after the player has joined a world/server/realm.</p>
+     * Game join listener.
      */
-    public static void cancelAutoReconnect() {
-        cancelActiveReconnect();
-        reconnectStrategy = null;
+    public static void onGameJoined() {
+        if (reconnectStrategy == null)
+            return; // Should not happen
+        if (!reconnectStrategy.isAttempting())
+            return; // Manual (re)connect
+
+        reconnectStrategy.resetAttempts();
+
+        // Send automatic messages if configured for the current context
+        Config.get()
+                .getAutoMessagesForId(reconnectStrategy.getId())
+                .ifPresent(autoMessages -> MessageUtil.sendAutomatedMessages(
+                        Minecraft.getInstance().player,
+                        autoMessages.getMessages(),
+                        autoMessages.getDelay()
+                ));
     }
 
-    public static ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit timeUnit) {
-        return EXECUTOR_SERVICE.schedule(command, delay, timeUnit);
-    }
+    // Reconnect management
 
     /**
      * Sets the strategy to be used for the next reconnection attempt.
      */
     public static void setReconnectStrategy(@NotNull ReconnectStrategy pReconnectStrategy) {
         // Avoid overwriting strategy on reconnect failure
-        if (reconnectStrategy == null) {
+        if (reconnectStrategy == null)
             reconnectStrategy = pReconnectStrategy;
-        }
     }
 
     /**
@@ -138,29 +153,8 @@ public class AutoReconnect {
      */
     public static void reconnect() {
         cancelCountdown();
-        checkStrategy().reconnect();
-    }
-
-    /**
-     * Initiates the countdown for the next reconnect attempt, if any.
-     */
-    public static void startCountdown(final IntConsumer callback) {
-        int delay = Config.get().getDelayForAttempt(checkStrategy().nextAttempt());
-        if (delay >= 0) {
-            countdown(delay, callback);
-        } else {
-            // No more attempts configured
-            callback.accept(-1);
-        }
-    }
-
-    /**
-     * Stops attempting reconnection but retains strategy for manual reconnect.
-     */
-    public static void cancelActiveReconnect() {
         if (reconnectStrategy != null)
-            reconnectStrategy.resetAttempts();
-        cancelCountdown();
+            reconnectStrategy.reconnect();
     }
 
     /**
@@ -171,100 +165,90 @@ public class AutoReconnect {
         AutoReconnect.reconnect();
     }
 
-    public static void onScreenChanged(Screen current, Screen next) {
-        if (sameType(current, next))
-            return;
-        // TODO condition could use some improvement, shouldn't cause any issues
-        if (!isMainScreen(current) && isMainScreen(next) || isReAuthenticating(current, next)) {
-            cancelAutoReconnect();
+    /**
+     * Stops any active reconnection and removes the saved strategy to prevent future reconnection.
+     * <p>
+     * Any other mods wanting to prevent automatic reconnection should invoke this method at any
+     * time after the player has joined a world/server/realm.
+     */
+    public static void cancelAutoReconnect() {
+        cancelActiveReconnect();
+        reconnectStrategy = null;
+    }
+
+    /**
+     * Stops attempting reconnection but retains the strategy for manual reconnection.
+     */
+    public static void cancelActiveReconnect() {
+        if (reconnectStrategy != null)
+            reconnectStrategy.resetAttempts();
+        cancelCountdown();
+    }
+
+    // Countdown management
+
+    public static ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit timeUnit) {
+        return EXECUTOR_SERVICE.schedule(command, delay, timeUnit);
+    }
+
+    /**
+     * Initiates the countdown for the next reconnect attempt, if any.
+     */
+    public static void startCountdown(final IntConsumer callback) {
+        int delay = Config.get().getDelayForAttempt(reconnectStrategy.nextAttempt());
+        if (delay >= 0) {
+            countdown(delay, callback);
+        } else {
+            // No more attempts configured
+            callback.accept(-1);
         }
     }
 
-    public static void onGameJoined() {
-        if (reconnectStrategy == null)
-            return; // should not happen
-        if (!reconnectStrategy.isAttempting())
-            return; // manual (re)connect
-
-        reconnectStrategy.resetAttempts();
-
-        // Send automatic messages if configured for the current context
-        Config.get()
-                .getAutoMessagesForName(reconnectStrategy.getName())
-                .ifPresent(autoMessages -> sendAutomatedMessages(
-                        Minecraft.getInstance().player,
-                        autoMessages.getMessages(),
-                        autoMessages.getDelay()
-                ));
-    }
-
-    public static boolean isPlayingSingleplayer() {
-        return reconnectStrategy instanceof SingleplayerReconnectStrategy;
-    }
-
+    /**
+     * Stops and clears the active countdown, if any.
+     */
     private static void cancelCountdown() {
-        synchronized (countdown) { // just to be sure
+        synchronized (countdown) { // Just to be sure
             if (countdown.get() == null)
                 return;
-            countdown.getAndSet(null).cancel(true); // should stop the timer
+            countdown.getAndSet(null).cancel(true);
         }
     }
 
-    // simulated timer using delayed recursion
+    /**
+     * Simulated reconnect countdown timer using delayed recursion.
+     */
     private static void countdown(int seconds, final IntConsumer callback) {
         if (reconnectStrategy == null)
-            return; // should not happen
+            return; // Should not happen
         if (seconds == 0) {
+            // Execute on main thread
             Minecraft.getInstance().execute(AutoReconnect::reconnect);
-            return;
-        }
-        callback.accept(seconds);
-        // wait at end of method for no initial delay
-        synchronized (countdown) { // just to be sure
-            countdown.set(schedule(() -> countdown(seconds - 1, callback), 1, TimeUnit.SECONDS));
-        }
-    }
-
-    /**
-     * Handle a list of messages to send by the player to the current connection.
-     *
-     * @param player   Player to send the message as.
-     * @param messages String Iterator of messages to send.
-     * @param delay    Delay in milliseconds before the first and between each following message.
-     */
-    private static void sendAutomatedMessages(
-            LocalPlayer player,
-            Iterator<String> messages,
-            int delay
-    ) {
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleWithFixedDelay(
-                () -> {
-                    if (!messages.hasNext()) {
-                        executorService.shutdown();
-                        return;
-                    }
-
-                    sendMessage(player, messages.next());
-                }, delay, delay, TimeUnit.MILLISECONDS
-        );
-    }
-
-    /**
-     * Handles sending of a single message or command by the player.
-     *
-     * @param player  Player to send the message as.
-     * @param message String with the message or command to send.
-     */
-    private static void sendMessage(LocalPlayer player, String message) {
-        if (message.startsWith("/")) {
-            player.connection.sendUnsignedCommand(message.substring(1));
         } else {
-            player.connection.sendChat(message);
+            callback.accept(seconds);
+            synchronized (countdown) { // Just to be sure
+                countdown.set(schedule(
+                        () -> countdown(seconds - 1, callback),
+                        1,
+                        TimeUnit.SECONDS
+                ));
+            }
         }
     }
 
-    private static boolean sameType(Object a, Object b) {
+    // Utility methods
+
+    /**
+     * @return {@code true} if the current reconnect strategy is for singleplayer.
+     */
+    public static boolean isPlayingSingleplayer() {
+        return reconnectStrategy instanceof WorldReconnectStrategy;
+    }
+
+    /**
+     * @return {@code true} if {@code a} is the same class as {@code b}.
+     */
+    private static boolean isSameType(Object a, Object b) {
         if (a == null && b == null)
             return true;
         if (a != null && b != null)
@@ -272,22 +256,22 @@ public class AutoReconnect {
         return false;
     }
 
+    /**
+     * @return {@code true} if the screen is a title or play-select screen.
+     */
     private static boolean isMainScreen(Screen screen) {
-        return screen instanceof TitleScreen || screen instanceof SelectWorldScreen
-                || screen instanceof JoinMultiplayerScreen || screen instanceof RealmsMainScreen;
+        return screen instanceof TitleScreen
+                || screen instanceof SelectWorldScreen
+                || screen instanceof JoinMultiplayerScreen
+                || screen instanceof RealmsMainScreen;
     }
 
+    /**
+     * @return {@code true} if switching from a disconnect screen to an AuthMe screen.
+     */
     private static boolean isReAuthenticating(Screen current, Screen next) {
-        return current instanceof DisconnectedScreen && next != null && next.getClass()
-                .getName()
-                .startsWith("me.axieum.mcmod.authme");
-    }
-
-    private static @NotNull ReconnectStrategy checkStrategy() {
-        if (reconnectStrategy == null) {
-            throw new IllegalStateException("Reconnect strategy failed null check");
-        } else {
-            return reconnectStrategy;
-        }
+        return current instanceof DisconnectedScreen
+                && next != null
+                && next.getClass().getName().startsWith("me.axieum.mcmod.authme");
     }
 }

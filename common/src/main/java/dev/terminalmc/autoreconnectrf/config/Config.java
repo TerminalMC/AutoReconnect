@@ -112,7 +112,7 @@ public class Config {
         return !options.delays.isEmpty();
     }
 
-    public Optional<AutoMessage> getAutoMessagesForName(String name) {
+    public Optional<AutoMessage> getAutoMessagesForId(String name) {
         return options.autoMessages.stream()
                 .filter(autoMessage -> name.equals(autoMessage.name))
                 .findFirst();

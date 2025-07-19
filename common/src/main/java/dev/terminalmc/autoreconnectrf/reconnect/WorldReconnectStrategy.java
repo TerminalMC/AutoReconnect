@@ -23,31 +23,31 @@ import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 
-public class SingleplayerReconnectStrategy extends ReconnectStrategy {
+public class WorldReconnectStrategy extends ReconnectStrategy {
 
     private final String worldName;
 
-    public SingleplayerReconnectStrategy(String worldName) {
+    public WorldReconnectStrategy(String worldName) {
         this.worldName = worldName;
     }
 
     @Override
-    public String getName() {
+    public String getId() {
+        // Worlds are identified by their name
         return worldName;
     }
 
     /**
-     * @see net.minecraft.client.quickplay.QuickPlay#joinSingleplayerWorld(Minecraft, String)
+     * @see net.minecraft.client.quickplay.QuickPlay#joinSingleplayerWorld
      */
     @SuppressWarnings("JavadocReference")
     @Override
     public void reconnect() {
-        Minecraft client = Minecraft.getInstance();
-        if (!client.getLevelSource().levelExists(getName()))
+        Minecraft mc = Minecraft.getInstance();
+        if (!mc.getLevelSource().levelExists(worldName))
             return;
-        client.forceSetScreen(new GenericMessageScreen(Component.translatable(
+        mc.forceSetScreen(new GenericMessageScreen(Component.translatable(
                 "selectWorld.data_read")));
-        client.createWorldOpenFlows()
-                .openWorld(getName(), () -> client.setScreen(new TitleScreen()));
+        mc.createWorldOpenFlows().openWorld(worldName, () -> mc.setScreen(new TitleScreen()));
     }
 }

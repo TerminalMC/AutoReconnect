@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.terminalmc.autoreconnectrf.mixin;
+package dev.terminalmc.autoreconnectrf.mixin.connection;
 
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -33,10 +33,10 @@ public class ClientPacketListenerMixin {
      * Game join event notifier.
      */
     @Inject(
-            at = @At("TAIL"),
-            method = "handleLogin"
+            method = "handleLogin",
+            at = @At("TAIL")
     )
-    private void afterHandleLogin(ClientboundLoginPacket packet, CallbackInfo info) {
+    private void onGameJoined(ClientboundLoginPacket packet, CallbackInfo ci) {
         AutoReconnect.onGameJoined();
     }
 }

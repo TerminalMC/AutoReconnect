@@ -26,23 +26,24 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.TransferState;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 
-public class MultiplayerReconnectStrategy extends ReconnectStrategy {
+public class ServerReconnectStrategy extends ReconnectStrategy {
 
     private final ServerData serverData;
-    private final TransferState cookieStorage;
+    private final TransferState transferState;
 
-    public MultiplayerReconnectStrategy(ServerData serverData, TransferState cookieStorage) {
+    public ServerReconnectStrategy(ServerData serverData, TransferState transferState) {
         this.serverData = serverData;
-        this.cookieStorage = cookieStorage;
+        this.transferState = transferState;
     }
 
     @Override
-    public String getName() {
-        return serverData.name;
+    public String getId() {
+        // Servers are identified by their IP
+        return serverData.ip;
     }
 
     /**
-     * @see net.minecraft.client.quickplay.QuickPlay#joinMultiplayerWorld(Minecraft, String)
+     * @see net.minecraft.client.quickplay.QuickPlay#joinMultiplayerWorld
      */
     @SuppressWarnings("JavadocReference")
     @Override
@@ -53,7 +54,7 @@ public class MultiplayerReconnectStrategy extends ReconnectStrategy {
                 ServerAddress.parseString(serverData.ip),
                 serverData,
                 false,
-                cookieStorage
+                transferState
         );
     }
 }

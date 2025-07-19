@@ -25,9 +25,9 @@ public abstract class ReconnectStrategy {
     ReconnectStrategy() {
     }
 
-    public abstract void reconnect();
+    public abstract String getId();
 
-    public abstract String getName();
+    public abstract void reconnect();
 
     public final int nextAttempt() {
         return ++attempt;

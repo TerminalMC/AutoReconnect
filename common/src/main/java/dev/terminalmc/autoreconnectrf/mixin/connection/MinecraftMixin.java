@@ -16,26 +16,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.terminalmc.autoreconnectrf.mixin;
+package dev.terminalmc.autoreconnectrf.mixin.connection;
 
-import com.mojang.realmsclient.dto.RealmsServer;
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
-import dev.terminalmc.autoreconnectrf.reconnect.RealmsReconnectStrategy;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
-import net.minecraft.realms.RealmsConnect;
+import dev.terminalmc.autoreconnectrf.reconnect.WorldReconnectStrategy;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.WorldStem;
+import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(RealmsConnect.class)
-public class RealmsConnectMixin {
+@Mixin(Minecraft.class)
+public class MinecraftMixin {
 
+    /**
+     * Singleplayer connection event notifier.
+     */
     @Inject(
-            at = @At("HEAD"),
-            method = "connect"
+            method = "doWorldLoad",
+            at = @At("HEAD")
     )
-    private void connect(RealmsServer server, ServerAddress address, CallbackInfo info) {
-        AutoReconnect.setReconnectStrategy(new RealmsReconnectStrategy(server));
+    private void onWorldConnect(
+            LevelStorageSource.LevelStorageAccess storage,
+            PackRepository packRepo,
+            WorldStem worldStem,
+            boolean newWorld,
+            CallbackInfo ci
+    ) {
+        AutoReconnect.setReconnectStrategy(
+                new WorldReconnectStrategy(worldStem.worldData().getLevelName()));
     }
 }

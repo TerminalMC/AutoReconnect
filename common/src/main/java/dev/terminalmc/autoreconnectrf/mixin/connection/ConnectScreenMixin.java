@@ -16,15 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.terminalmc.autoreconnectrf.mixin;
+package dev.terminalmc.autoreconnectrf.mixin.connection;
 
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
-import dev.terminalmc.autoreconnectrf.reconnect.MultiplayerReconnectStrategy;
+import dev.terminalmc.autoreconnectrf.reconnect.ServerReconnectStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.TransferState;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,24 +35,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ConnectScreenMixin {
 
     /**
-     * Multiplayer connection event notifier.
+     * Server connection event notifier.
      */
     @Inject(
-            at = @At("HEAD"),
-            method = "connect"
+            method = "connect",
+            at = @At("HEAD")
     )
-    private void connect(
-            Minecraft client,
+    private void onServerConnect(
+            Minecraft mc,
             ServerAddress address,
-            ServerData data,
-            TransferState transferState,
+            @Nullable ServerData data,
+            @Nullable TransferState transferState,
             CallbackInfo ci
     ) {
         if (data != null) {
-            AutoReconnect.setReconnectStrategy(new MultiplayerReconnectStrategy(
-                    data,
-                    transferState
-            ));
+            AutoReconnect.setReconnectStrategy(new ServerReconnectStrategy(data, transferState));
         }
     }
 }

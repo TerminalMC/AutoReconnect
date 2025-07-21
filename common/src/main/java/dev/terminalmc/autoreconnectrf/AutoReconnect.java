@@ -126,7 +126,7 @@ public class AutoReconnect {
                 .ifPresent(autoMessages -> MessageUtil.sendAutomatedMessages(
                         Minecraft.getInstance().player,
                         autoMessages.getMessages(),
-                        autoMessages.getDelay()
+                        (int) (autoMessages.delay * 1000)
                 ));
     }
 

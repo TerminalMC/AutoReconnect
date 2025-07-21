@@ -73,7 +73,8 @@ public class YaclScreenProvider {
                         () -> options.delays,
                         val -> options.delays = val
                 )
-                .controller(option -> IntegerFieldControllerBuilder.create(option).min(1))
+                .controller(option -> IntegerFieldControllerBuilder.create(option).min(1)
+                        .formatValue((val) -> localized("option", "attempts.delays.value", val)))
                 .initial(0)
                 .insertEntriesAtEnd(true)
                 .minimumNumberOfEntries(1)
@@ -198,23 +199,28 @@ public class YaclScreenProvider {
                     .build());
 
             amGroup.option(Option.<String>createBuilder()
-                    .name(localized("option", "messages.instance.name"))
+                    .name(localized("option", "messages.instance.id"))
                     .description(OptionDescription.of(localized(
                             "option",
-                            "messages.instance.name.tooltip"
+                            "messages.instance.id.tooltip"
                     )))
-                    .binding(Config.AutoMessage.nameDefault, () -> am.name, val -> am.name = val)
+                    .binding(Config.AutoMessage.idDefault, () -> am.id, val -> am.id = val)
                     .controller(StringControllerBuilder::create)
                     .build());
 
-            amGroup.option(Option.<Integer>createBuilder()
+            amGroup.option(Option.<Float>createBuilder()
                     .name(localized("option", "messages.instance.delay"))
                     .description(OptionDescription.of(localized(
                             "option",
                             "messages.instance.delay.tooltip"
                     )))
                     .binding(Config.AutoMessage.delayDefault, () -> am.delay, val -> am.delay = val)
-                    .controller(option -> IntegerFieldControllerBuilder.create(option).min(0))
+                    .controller(option -> FloatFieldControllerBuilder.create(option).min(0F)
+                            .formatValue((val) -> localized(
+                                    "option",
+                                    "messages.instance.delay.value",
+                                    val
+                            )))
                     .build());
 
             messagesCat.group(amGroup.build());

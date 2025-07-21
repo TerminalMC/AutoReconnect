@@ -80,21 +80,17 @@ public class Config {
 
     public static final class AutoMessage {
 
-        public static final String nameDefault = "";
-        public String name = nameDefault;
+        public static final String idDefault = "";
+        public String id = idDefault;
+
+        public static final float delayDefault = 1F;
+        public float delay = delayDefault;
 
         public static final Supplier<List<String>> messagesDefault = List::of;
         public List<String> messages = messagesDefault.get();
 
-        public static final int delayDefault = 1000;
-        public int delay = delayDefault;
-
         public Iterator<String> getMessages() {
             return messages.iterator();
-        }
-
-        public int getDelay() {
-            return delay;
         }
     }
 
@@ -114,7 +110,7 @@ public class Config {
 
     public Optional<AutoMessage> getAutoMessagesForId(String name) {
         return options.autoMessages.stream()
-                .filter(autoMessage -> name.equals(autoMessage.name))
+                .filter(autoMessage -> name.equals(autoMessage.id))
                 .findFirst();
     }
 
@@ -165,8 +161,8 @@ public class Config {
             options.autoMessages = Options.autoMessagesDefault.get();
         } else if (!options.autoMessages.isEmpty()) {
             for (AutoMessage autoMessage : options.autoMessages) {
-                if (autoMessage.name == null) {
-                    autoMessage.name = AutoMessage.nameDefault;
+                if (autoMessage.id == null) {
+                    autoMessage.id = AutoMessage.idDefault;
                 }
                 if (autoMessage.messages == null) {
                     autoMessage.messages = AutoMessage.messagesDefault.get();

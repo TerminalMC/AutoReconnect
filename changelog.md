@@ -5,6 +5,7 @@
 - Now, AutoMessages are identified by either the Server IP, the Realm Name, or the World Name
 - Now, AutoMessage delays are configured in decimal seconds
 - Fixed the caret position in regex syntax-error tooltips
+- Added a config option to enable command signing, fixing AutoMessage commands on certain servers
 
 ## 1.0.4
 

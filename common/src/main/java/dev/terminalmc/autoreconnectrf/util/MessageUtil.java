@@ -24,6 +24,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static dev.terminalmc.autoreconnectrf.config.Config.options;
+
 public class MessageUtil {
 
     /**
@@ -59,7 +61,11 @@ public class MessageUtil {
      */
     private static void sendMessage(LocalPlayer player, String message) {
         if (message.startsWith("/")) {
-            player.connection.sendUnsignedCommand(message.substring(1));
+            if (options().commandSigning) {
+                player.connection.sendCommand(message.substring(1));
+            } else {
+                player.connection.sendUnsignedCommand(message.substring(1));
+            }
         } else {
             player.connection.sendChat(message);
         }

@@ -40,5 +40,9 @@
   "option.autoreconnectrf.messages.instance.messages": "Messages",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "Messages or commands to be sent after automatically reconnecting.",
   "option.autoreconnectrf.messages.instance.add": "Add",
-  "option.autoreconnectrf.messages.instance.delete": "Delete"
+  "option.autoreconnectrf.messages.instance.delete": "Delete",
+
+  "option.autoreconnectrf.misc": "Misc",
+  "option.autoreconnectrf.misc.commandSigning": "Command Signing",
+  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled."
 }

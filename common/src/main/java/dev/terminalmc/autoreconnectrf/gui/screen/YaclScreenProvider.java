@@ -27,6 +27,7 @@ import dev.isxander.yacl3.gui.controllers.string.StringController;
 import dev.isxander.yacl3.gui.controllers.string.StringControllerElement;
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
 import dev.terminalmc.autoreconnectrf.config.Config;
+import dev.terminalmc.autoreconnectrf.config.Config.Options;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -253,9 +254,29 @@ public class YaclScreenProvider {
                 })
                 .build());
 
+        // Misc
+
+        ConfigCategory.Builder miscCat =
+                ConfigCategory.createBuilder().name(localized("option", "misc"));
+
+        miscCat.option(Option.<Boolean>createBuilder()
+                .name(localized("option", "misc.commandSigning"))
+                .description(OptionDescription.of(localized(
+                        "option",
+                        "misc.commandSigning.tooltip"
+                )))
+                .binding(
+                        Options.commandSigningDefault,
+                        () -> options.commandSigning,
+                        val -> options.commandSigning = val
+                )
+                .controller(BooleanControllerBuilder::create)
+                .build());
+
         builder.category(attemptsCat.build());
         builder.category(conditionsCat.build());
         builder.category(messagesCat.build());
+        builder.category(miscCat.build());
 
         YetAnotherConfigLib yacl = builder.build();
         return yacl.generateScreen(parent);

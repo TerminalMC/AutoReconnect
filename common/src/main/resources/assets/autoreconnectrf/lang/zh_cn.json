@@ -40,5 +40,9 @@
   "option.autoreconnectrf.messages.instance.messages": "消息",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "自动重新连接成功后要发送的信息。",
   "option.autoreconnectrf.messages.instance.add": "添加...",
-  "option.autoreconnectrf.messages.instance.delete": "删除..."
+  "option.autoreconnectrf.messages.instance.delete": "删除...",
+
+  "option.autoreconnectrf.misc": "Misc",
+  "option.autoreconnectrf.misc.commandSigning": "Command Signing",
+  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled."
 }

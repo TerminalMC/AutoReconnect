@@ -76,6 +76,9 @@ public class Config {
 
         public static final Supplier<List<AutoMessage>> autoMessagesDefault = List::of;
         public List<AutoMessage> autoMessages = autoMessagesDefault.get();
+
+        public static final boolean commandSigningDefault = false;
+        public boolean commandSigning = commandSigningDefault;
     }
 
     public static final class AutoMessage {

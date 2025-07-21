@@ -40,5 +40,9 @@
   "option.autoreconnectrf.messages.instance.messages": "Повідомлення",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "Повідомлення або команди, які будуть надіслані після автоматичного перепід'єднання.",
   "option.autoreconnectrf.messages.instance.add": "Додати",
-  "option.autoreconnectrf.messages.instance.delete": "Видалити"
+  "option.autoreconnectrf.messages.instance.delete": "Видалити",
+
+  "option.autoreconnectrf.misc": "Misc",
+  "option.autoreconnectrf.misc.commandSigning": "Command Signing",
+  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled."
 }

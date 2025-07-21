@@ -40,5 +40,9 @@
   "option.autoreconnectrf.messages.instance.messages": "Сообщения",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "Сообщения или команды для отправки после автоматического переподключения.",
   "option.autoreconnectrf.messages.instance.add": "Добавить",
-  "option.autoreconnectrf.messages.instance.delete": "Удалить"
+  "option.autoreconnectrf.messages.instance.delete": "Удалить",
+
+  "option.autoreconnectrf.misc": "Misc",
+  "option.autoreconnectrf.misc.commandSigning": "Command Signing",
+  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled."
 }

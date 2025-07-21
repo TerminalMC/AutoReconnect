@@ -29,10 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class Config {
@@ -52,12 +49,12 @@ public class Config {
 
     public static class Options {
 
-        public static final Supplier<List<Integer>> delaysDefault = () -> List.of(
+        public static final Supplier<List<Integer>> delaysDefault = () -> new ArrayList<>(List.of(
                 3,
                 10,
                 30,
                 60
-        );
+        ));
         public List<Integer> delays = delaysDefault.get();
 
         public static final boolean infiniteDefault = false;
@@ -66,15 +63,18 @@ public class Config {
         public static final boolean conditionTypeDefault = false;
         public boolean conditionType = conditionTypeDefault;
 
-        public static final Supplier<List<String>> conditionKeysDefault = () -> List.of(
-                "multiplayer.disconnect.banned"
-        );
+        public static final Supplier<List<String>> conditionKeysDefault =
+                () -> new ArrayList<>(List.of(
+                        "multiplayer.disconnect.banned"
+                ));
         public List<String> conditionKeys = conditionKeysDefault.get();
 
-        public static final Supplier<List<String>> conditionPatternsDefault = List::of;
+        public static final Supplier<List<String>> conditionPatternsDefault =
+                () -> new ArrayList<>(List.of());
         public List<String> conditionPatterns = conditionPatternsDefault.get();
 
-        public static final Supplier<List<AutoMessage>> autoMessagesDefault = List::of;
+        public static final Supplier<List<AutoMessage>> autoMessagesDefault =
+                () -> new ArrayList<>(List.of());
         public List<AutoMessage> autoMessages = autoMessagesDefault.get();
 
         public static final boolean commandSigningDefault = false;

@@ -2,7 +2,9 @@
 
 ## 2.0.0
 
-- TBD
+- Now, AutoMessages are identified by either the Server IP, the Realm Name, or the World Name
+- Now, AutoMessage delays are configured in decimal seconds
+- Fixed the caret position in regex syntax-error tooltips
 
 ## 1.0.4
 

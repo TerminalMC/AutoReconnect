@@ -123,10 +123,9 @@ public class AutoReconnect {
         // Send automatic messages if configured for the current context
         Config.get()
                 .getAutoMessagesForId(reconnectStrategy.getId())
-                .ifPresent(autoMessages -> MessageUtil.sendAutomatedMessages(
-                        Minecraft.getInstance().player,
-                        autoMessages.getMessages(),
-                        (int) (autoMessages.delay * 1000)
+                .forEach(autoMessage -> MessageUtil.sendAutomatedMessages(
+                        autoMessage.getMessages(),
+                        (int) (autoMessage.delay * 1000)
                 ));
     }
 

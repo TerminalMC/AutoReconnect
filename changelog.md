@@ -6,6 +6,7 @@
 - Now, AutoMessage delays are configured in decimal seconds
 - Fixed the caret position in regex syntax-error tooltips
 - Added a config option to enable command signing, fixing AutoMessage commands on certain servers
+- Enabled pairing multiple AutoMessage objects to a single connection
 
 ## 1.0.4
 

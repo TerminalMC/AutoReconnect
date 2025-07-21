@@ -17,6 +17,7 @@
 
 package dev.terminalmc.autoreconnectrf.util;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
 import java.util.Iterator;
@@ -31,12 +32,10 @@ public class MessageUtil {
     /**
      * Handle a list of messages to send by the player to the current connection.
      *
-     * @param player   Player to send the message as.
      * @param messages String Iterator of messages to send.
      * @param delay    Delay in milliseconds before the first and between each following message.
      */
     public static void sendAutomatedMessages(
-            LocalPlayer player,
             Iterator<String> messages,
             int delay
     ) {
@@ -48,7 +47,7 @@ public class MessageUtil {
                         return;
                     }
 
-                    sendMessage(player, messages.next());
+                    sendMessage(messages.next());
                 }, delay, delay, TimeUnit.MILLISECONDS
         );
     }
@@ -56,10 +55,12 @@ public class MessageUtil {
     /**
      * Handles sending of a single message or command by the player.
      *
-     * @param player  Player to send the message as.
      * @param message String with the message or command to send.
      */
-    private static void sendMessage(LocalPlayer player, String message) {
+    private static void sendMessage(String message) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null)
+            return;
         if (message.startsWith("/")) {
             if (options().commandSigning) {
                 player.connection.sendCommand(message.substring(1));

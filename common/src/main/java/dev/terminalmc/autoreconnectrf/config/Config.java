@@ -29,7 +29,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class Config {
@@ -111,10 +114,10 @@ public class Config {
         return !options.delays.isEmpty();
     }
 
-    public Optional<AutoMessage> getAutoMessagesForId(String name) {
+    public List<AutoMessage> getAutoMessagesForId(String id) {
         return options.autoMessages.stream()
-                .filter(autoMessage -> name.equals(autoMessage.id))
-                .findFirst();
+                .filter(autoMessage -> id.equals(autoMessage.id))
+                .toList();
     }
 
     // Instance management

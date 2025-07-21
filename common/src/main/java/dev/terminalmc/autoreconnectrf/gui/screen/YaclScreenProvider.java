@@ -29,6 +29,7 @@ import dev.terminalmc.autoreconnectrf.AutoReconnect;
 import dev.terminalmc.autoreconnectrf.config.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetTooltipHolder;
@@ -37,9 +38,11 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -165,7 +168,7 @@ public class YaclScreenProvider {
                                 Pattern.compile(val);
                                 return Optional.empty();
                             } catch (PatternSyntaxException e) {
-                                return Optional.of(e.getMessage().replaceAll("\\u000D", ""));
+                                return Optional.of(fixRegexMessage(e.getMessage()));
                             }
                         }))
                 .initial("")
@@ -289,6 +292,48 @@ public class YaclScreenProvider {
             Minecraft.getInstance().setScreen(parent);
             AutoReconnect.LOG.error("YACL reload hack failed with exception\n{}", e);
         }
+    }
+
+    /**
+     * Adjusts {@link PatternSyntaxException} description messages for correct display in tooltips.
+     * <p>
+     * Messages are intended for display using monospaced fonts, so the caret indicating the error
+     * position will usually be in the wrong place when displayed using the Minecraft font. This
+     * method simply moves the caret to a new position as close as possible to the correct one.
+     * <p>
+     * Also, messages may contain carriage-return characters which don't play well with Minecraft so
+     * this method removes them.
+     */
+    public static String fixRegexMessage(String str) {
+        // Remove carriage returns
+        str = str.replaceAll("\\u000D", "");
+
+        // If there is a cursor, fix its position
+        if (str.endsWith("^")) {
+            Matcher indexMatcher = Pattern.compile("near index (\\d+)\n").matcher(str);
+            if (indexMatcher.find()) {
+                Font font = Minecraft.getInstance().font;
+                // Get the index that the cursor is pointing to
+                int index = Integer.parseInt(indexMatcher.group(1));
+                // Determine the cursor offset distance
+                int startPos = indexMatcher.end();
+                int cursorPos = startPos + index;
+                int cursorOffset = font.width(str.substring(startPos, cursorPos));
+                // Construct the new offset space
+                char[] charArray = new char[cursorOffset / font.width(" ")];
+                Arrays.fill(charArray, ' ');
+                String newSpace = new String(charArray);
+
+                Matcher cursorMatcher = Pattern.compile("\n( *\\^)$").matcher(str);
+                if (cursorMatcher.find(cursorPos)) {
+                    // Get the original cursor and its offset space
+                    String cursorLine = cursorMatcher.group(1);
+                    // Replace the old space with the new
+                    str = str.replaceAll(Pattern.quote(cursorLine) + "$", newSpace + "^");
+                }
+            }
+        }
+        return str;
     }
 
     // Various shenanigans to implement a custom string option validator, of sorts

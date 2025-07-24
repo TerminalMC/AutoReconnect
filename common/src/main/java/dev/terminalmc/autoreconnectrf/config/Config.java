@@ -34,6 +34,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Config {
 
@@ -82,6 +84,9 @@ public class Config {
 
         public static final boolean commandSigningDefault = false;
         public boolean commandSigning = commandSigningDefault;
+
+        public static final boolean regexIdsDefault = false;
+        public boolean regexIds = regexIdsDefault;
     }
 
     public static final class AutoMessage {
@@ -116,7 +121,18 @@ public class Config {
 
     public List<AutoMessage> getAutoMessagesForId(String id) {
         return options.autoMessages.stream()
-                .filter(autoMessage -> id.equals(autoMessage.id))
+                .filter(autoMessage -> {
+                    if (options.regexIds) {
+                        // Can't depend on the config patterns being valid
+                        try {
+                            return Pattern.compile(autoMessage.id).matcher(id).matches();
+                        } catch (PatternSyntaxException ignored) {
+                            return false;
+                        }
+                    } else {
+                        return autoMessage.id.equals(id);
+                    }
+                })
                 .toList();
     }
 

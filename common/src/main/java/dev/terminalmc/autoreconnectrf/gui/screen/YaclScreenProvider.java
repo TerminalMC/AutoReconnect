@@ -51,6 +51,8 @@ import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
 public class YaclScreenProvider {
 
+    static boolean regexIdsTemp;
+
     /**
      * Builds and returns a YACL options screen.
      *
@@ -175,7 +177,8 @@ public class YaclScreenProvider {
                             } catch (PatternSyntaxException e) {
                                 return Optional.of(fixRegexMessage(e.getMessage()));
                             }
-                        }))
+                        })
+                )
                 .initial("")
                 .insertEntriesAtEnd(true)
                 .build());
@@ -220,7 +223,20 @@ public class YaclScreenProvider {
                             "messages.instance.id.tooltip"
                     )))
                     .binding(Config.AutoMessage.idDefault, () -> am.id, val -> am.id = val)
-                    .controller(StringControllerBuilder::create)
+                    .controller(option -> IRestrictedStringControllerBuilder.create(option)
+                            .validator(val -> {
+                                if (regexIdsTemp) {
+                                    try {
+                                        Pattern.compile(val);
+                                        return Optional.empty();
+                                    } catch (PatternSyntaxException e) {
+                                        return Optional.of(fixRegexMessage(e.getMessage()));
+                                    }
+                                } else {
+                                    return Optional.empty();
+                                }
+                            })
+                    )
                     .build());
 
             amGroup.option(Option.<Float>createBuilder()
@@ -273,6 +289,22 @@ public class YaclScreenProvider {
                         () -> options.commandSigning,
                         val -> options.commandSigning = val
                 )
+                .controller(BooleanControllerBuilder::create)
+                .build());
+
+        miscCat.option(Option.<Boolean>createBuilder()
+                .name(localized("option", "misc.regexIds"))
+                .description(OptionDescription.of(localized(
+                        "option",
+                        "misc.regexIds.tooltip"
+                )))
+                .binding(
+                        Options.regexIdsDefault,
+                        () -> options.regexIds,
+                        val -> options.regexIds = val
+                )
+                .addListener((option, event) ->
+                        YaclScreenProvider.regexIdsTemp = option.pendingValue())
                 .controller(BooleanControllerBuilder::create)
                 .build());
 

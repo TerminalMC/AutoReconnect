@@ -45,5 +45,7 @@
 
   "option.autoreconnectrf.misc": "Misc",
   "option.autoreconnectrf.misc.commandSigning": "Command Signing",
-  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled."
+  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled.",
+  "option.autoreconnectrf.misc.regexIds": "Regex IDs",
+  "option.autoreconnectrf.misc.regexIds.tooltip": "Whether to parse all AutoMessage Connection IDs as regex patterns. Only enable this if you know what you're doing."
 }

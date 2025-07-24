@@ -18,6 +18,7 @@
   "option.autoreconnectrf.attempts.infinite.tooltip": "Whether to continue attempting to reconnect with the last configured delay.",
 
   "option.autoreconnectrf.conditions": "Conditions",
+  "option.autoreconnectrf.conditions.tooltip": "Conditions allow you to prevent AutoReconnect from attempting to reconnect you, based on the disconnect reason. Conditions do not work on Realms.",
   "option.autoreconnectrf.conditions.type": "Type",
   "option.autoreconnectrf.conditions.type.positive": "Positive",
   "option.autoreconnectrf.conditions.type.negative": "Negative",

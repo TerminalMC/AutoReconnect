@@ -100,6 +100,10 @@ public class YaclScreenProvider {
         ConfigCategory.Builder conditionsCat =
                 ConfigCategory.createBuilder().name(localized("option", "conditions"));
 
+        conditionsCat.option(LabelOption.createBuilder()
+                .lines(List.of(localized("option", "conditions.tooltip")))
+                .build());
+
         conditionsCat.option(Option.<Boolean>createBuilder()
                 .name(localized("option", "conditions.type"))
                 .description(OptionDescription.of(localized(

@@ -18,6 +18,7 @@
   "option.autoreconnectrf.attempts.infinite.tooltip": "Чи повторювати перепід'єднання з останньою налаштованою затримкою.",
 
   "option.autoreconnectrf.conditions": "Умови",
+  "option.autoreconnectrf.conditions.tooltip": "Conditions allow you to prevent AutoReconnect from attempting to reconnect you, based on the disconnect reason. Conditions do not work on Realms.",
   "option.autoreconnectrf.conditions.type": "Тип",
   "option.autoreconnectrf.conditions.type.positive": "Позитивний",
   "option.autoreconnectrf.conditions.type.negative": "Негативний",

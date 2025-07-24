@@ -31,26 +31,26 @@ import static dev.terminalmc.autoreconnectrf.config.Config.options;
 public class MessageUtil {
 
     /**
-     * Handle a list of messages to send by the player to the current connection.
+     * Handle a list of messages or commands to send by the player to the current connection.
      *
-     * @param messages String Iterator of messages to send.
+     * @param messages String iterator of messages or commands to send.
      * @param delay    Delay in milliseconds before the first and between each following message.
      */
-    public static void sendAutomatedMessages(
+    public static void sendAll(
             Iterator<String> messages,
             int delay
     ) {
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleWithFixedDelay(
-                () -> {
-                    if (!messages.hasNext()) {
-                        executorService.shutdown();
-                        return;
-                    }
-
-                    sendMessage(messages.next());
-                }, delay, delay, TimeUnit.MILLISECONDS
-        );
+        try (ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor()) {
+            execService.scheduleWithFixedDelay(
+                    () -> {
+                        if (!messages.hasNext()) {
+                            execService.shutdown();
+                            return;
+                        }
+                        sendMessage(messages.next());
+                    }, delay, delay, TimeUnit.MILLISECONDS
+            );
+        }
     }
 
     /**

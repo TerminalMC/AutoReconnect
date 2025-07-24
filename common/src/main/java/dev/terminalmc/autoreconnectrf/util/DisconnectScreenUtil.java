@@ -37,8 +37,8 @@ public class DisconnectScreenUtil {
      * Attempts to locate the 'back' button on the specified screen.
      */
     public static @Nullable Button findBackButton(Screen screen) {
-        for (GuiEventListener element : screen.children()) {
-            if (!(element instanceof Button button))
+        for (GuiEventListener widget : screen.children()) {
+            if (!(widget instanceof Button button))
                 continue;
 
             String key;

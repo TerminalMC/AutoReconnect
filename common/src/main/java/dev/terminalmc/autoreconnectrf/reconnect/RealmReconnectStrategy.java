@@ -35,7 +35,7 @@ public class RealmReconnectStrategy extends ReconnectStrategy {
 
     @Override
     public String getId() {
-        // Realms are identified by their name.
+        // Realms are identified by their name
         return realmsServer.getName();
     }
 

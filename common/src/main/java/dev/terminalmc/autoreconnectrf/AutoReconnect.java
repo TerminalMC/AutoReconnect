@@ -123,7 +123,7 @@ public class AutoReconnect {
         // Send automatic messages if configured for the current context
         Config.get()
                 .getAutoMessagesForId(reconnectStrategy.getId())
-                .forEach(autoMessage -> MessageUtil.sendAutomatedMessages(
+                .forEach(autoMessage -> MessageUtil.sendAll(
                         autoMessage.getMessages(),
                         (int) (autoMessage.delay * 1000)
                 ));
@@ -141,7 +141,7 @@ public class AutoReconnect {
     }
 
     /**
-     * @return {@code true} if the mod has a reconnection strategy, {@code false} otherwise.
+     * @return {@code true} if the mod has a reconnection strategy.
      */
     public static boolean canReconnect() {
         return reconnectStrategy != null;

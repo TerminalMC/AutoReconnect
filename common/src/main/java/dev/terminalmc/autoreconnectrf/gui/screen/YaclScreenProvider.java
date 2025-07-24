@@ -185,11 +185,18 @@ public class YaclScreenProvider {
         ConfigCategory.Builder messagesCat =
                 ConfigCategory.createBuilder().name(localized("option", "messages"));
 
-        int i = 0;
-        for (Config.AutoMessage am : options.autoMessages) {
-            i++;
+        messagesCat.option(ButtonOption.createBuilder()
+                .name(localized("option", "messages.instance.add").withStyle(ChatFormatting.GREEN))
+                .action((yaclScreen, buttonOption) -> {
+                    options.autoMessages.add(new Config.AutoMessage());
+                    reload(yaclScreen, parent);
+                })
+                .build());
+
+        int i = options.autoMessages.size();
+        for (Config.AutoMessage am : options.autoMessages.reversed()) {
             OptionGroup.Builder amGroup = OptionGroup.createBuilder();
-            amGroup.name(localized("option", "messages.instance", i));
+            amGroup.name(localized("option", "messages.instance", i--));
             amGroup.description(OptionDescription.of(localized(
                     "option",
                     "messages.instance.tooltip"
@@ -249,14 +256,6 @@ public class YaclScreenProvider {
                     .insertEntriesAtEnd(true)
                     .build());
         }
-
-        messagesCat.option(ButtonOption.createBuilder()
-                .name(localized("option", "messages.instance.add").withStyle(ChatFormatting.GREEN))
-                .action((yaclScreen, buttonOption) -> {
-                    options.autoMessages.addFirst(new Config.AutoMessage());
-                    reload(yaclScreen, parent);
-                })
-                .build());
 
         // Misc
 
@@ -486,7 +485,7 @@ public class YaclScreenProvider {
 
     /**
      * A list of disconnect reason keys, obtained by searching for "disconnect." and ".disconnect"
-     * in 1.21.1 and 1.21.6 lang files.
+     * in 1.21.1 and 1.21.8 lang files.
      */
     public static final List<String> DISCONNECT_KEYS = List.of(
             "disconnect.closed",

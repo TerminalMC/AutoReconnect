@@ -1,5 +1,6 @@
 /*
  * AutoReconnect
+ * Copyright (C) 2023 Bstn1802
  * Copyright (C) 2025 TerminalMC
  *
  * This program is free software: you can redistribute it and/or modify

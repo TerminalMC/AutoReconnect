@@ -40,17 +40,17 @@ public class MessageUtil {
             Iterator<String> messages,
             int delay
     ) {
-        try (ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor()) {
-            execService.scheduleWithFixedDelay(
-                    () -> {
-                        if (!messages.hasNext()) {
-                            execService.shutdown();
-                            return;
-                        }
-                        sendMessage(messages.next());
-                    }, delay, delay, TimeUnit.MILLISECONDS
-            );
-        }
+        @SuppressWarnings("resource")
+        ScheduledExecutorService execService = Executors.newSingleThreadScheduledExecutor();
+        execService.scheduleWithFixedDelay(
+                () -> {
+                    if (!messages.hasNext()) {
+                        execService.shutdown();
+                        return;
+                    }
+                    sendMessage(messages.next());
+                }, delay, delay, TimeUnit.MILLISECONDS
+        );
     }
 
     /**

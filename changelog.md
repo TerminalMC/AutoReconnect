@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Fixed an issue with AutoMessage scheduling
+
 ## 2.0.0
 
 - Now, AutoMessages are identified by either the Server IP, the Realm Name, or the World Name

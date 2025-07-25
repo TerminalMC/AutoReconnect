@@ -66,7 +66,10 @@ public class MessageUtil {
             if (options().commandSigning) {
                 player.connection.sendCommand(message.substring(1));
             } else {
-                player.connection.sendUnsignedCommand(message.substring(1));
+                player.connection.sendUnattendedCommand(
+                        message.substring(1),
+                        Minecraft.getInstance().screen
+                );
             }
         } else {
             player.connection.sendChat(message);

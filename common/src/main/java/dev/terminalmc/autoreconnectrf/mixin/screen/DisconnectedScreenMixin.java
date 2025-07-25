@@ -45,8 +45,8 @@ import java.util.regex.Pattern;
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
 /**
- * {@link DisconnectedScreen} is used on disconnection from worlds and servers. For realms, refer to
- * {@link DisconnectedRealmsScreenMixin}.
+ * {@link DisconnectedScreen} is used on disconnection from worlds and servers, and since 1.21.6,
+ * realms.
  */
 @Mixin(DisconnectedScreen.class)
 public class DisconnectedScreenMixin extends Screen {

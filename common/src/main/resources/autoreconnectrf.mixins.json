@@ -13,7 +13,6 @@
     "connection.ConnectScreenMixin",
     "connection.MinecraftMixin",
     "connection.RealmsConnectMixin",
-    "screen.DisconnectedRealmsScreenMixin",
     "screen.DisconnectedScreenMixin",
     "screen.MinecraftMixin"
   ],

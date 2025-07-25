@@ -508,6 +508,9 @@ public class YaclScreenProvider {
         public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
             super.render(graphics, mouseX, mouseY, delta);
             this.tooltip.refreshTooltipForNextRenderPass(
+                    graphics,
+                    mouseX,
+                    mouseY,
                     super.isMouseOver(mouseX, mouseY),
                     super.isFocused(),
                     super.getRectangle()

@@ -72,6 +72,10 @@ public class AutoReconnect {
 
     private static @Nullable ReconnectStrategy reconnectStrategy = null;
 
+    public static boolean debug() {
+        return true;
+    }
+
     /**
      * Client initialization.
      */
@@ -117,6 +121,8 @@ public class AutoReconnect {
             return; // Should not happen
         if (!reconnectStrategy.isAttempting())
             return; // Manual (re)connect
+        if (debug())
+            AutoReconnect.LOG.info("onGameJoined for ID {}", reconnectStrategy.getId());
 
         reconnectStrategy.resetAttempts();
 
@@ -136,8 +142,20 @@ public class AutoReconnect {
      */
     public static void setReconnectStrategy(@NotNull ReconnectStrategy pReconnectStrategy) {
         // Avoid overwriting strategy on reconnect failure
-        if (reconnectStrategy == null)
+        if (reconnectStrategy == null) {
+            if (debug())
+                AutoReconnect.LOG.info(
+                        "Setting reconnect strategy for ID {}",
+                        pReconnectStrategy.getId()
+                );
             reconnectStrategy = pReconnectStrategy;
+        } else {
+            if (debug())
+                AutoReconnect.LOG.info(
+                        "Not overriding existing reconnect strategy ",
+                        reconnectStrategy.getId()
+                );
+        }
     }
 
     /**
@@ -152,8 +170,17 @@ public class AutoReconnect {
      */
     public static void reconnect() {
         cancelCountdown();
-        if (reconnectStrategy != null)
+        if (reconnectStrategy != null) {
+            if (debug())
+                AutoReconnect.LOG.info(
+                        "Reconnecting with strategy for ID {}",
+                        reconnectStrategy.getId()
+                );
             reconnectStrategy.reconnect();
+        } else {
+            if (debug())
+                AutoReconnect.LOG.info("Cannot reconnect: strategy is null");
+        }
     }
 
     /**

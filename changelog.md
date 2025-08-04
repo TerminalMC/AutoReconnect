@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1-debug.1
+
+- Added debug logging
+
 ## 2.0.1
 
 - Fixed an issue with AutoMessage scheduling

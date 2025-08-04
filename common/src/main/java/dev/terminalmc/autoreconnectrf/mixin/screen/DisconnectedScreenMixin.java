@@ -42,6 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import static dev.terminalmc.autoreconnectrf.AutoReconnect.debug;
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 
 /**
@@ -73,6 +74,9 @@ public class DisconnectedScreenMixin extends Screen {
             at = @At("RETURN")
     )
     private void afterInit(CallbackInfo ci) {
+        if (debug())
+            AutoReconnect.LOG.info("Initializing disconnect screen");
+
         // Find the 'back' button
         @Nullable Button backButton = DisconnectScreenUtil.findBackButton(this);
         if (backButton == null) {
@@ -85,8 +89,11 @@ public class DisconnectedScreenMixin extends Screen {
 
         // Check for a reconnect strategy
         autoreconnectrf$canAutoReconnect = AutoReconnect.canReconnect();
-        if (!autoreconnectrf$canAutoReconnect)
+        if (!autoreconnectrf$canAutoReconnect) {
+            if (debug())
+                AutoReconnect.LOG.info("Cannot reconnect, aborting screen init");
             return;
+        }
 
         // Check whether the conditions allow a reconnect
         autoreconnectrf$canAutoReconnect = autoreconnectrf$canAutoReconnect();
@@ -95,6 +102,8 @@ public class DisconnectedScreenMixin extends Screen {
         Button reconnectButton = autoreconnectrf$addButtons(backButton);
 
         if (autoreconnectrf$canAutoReconnect) {
+            if (debug())
+                AutoReconnect.LOG.info("Starting countdown");
             DisconnectScreenUtil.startCountdown(reconnectButton);
         }
     }

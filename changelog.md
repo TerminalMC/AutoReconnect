@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.1-debug.1
+## 2.0.1-debug.2
 
 - Added debug logging
 

@@ -108,6 +108,12 @@ public class AutoReconnect {
     public static void onScreenChanged(@Nullable Screen current, @Nullable Screen next) {
         if (isSameType(current, next))
             return;
+        if (debug())
+            AutoReconnect.LOG.info(
+                    "Changing screen from {} to {}",
+                    current == null ? "null" : current.getClass().getSimpleName(),
+                    next == null ? "null" : next.getClass().getSimpleName()
+            );
         if (!isMainScreen(current) && isMainScreen(next) || isReAuthenticating(current, next)) {
             cancelAutoReconnect();
         }

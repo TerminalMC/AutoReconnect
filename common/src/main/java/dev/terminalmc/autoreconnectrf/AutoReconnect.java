@@ -24,6 +24,7 @@ import dev.terminalmc.autoreconnectrf.reconnect.ReconnectStrategy;
 import dev.terminalmc.autoreconnectrf.reconnect.WorldReconnectStrategy;
 import dev.terminalmc.autoreconnectrf.util.MessageUtil;
 import dev.terminalmc.autoreconnectrf.util.ModLogger;
+import dev.terminalmc.autoreconnectrf.util.Webhook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DisconnectedScreen;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +46,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntConsumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import static dev.terminalmc.autoreconnectrf.config.Config.options;
 
 public class AutoReconnect {
 
@@ -194,6 +198,12 @@ public class AutoReconnect {
      * Initiates the countdown for the next reconnect attempt, if any.
      */
     public static void startCountdown(final IntConsumer callback) {
+        // Send webhook message
+        ForkJoinPool.commonPool().execute(() -> Webhook.send(
+                options().webhookAddress,
+                options().webhookMessage
+        ));
+
         int delay = Config.get().getDelayForAttempt(reconnectStrategy.nextAttempt());
         if (delay >= 0) {
             countdown(delay, callback);

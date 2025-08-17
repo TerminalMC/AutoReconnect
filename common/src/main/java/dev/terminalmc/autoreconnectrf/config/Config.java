@@ -87,6 +87,15 @@ public class Config {
 
         public static final boolean regexIdsDefault = false;
         public boolean regexIds = regexIdsDefault;
+
+        public static final String webhookAddressDefault = "";
+        public String webhookAddress = webhookAddressDefault;
+
+        public static final String webhookMessageDefault = "{\"embeds\": [{"
+                + "\"description\": \"" + "Player disconnected from server." + "\","
+                + "\"color\": 15258703"
+                + "}]}";
+        public String webhookMessage = webhookMessageDefault;
     }
 
     public static final class AutoMessage {

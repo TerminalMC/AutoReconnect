@@ -308,6 +308,26 @@ public class YaclScreenProvider {
                 .controller(BooleanControllerBuilder::create)
                 .build());
 
+        miscCat.option(Option.<String>createBuilder()
+                .name(Component.literal("Webhook Address"))
+                .binding(
+                        Options.webhookAddressDefault,
+                        () -> options.webhookAddress,
+                        val -> options.webhookAddress = val
+                )
+                .controller(StringControllerBuilder::create)
+                .build());
+
+        miscCat.option(Option.<String>createBuilder()
+                .name(Component.literal("Webhook Message"))
+                .binding(
+                        Options.webhookMessageDefault,
+                        () -> options.webhookMessage,
+                        val -> options.webhookMessage = val
+                )
+                .controller(StringControllerBuilder::create)
+                .build());
+
         builder.category(attemptsCat.build());
         builder.category(conditionsCat.build());
         builder.category(messagesCat.build());

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1-webhook
+
+- Add temporary webhook
+
 ## 2.0.1
 
 - Fixed an issue with AutoMessage scheduling

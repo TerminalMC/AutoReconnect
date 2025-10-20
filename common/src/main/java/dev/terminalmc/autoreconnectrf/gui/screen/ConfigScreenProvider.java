@@ -37,7 +37,7 @@ public class ConfigScreenProvider {
         try {
             return YaclScreenProvider.getConfigScreen(parent);
         } catch (NoClassDefFoundError ignored) {
-            return new BackupScreen(parent, "installYacl", "https://modrinth.com/mod/1eAoo2KR");
+            return new BackupScreen(parent, "installYacl", "https://modrinth.com/project/1eAoo2KR");
         }
     }
 
@@ -72,7 +72,7 @@ public class ConfigScreenProvider {
                                     (open) -> {
                                         if (open)
                                             Util.getPlatform().openUri(modUrl);
-                                        Minecraft.getInstance().setScreen(parent);
+                                        onClose();
                                     }, modUrl, true
                             ))
                     )
@@ -86,6 +86,11 @@ public class ConfigScreenProvider {
                     .size(115, 20)
                     .build();
             addRenderableWidget(exitButton);
+        }
+
+        @Override
+        public void onClose() {
+            Minecraft.getInstance().setScreen(parent);
         }
     }
 }

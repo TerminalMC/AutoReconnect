@@ -30,6 +30,7 @@ import net.minecraft.client.gui.screens.DisconnectedScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import org.jetbrains.annotations.Nullable;
@@ -103,14 +104,14 @@ public class DisconnectedScreenMixin extends Screen {
      * Allows pressing ESC to cancel automatic reconnection.
      */
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 256 && autoreconnectrf$canAutoReconnect) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.key() == 256 && autoreconnectrf$canAutoReconnect) {
             if (autoreconnectrf$manualCancel != null) {
                 autoreconnectrf$manualCancel.run();
             }
             return true;
         } else {
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(event);
         }
     }
 

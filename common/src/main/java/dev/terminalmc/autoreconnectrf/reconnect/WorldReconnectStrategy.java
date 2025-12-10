@@ -46,7 +46,7 @@ public class WorldReconnectStrategy extends ReconnectStrategy {
         Minecraft mc = Minecraft.getInstance();
         if (!mc.getLevelSource().levelExists(worldName))
             return;
-        mc.forceSetScreen(new GenericMessageScreen(Component.translatable(
+        mc.setScreenAndShow(new GenericMessageScreen(Component.translatable(
                 "selectWorld.data_read")));
         mc.createWorldOpenFlows().openWorld(worldName, () -> mc.setScreen(new TitleScreen()));
     }

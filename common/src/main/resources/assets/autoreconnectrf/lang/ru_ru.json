@@ -3,6 +3,7 @@
 
   "message.autoreconnectrf.viewModrinth": "Посмотреть на Modrinth",
   "message.autoreconnectrf.installYacl": "Установите Yet Another Config Lib для доступа к параметрам мода",
+  "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "Переподключиться",
   "message.autoreconnectrf.reconnectIn": "Переподключение через %d...",

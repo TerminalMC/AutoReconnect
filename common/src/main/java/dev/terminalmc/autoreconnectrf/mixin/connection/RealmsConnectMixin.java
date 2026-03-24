@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RealmsConnect.class)
-public class RealmsConnectMixin {
+public abstract class RealmsConnectMixin {
 
     /**
      * Realms connection event notifier.

@@ -3,6 +3,7 @@
 
   "message.autoreconnectrf.viewModrinth": "查看 Modrinth",
   "message.autoreconnectrf.installYacl": "安装 Yet Another Config Lib 更改 Mod 选项。",
+  "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "重新连接",
   "message.autoreconnectrf.reconnectIn": "在 %d 秒后重新连接...",

@@ -23,14 +23,17 @@ import dev.terminalmc.autoreconnectrf.reconnect.WorldReconnectStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(Minecraft.class)
-public class MinecraftMixin {
+public abstract class MinecraftMixin {
 
     /**
      * Singleplayer connection event notifier.
@@ -39,14 +42,19 @@ public class MinecraftMixin {
             method = "doWorldLoad",
             at = @At("HEAD")
     )
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private void onWorldConnect(
-            LevelStorageSource.LevelStorageAccess storage,
-            PackRepository packRepo,
+            LevelStorageSource.LevelStorageAccess levelSourceAccess,
+            PackRepository packRepository,
             WorldStem worldStem,
+            Optional<GameRules> gameRules,
             boolean newWorld,
             CallbackInfo ci
     ) {
         AutoReconnect.setReconnectStrategy(
-                new WorldReconnectStrategy(worldStem.worldData().getLevelName()));
+                new WorldReconnectStrategy(worldStem.worldDataAndGenSettings()
+                        .data()
+                        .getLevelName())
+        );
     }
 }

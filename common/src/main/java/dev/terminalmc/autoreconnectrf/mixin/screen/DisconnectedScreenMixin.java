@@ -50,7 +50,7 @@ import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
  * realms.
  */
 @Mixin(DisconnectedScreen.class)
-public class DisconnectedScreenMixin extends Screen {
+public abstract class DisconnectedScreenMixin extends Screen {
 
     @Shadow
     @Mutable

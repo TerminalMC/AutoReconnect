@@ -4,9 +4,11 @@
   "package": "dev.terminalmc.autoreconnectrf.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_${java_version}",
+  "plugin": "dev.terminalmc.autoreconnectrf.util.MixinConfigPlugin",
+  "mixinextras": {
+    "minVersion": "${mixinextras_version_min}"
+  },
   "mixins": [
-  ],
-  "client": [
     "accessor.DisconnectedScreenAccessor",
     "accessor.ScreenAccessor",
     "connection.ClientPacketListenerMixin",
@@ -15,6 +17,8 @@
     "connection.RealmsConnectMixin",
     "screen.DisconnectedScreenMixin",
     "screen.MinecraftMixin"
+  ],
+  "client": [
   ],
   "server": [
   ],

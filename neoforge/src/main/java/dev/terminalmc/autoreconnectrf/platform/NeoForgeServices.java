@@ -17,13 +17,13 @@
 
 package dev.terminalmc.autoreconnectrf.platform;
 
-import dev.terminalmc.autoreconnectrf.platform.services.IPlatformServices;
+import dev.terminalmc.autoreconnectrf.platform.services.PlatformServices;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
-public class NeoForgeServices implements IPlatformServices {
+public class NeoForgeServices implements PlatformServices {
 
     @Override
     public boolean isDevEnv() {

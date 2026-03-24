@@ -20,7 +20,7 @@ package dev.terminalmc.autoreconnectrf.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
-import dev.terminalmc.autoreconnectrf.platform.Services;
+import dev.terminalmc.autoreconnectrf.platform.services.PlatformServices;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +39,7 @@ import java.util.regex.PatternSyntaxException;
 
 public class Config {
 
-    private static final Path DIR_PATH = Services.PLATFORM.getConfigDir();
+    private static final Path DIR_PATH = PlatformServices.getInstance().getConfigDir();
     private static final String FILE_NAME = AutoReconnect.MOD_ID + ".json";
     private static final String BACKUP_FILE_NAME = AutoReconnect.MOD_ID + ".unreadable.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();

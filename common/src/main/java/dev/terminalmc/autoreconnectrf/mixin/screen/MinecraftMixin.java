@@ -28,6 +28,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
 
@@ -41,8 +43,7 @@ public abstract class MinecraftMixin {
             method = "setScreen",
             at = @At(
                     value = "FIELD",
-                    opcode = 181
-                    /* PUTFIELD */,
+                    opcode = PUTFIELD,
                     target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;"
             )
     )

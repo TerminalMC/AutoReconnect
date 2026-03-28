@@ -23,7 +23,6 @@ import dev.isxander.yacl3.api.utils.Dimension;
 import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
 import dev.isxander.yacl3.gui.controllers.string.IStringController;
-import dev.isxander.yacl3.gui.controllers.string.StringController;
 import dev.isxander.yacl3.gui.controllers.string.StringControllerElement;
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
 import dev.terminalmc.autoreconnectrf.config.Config;
@@ -31,7 +30,7 @@ import dev.terminalmc.autoreconnectrf.config.Config.Options;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetTooltipHolder;
 import net.minecraft.client.gui.screens.Screen;
@@ -436,8 +435,9 @@ public class YaclScreenProvider {
         }
     }
 
-    private static class RestrictedStringController extends StringController {
+    private static class RestrictedStringController implements IStringController<String> {
 
+        private final Option<String> option;
         private final @Nullable Function<String, Optional<String>> validator;
         private @Nullable String displayValue;
         private @Nullable YaclScreenProvider.RestrictedStringControllerElement widget;
@@ -446,17 +446,27 @@ public class YaclScreenProvider {
                 Option<String> option,
                 @Nullable Function<String, Optional<String>> validator
         ) {
-            super(option);
+            this.option = option;
             this.validator = validator;
         }
 
         @Override
         public Component formatValue() {
             if (displayValue == null) {
-                return super.formatValue();
+                return Component.literal(getString());
             } else {
                 return Component.literal(displayValue).withStyle(ChatFormatting.RED);
             }
+        }
+
+        @Override
+        public Option<String> option() {
+            return option;
+        }
+
+        @Override
+        public String getString() {
+            return option().pendingValue();
         }
 
         @Override
@@ -474,7 +484,7 @@ public class YaclScreenProvider {
             displayValue = null;
             if (widget != null)
                 widget.setTooltip(null);
-            super.setFromString(value);
+            option.requestSet(value);
         }
 
         @Override
@@ -505,8 +515,13 @@ public class YaclScreenProvider {
         }
 
         @Override
-        public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-            super.render(graphics, mouseX, mouseY, delta);
+        public void extractRenderState(
+                @NotNull GuiGraphicsExtractor graphics,
+                int mouseX,
+                int mouseY,
+                float delta
+        ) {
+            super.extractRenderState(graphics, mouseX, mouseY, delta);
             this.tooltip.refreshTooltipForNextRenderPass(
                     graphics,
                     mouseX,

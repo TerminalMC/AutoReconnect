@@ -1,4 +1,7 @@
 {
+  "modmenu.nameTranslation.autoreconnectrf":"AutoReconnect",
+  "modmenu.descriptionTranslation.autoreconnectrf":"Automatically reconnect to servers after unintentional disconnection.",
+  
   "autoreconnectrf.name": "AutoReconnect",
 
   "message.autoreconnectrf.viewModrinth": "View on Modrinth",

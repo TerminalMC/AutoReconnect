@@ -1,0 +1,52 @@
+{
+  "autoreconnectrf.name": "AutoReconnect",
+
+  "message.autoreconnectrf.viewModrinth": "View on Modrinth",
+  "message.autoreconnectrf.installYacl": "Install Yet Another Config Lib to access mod options",
+  "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
+
+  "message.autoreconnectrf.reconnect": "Reconnect",
+  "message.autoreconnectrf.reconnectIn": "Reconnecting in %d...",
+  "message.autoreconnectrf.reconnectFailed": "Could not reconnect!",
+
+  "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",
+
+  "option.autoreconnectrf.attempts": "Attempts",
+  "option.autoreconnectrf.attempts.delays": "Delays",
+  "option.autoreconnectrf.attempts.delays.tooltip": "Time to wait between attempts.",
+  "option.autoreconnectrf.attempts.delays.value": "%s sec",
+  "option.autoreconnectrf.attempts.infinite": "Infinite",
+  "option.autoreconnectrf.attempts.infinite.tooltip": "Whether to continue attempting to reconnect with the last configured delay.",
+
+  "option.autoreconnectrf.conditions": "Conditions",
+  "option.autoreconnectrf.conditions.tooltip": "Conditions allow you to prevent AutoReconnect from attempting to reconnect you, based on the disconnect reason. Conditions do not work on Realms.",
+  "option.autoreconnectrf.conditions.type": "Type",
+  "option.autoreconnectrf.conditions.type.positive": "Positive",
+  "option.autoreconnectrf.conditions.type.negative": "Negative",
+  "option.autoreconnectrf.conditions.type.tooltip": "%s: Only reconnect if at least one condition matches.\n%s: Only reconnect if no conditions match.",
+  "option.autoreconnectrf.conditions.keys": "Condition Keys",
+  "option.autoreconnectrf.conditions.keys.tooltip": "Keys to check against the disconnect reason key, to determine whether to reconnect.\n\nLast disconnect reason key:\n%s",
+  "option.autoreconnectrf.conditions.patterns": "Condition Patterns",
+  "option.autoreconnectrf.conditions.patterns.tooltip": "Regex patterns to check against the disconnect reason string, to determine whether to reconnect.\n\nLast disconnect reason string:\n%s",
+  "option.autoreconnectrf.conditions.last.none": "[None]",
+
+  "option.autoreconnectrf.messages": "AutoMessages",
+  "option.autoreconnectrf.messages.tooltip": "Messages to send after a successful automatic reconnect.",
+  "option.autoreconnectrf.messages.instance": "AutoMessage %d",
+  "option.autoreconnectrf.messages.instance.tooltip": "A single AutoMessage object for a specific server, realm or world.",
+  "option.autoreconnectrf.messages.instance.id": "Connection ID",
+  "option.autoreconnectrf.messages.instance.id.tooltip": "The server IP, realm name, or world name on which this AutoMessage should be used.",
+  "option.autoreconnectrf.messages.instance.delay": "Delay",
+  "option.autoreconnectrf.messages.instance.delay.tooltip": "Time to wait before the sending the first message and between subsequent ones.",
+  "option.autoreconnectrf.messages.instance.delay.value": "%s sec",
+  "option.autoreconnectrf.messages.instance.messages": "Messages",
+  "option.autoreconnectrf.messages.instance.messages.tooltip": "Messages or commands to be sent after automatically reconnecting.",
+  "option.autoreconnectrf.messages.instance.add": "Add",
+  "option.autoreconnectrf.messages.instance.delete": "Delete",
+
+  "option.autoreconnectrf.misc": "Misc",
+  "option.autoreconnectrf.misc.commandSigning": "Command Signing",
+  "option.autoreconnectrf.misc.commandSigning.tooltip": "Whether to sign AutoMessage commands when sending. Certain servers may require this to be enabled.",
+  "option.autoreconnectrf.misc.regexIds": "Regex IDs",
+  "option.autoreconnectrf.misc.regexIds.tooltip": "Whether to parse all AutoMessage Connection IDs as regex patterns. Only enable this if you know what you're doing."
+}

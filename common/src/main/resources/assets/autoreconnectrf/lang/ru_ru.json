@@ -3,6 +3,7 @@
 
   "modmenu.nameTranslation.autoreconnectrf": "AutoReconnect",
   "modmenu.descriptionTranslation.autoreconnectrf": "Автоматически переподключает к серверам после непреднамеренного отключения.",
+  "fml.menu.mods.info.description.autoreconnectrf": "Автоматически переподключает к серверам после непреднамеренного отключения.",
 
   "message.autoreconnectrf.viewModrinth": "Посмотреть на Modrinth",
   "message.autoreconnectrf.installYacl": "Установите Yet Another Config Lib для доступа к настройкам мода",

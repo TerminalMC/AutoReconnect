@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.1
+
+- Updated Russian translation (rfin0)
+- Added Traditional Chinese translation (StarsShine11904)
+
 ## 3.0.0
 
 - Re-enabled config screen

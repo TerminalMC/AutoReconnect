@@ -234,7 +234,7 @@ public class YaclScreenProvider {
                         // YACL's change listeners, so we force a save and
                         // then reload to show the change.
                         Minecraft mc = Minecraft.getInstance();
-                        mc.setScreen(
+                        mc.gui.setScreen(
                                 new ConfirmScreen(
                                         (confirmed) -> {
                                             if (confirmed) {
@@ -242,7 +242,7 @@ public class YaclScreenProvider {
                                                 Config.save();
                                                 reload(screen, parent);
                                             } else {
-                                                mc.setScreen(screen);
+                                                mc.gui.setScreen(screen);
                                             }
                                         },
                                         localized("option", "messages.instance.delete.warning"),

@@ -48,6 +48,6 @@ public class WorldReconnectStrategy extends ReconnectStrategy {
             return;
         mc.setScreenAndShow(new GenericMessageScreen(Component.translatable(
                 "selectWorld.data_read")));
-        mc.createWorldOpenFlows().openWorld(worldName, () -> mc.setScreen(new TitleScreen()));
+        mc.createWorldOpenFlows().openWorld(worldName, () -> mc.gui.setScreen(new TitleScreen()));
     }
 }

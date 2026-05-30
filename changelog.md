@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.3.0-beta.1
+
+- Updated to mc26.2-pre.2
+- Temporarily disabled config screen
+- Mod versioning scheme now resets `minor` on increment of either `major` or `mc`
+
 ## 3.2.2
 
 - Added a command to open the config screen

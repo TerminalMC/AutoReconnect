@@ -68,7 +68,7 @@ public class MessageUtil {
             } else {
                 player.connection.sendUnattendedCommand(
                         message.substring(1),
-                        Minecraft.getInstance().screen
+                        Minecraft.getInstance().gui.screen()
                 );
             }
         } else {

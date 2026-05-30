@@ -46,7 +46,7 @@ public class RealmReconnectStrategy extends ReconnectStrategy {
     @Override
     public void reconnect() {
         TitleScreen titleScreen = new TitleScreen();
-        Minecraft.getInstance().setScreen(new RealmsLongRunningMcoTaskScreen(
+        Minecraft.getInstance().gui.setScreen(new RealmsLongRunningMcoTaskScreen(
                 titleScreen,
                 new GetServerDetailsTask(new RealmsMainScreen(titleScreen), realmsServer)
         ));

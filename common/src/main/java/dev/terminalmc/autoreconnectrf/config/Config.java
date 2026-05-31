@@ -62,6 +62,9 @@ public class Config {
         ));
         public List<Integer> delays = delaysDefault.get();
 
+        public static final boolean initialDefault = false;
+        public boolean initial = initialDefault;
+
         public static final boolean infiniteDefault = false;
         public boolean infinite = infiniteDefault;
 
@@ -70,7 +73,19 @@ public class Config {
 
         public static final Supplier<List<String>> conditionKeysDefault =
                 () -> new ArrayList<>(List.of(
-                        "multiplayer.disconnect.banned"
+                        "disconnect.loginFailedInfo",
+                        "disconnect.spam",
+                        "disconnect.timeout",
+                        "disconnect.unknownHost",
+                        "multiplayer.disconnect.banned",
+                        "multiplayer.disconnect.code_of_conduct",
+                        "multiplayer.disconnect.incompatible",
+                        "multiplayer.disconnect.ip_banned",
+                        "multiplayer.disconnect.kicked",
+                        "multiplayer.disconnect.name_taken",
+                        "multiplayer.disconnect.not_whitelisted",
+                        "multiplayer.disconnect.outdated_client",
+                        "multiplayer.disconnect.outdated_server"
                 ));
         public List<String> conditionKeys = conditionKeysDefault.get();
 

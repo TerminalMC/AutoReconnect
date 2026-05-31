@@ -19,6 +19,8 @@
   "option.autoreconnectrf.attempts.delays": "Задержки",
   "option.autoreconnectrf.attempts.delays.tooltip": "Задержки между попытками (в секундах).",
   "option.autoreconnectrf.attempts.delays.value": "%s сек.",
+  "option.autoreconnectrf.attempts.initial": "Initial",
+  "option.autoreconnectrf.attempts.initial.tooltip": "Whether to attempt to reconnect if a manual connection attempt fails.",
   "option.autoreconnectrf.attempts.infinite": "Бесконечно",
   "option.autoreconnectrf.attempts.infinite.tooltip": "Повторять переподключение с последней настроенной задержкой.",
 
@@ -46,7 +48,7 @@
   "option.autoreconnectrf.messages.instance.messages": "Сообщения",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "Сообщения или команды для отправки после автоматического переподключения.",
   "option.autoreconnectrf.messages.instance.add": "Добавить",
-  "option.autoreconnectrf.messages.instance.add.description": "Save all pending changes, add a new AutoMessage, and reload the screen.",
+  "option.autoreconnectrf.messages.instance.add.tooltip": "Save all pending changes, add a new AutoMessage, and reload the screen.",
   "option.autoreconnectrf.messages.instance.delete": "Удалить",
   "option.autoreconnectrf.messages.instance.delete.warning": "Delete AutoMessage",
   "option.autoreconnectrf.messages.instance.delete.confirm": "This will save all pending config changes and reload the screen. Are you sure you want to proceed?",

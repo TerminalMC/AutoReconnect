@@ -45,6 +45,8 @@ import java.util.function.IntConsumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import static dev.terminalmc.autoreconnectrf.config.Config.options;
+
 public class AutoReconnect {
 
     public static final String MOD_ID = "autoreconnectrf";
@@ -71,6 +73,7 @@ public class AutoReconnect {
             new AtomicReference<>(null);
 
     private static @Nullable ReconnectStrategy reconnectStrategy = null;
+    private static boolean hasFullyConnected = false;
 
     /**
      * Client initialization.
@@ -115,18 +118,24 @@ public class AutoReconnect {
     public static void onGameJoined() {
         if (reconnectStrategy == null)
             return; // Should not happen
-        if (!reconnectStrategy.isAttempting())
-            return; // Manual (re)connect
 
-        reconnectStrategy.resetAttempts();
+        if (reconnectStrategy.isAttempting()) {
+            // Successfully completed auto-reconnect
 
-        // Send automatic messages if configured for the current context
-        Config.get()
-                .getAutoMessagesForId(reconnectStrategy.getId())
-                .forEach(autoMessage -> MessageUtil.sendAll(
-                        autoMessage.getMessages(),
-                        (int) (autoMessage.delay * 1000)
-                ));
+            reconnectStrategy.resetAttempts();
+
+            // Send automatic messages if configured for the current context
+            Config.get()
+                    .getAutoMessagesForId(reconnectStrategy.getId())
+                    .forEach(autoMessage -> MessageUtil.sendAll(
+                            autoMessage.getMessages(),
+                            (int) (autoMessage.delay * 1000)
+                    ));
+        } else {
+            // Manual re/connect
+
+            hasFullyConnected = true;
+        }
     }
 
     // Reconnect management
@@ -136,15 +145,17 @@ public class AutoReconnect {
      */
     public static void setReconnectStrategy(@NotNull ReconnectStrategy pReconnectStrategy) {
         // Avoid overwriting strategy on reconnect failure
-        if (reconnectStrategy == null)
+        if (reconnectStrategy == null) {
             reconnectStrategy = pReconnectStrategy;
+            hasFullyConnected = false;
+        }
     }
 
     /**
-     * @return {@code true} if the mod has a reconnection strategy.
+     * @return {@code true} if the mod has a useable reconnection strategy.
      */
     public static boolean canReconnect() {
-        return reconnectStrategy != null;
+        return reconnectStrategy != null && (options().initial || hasFullyConnected);
     }
 
     /**
@@ -152,7 +163,7 @@ public class AutoReconnect {
      */
     public static void reconnect() {
         cancelCountdown();
-        if (reconnectStrategy != null)
+        if (reconnectStrategy != null && (options().initial || hasFullyConnected))
             reconnectStrategy.reconnect();
     }
 

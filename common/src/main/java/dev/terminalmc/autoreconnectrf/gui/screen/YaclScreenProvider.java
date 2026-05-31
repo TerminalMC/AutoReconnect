@@ -87,6 +87,17 @@ public class YaclScreenProvider {
                 .build());
 
         attemptsCat.option(Option.<Boolean>createBuilder()
+                .name(localized("option", "attempts.initial"))
+                .description(OptionDescription.of(localized("option", "attempts.initial.tooltip")))
+                .binding(
+                        Config.Options.initialDefault,
+                        () -> options.initial,
+                        val -> options.initial = val
+                )
+                .controller(BooleanControllerBuilder::create)
+                .build());
+
+        attemptsCat.option(Option.<Boolean>createBuilder()
                 .name(localized("option", "attempts.infinite"))
                 .description(OptionDescription.of(localized("option", "attempts.infinite.tooltip")))
                 .binding(
@@ -192,7 +203,7 @@ public class YaclScreenProvider {
                 .name(localized("option", "messages.instance.add").withStyle(ChatFormatting.GREEN))
                 .description(OptionDescription.of(localized(
                         "option",
-                        "messages.instance.add.description"
+                        "messages.instance.add.tooltip"
                 )))
                 .action((yaclScreen, buttonOption) -> {
                     // Adding a complex object like this does not trigger

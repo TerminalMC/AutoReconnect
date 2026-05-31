@@ -4,6 +4,8 @@
 
 - Added a command to open the config screen
 - Fixed automessages not saving on add/delete
+- Disabled reconnecting when initial manual connection fails
+- Expanded default list of negative condition keys
 
 ## 3.2.1
 

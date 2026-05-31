@@ -18,6 +18,8 @@
   "option.autoreconnectrf.attempts.delays": "延遲時間",
   "option.autoreconnectrf.attempts.delays.tooltip": "每次嘗試之間的等待時間。",
   "option.autoreconnectrf.attempts.delays.value": "%s 秒",
+  "option.autoreconnectrf.attempts.initial": "Initial",
+  "option.autoreconnectrf.attempts.initial.tooltip": "Whether to attempt to reconnect if a manual connection attempt fails.",
   "option.autoreconnectrf.attempts.infinite": "無限",
   "option.autoreconnectrf.attempts.infinite.tooltip": "是否使用最後一次設定的延遲時間繼續嘗試重新連線。",
 
@@ -45,7 +47,7 @@
   "option.autoreconnectrf.messages.instance.messages": "訊息",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "自動重新連線後要傳送的訊息或指令。",
   "option.autoreconnectrf.messages.instance.add": "新增",
-  "option.autoreconnectrf.messages.instance.add.description": "Save all pending changes, add a new AutoMessage, and reload the screen.",
+  "option.autoreconnectrf.messages.instance.add.tooltip": "Save all pending changes, add a new AutoMessage, and reload the screen.",
   "option.autoreconnectrf.messages.instance.delete": "刪除",
   "option.autoreconnectrf.messages.instance.delete.warning": "Delete AutoMessage",
   "option.autoreconnectrf.messages.instance.delete.confirm": "This will save all pending config changes and reload the screen. Are you sure you want to proceed?",

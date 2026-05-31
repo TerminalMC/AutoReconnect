@@ -21,6 +21,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
+import dev.terminalmc.autoreconnectrf.gui.screen.ConfigScreenProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
 
@@ -30,9 +31,18 @@ import static net.minecraft.commands.Commands.literal;
 @SuppressWarnings("unchecked")
 public class Commands<S> extends CommandDispatcher<S> {
 
-    public void register(CommandDispatcher<S> dispatcher, CommandBuildContext buildContext) {
+    private Commands() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
+    public static <S> void register(CommandDispatcher<S> dispatcher, CommandBuildContext buildCtx) {
         Minecraft mc = Minecraft.getInstance();
+        //noinspection unchecked
         dispatcher.register((LiteralArgumentBuilder<S>) literal(AutoReconnect.MOD_ID)
+                .executes((ctx) -> {
+                    mc.schedule(() -> mc.setScreen(ConfigScreenProvider.getConfigScreen(null)));
+                    return Command.SINGLE_SUCCESS;
+                })
                 .then(literal("disconnect")
                         .executes(ctx -> {
                             if (mc.player != null) {

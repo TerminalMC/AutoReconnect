@@ -20,7 +20,6 @@ package dev.terminalmc.autoreconnectrf;
 import dev.terminalmc.autoreconnectrf.command.Commands;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @SuppressWarnings("unused")
@@ -29,11 +28,7 @@ public class AutoReconnectFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // Register client commands
-        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, buildContext) ->
-                new Commands<FabricClientCommandSource>().register(
-                        dispatcher,
-                        buildContext
-                )));
+        ClientCommandRegistrationCallback.EVENT.register(Commands::register);
 
         // Register client after-tick event
         ClientTickEvents.END_CLIENT_TICK.register(AutoReconnect::afterClientTick);

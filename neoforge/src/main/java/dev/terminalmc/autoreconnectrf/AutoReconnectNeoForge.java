@@ -20,7 +20,6 @@ package dev.terminalmc.autoreconnectrf;
 import dev.terminalmc.autoreconnectrf.command.Commands;
 import dev.terminalmc.autoreconnectrf.gui.screen.ConfigScreenProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandSourceStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
@@ -54,22 +53,19 @@ public class AutoReconnectNeoForge {
     static class ClientEventHandler {
 
         /**
-         * Registers all client-side commands.
-         */
-        @SubscribeEvent
-        static void registerClientCommands(RegisterClientCommandsEvent event) {
-            new Commands<CommandSourceStack>().register(
-                    event.getDispatcher(),
-                    event.getBuildContext()
-            );
-        }
-
-        /**
          * Registers client after-tick event.
          */
         @SubscribeEvent
         public static void registerAfterClientTick(ClientTickEvent.Post event) {
             AutoReconnect.afterClientTick(Minecraft.getInstance());
+        }
+
+        /**
+         * Registers all client commands.
+         */
+        @SubscribeEvent
+        public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
+            Commands.register(event.getDispatcher(), event.getBuildContext());
         }
     }
 }

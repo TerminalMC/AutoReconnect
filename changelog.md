@@ -3,6 +3,7 @@
 ## 3.2.2
 
 - Added a command to open the config screen
+- Fixed automessages not saving on add/delete
 
 ## 3.2.1
 

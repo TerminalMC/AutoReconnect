@@ -1,7 +1,7 @@
 {
   "modmenu.nameTranslation.autoreconnectrf":"自動重連",
   "modmenu.descriptionTranslation.autoreconnectrf":"在意外斷線後自動重新連線至伺服器。",
-  
+
   "autoreconnectrf.name": "自動重連",
 
   "message.autoreconnectrf.viewModrinth": "在 Modrinth 上檢視",
@@ -45,7 +45,10 @@
   "option.autoreconnectrf.messages.instance.messages": "訊息",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "自動重新連線後要傳送的訊息或指令。",
   "option.autoreconnectrf.messages.instance.add": "新增",
+  "option.autoreconnectrf.messages.instance.add.description": "Save all pending changes, add a new AutoMessage, and reload the screen.",
   "option.autoreconnectrf.messages.instance.delete": "刪除",
+  "option.autoreconnectrf.messages.instance.delete.warning": "Delete AutoMessage",
+  "option.autoreconnectrf.messages.instance.delete.confirm": "This will save all pending config changes and reload the screen. Are you sure you want to proceed?",
 
   "option.autoreconnectrf.misc": "雜項",
   "option.autoreconnectrf.misc.commandSigning": "指令簽章",

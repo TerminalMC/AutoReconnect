@@ -46,7 +46,10 @@
   "option.autoreconnectrf.messages.instance.messages": "Сообщения",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "Сообщения или команды для отправки после автоматического переподключения.",
   "option.autoreconnectrf.messages.instance.add": "Добавить",
+  "option.autoreconnectrf.messages.instance.add.description": "Save all pending changes, add a new AutoMessage, and reload the screen.",
   "option.autoreconnectrf.messages.instance.delete": "Удалить",
+  "option.autoreconnectrf.messages.instance.delete.warning": "Delete AutoMessage",
+  "option.autoreconnectrf.messages.instance.delete.confirm": "This will save all pending config changes and reload the screen. Are you sure you want to proceed?",
 
   "option.autoreconnectrf.misc": "Разное",
   "option.autoreconnectrf.misc.commandSigning": "Подпись команд",

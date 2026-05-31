@@ -33,6 +33,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetTooltipHolder;
+import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -189,8 +190,16 @@ public class YaclScreenProvider {
 
         messagesCat.option(ButtonOption.createBuilder()
                 .name(localized("option", "messages.instance.add").withStyle(ChatFormatting.GREEN))
+                .description(OptionDescription.of(localized(
+                        "option",
+                        "messages.instance.add.description"
+                )))
                 .action((yaclScreen, buttonOption) -> {
+                    // Adding a complex object like this does not trigger
+                    // YACL's change listeners, so we force a save and
+                    // then reload to show the change.
                     options.autoMessages.add(new Config.AutoMessage());
+                    Config.save();
                     reload(yaclScreen, parent);
                 })
                 .build());
@@ -210,8 +219,24 @@ public class YaclScreenProvider {
                             "messages.instance.delete"
                     ).withStyle(ChatFormatting.RED))
                     .action((screen, buttonOption) -> {
-                        options.autoMessages.remove(am);
-                        reload(screen, parent);
+                        // Removing a complex object like this does not trigger
+                        // YACL's change listeners, so we force a save and
+                        // then reload to show the change.
+                        Minecraft mc = Minecraft.getInstance();
+                        mc.setScreen(
+                                new ConfirmScreen(
+                                        (confirmed) -> {
+                                            if (confirmed) {
+                                                options.autoMessages.remove(am);
+                                                Config.save();
+                                                reload(screen, parent);
+                                            } else {
+                                                mc.setScreen(screen);
+                                            }
+                                        },
+                                        localized("option", "messages.instance.delete.warning"),
+                                        localized("option", "messages.instance.delete.confirm")
+                                ));
                     })
                     .build());
 

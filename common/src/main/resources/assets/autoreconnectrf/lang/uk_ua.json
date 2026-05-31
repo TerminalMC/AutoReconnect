@@ -42,7 +42,10 @@
   "option.autoreconnectrf.messages.instance.messages": "Повідомлення",
   "option.autoreconnectrf.messages.instance.messages.tooltip": "Повідомлення або команди, які будуть надіслані після автоматичного перепід'єднання.",
   "option.autoreconnectrf.messages.instance.add": "Додати",
+  "option.autoreconnectrf.messages.instance.add.description": "Save all pending changes, add a new AutoMessage, and reload the screen.",
   "option.autoreconnectrf.messages.instance.delete": "Видалити",
+  "option.autoreconnectrf.messages.instance.delete.warning": "Delete AutoMessage",
+  "option.autoreconnectrf.messages.instance.delete.confirm": "This will save all pending config changes and reload the screen. Are you sure you want to proceed?",
 
   "option.autoreconnectrf.misc": "Misc",
   "option.autoreconnectrf.misc.commandSigning": "Command Signing",

@@ -19,7 +19,7 @@
 package dev.terminalmc.autoreconnectrf.mixin.screen;
 
 import dev.terminalmc.autoreconnectrf.AutoReconnect;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,11 +30,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static org.objectweb.asm.Opcodes.PUTFIELD;
 
-@Mixin(Minecraft.class)
-public abstract class MinecraftMixin {
+@Mixin(Gui.class)
+public abstract class GuiMixin {
 
     @Shadow
-    public Screen screen;
+    private Screen screen;
 
     /**
      * Screen change event notifier.
@@ -44,7 +44,7 @@ public abstract class MinecraftMixin {
             at = @At(
                     value = "FIELD",
                     opcode = PUTFIELD,
-                    target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;"
+                    target = "Lnet/minecraft/client/gui/Gui;screen:Lnet/minecraft/client/gui/screens/Screen;"
             )
     )
     private void onScreenChanged(@Nullable Screen newScreen, CallbackInfo ci) {

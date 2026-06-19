@@ -238,7 +238,7 @@ public class YaclScreenProvider {
                         // YACL's change listeners, so we force a save and
                         // then reload to show the change.
                         Minecraft mc = Minecraft.getInstance();
-                        mc.setScreen(
+                        mc.gui.setScreen(
                                 new ConfirmScreen(
                                         (confirmed) -> {
                                             if (confirmed) {
@@ -246,7 +246,7 @@ public class YaclScreenProvider {
                                                 Config.save();
                                                 reload(screen, parent);
                                             } else {
-                                                mc.setScreen(screen);
+                                                mc.gui.setScreen(screen);
                                             }
                                         },
                                         localized("option", "messages.instance.delete.warning"),
@@ -382,9 +382,9 @@ public class YaclScreenProvider {
                         newScreen.tabNavigationBar.getTabs().size() - 1
                 );
             }
-            Minecraft.getInstance().setScreen(newScreen);
+            Minecraft.getInstance().gui.setScreen(newScreen);
         } catch (Exception e) {
-            Minecraft.getInstance().setScreen(parent);
+            Minecraft.getInstance().gui.setScreen(parent);
             AutoReconnect.LOG.error("YACL reload hack failed with exception:", e);
         }
     }

@@ -15,7 +15,7 @@
     "connection.MinecraftMixin",
     "connection.RealmsConnectMixin",
     "screen.DisconnectedScreenMixin",
-    "screen.MinecraftMixin"
+    "screen.GuiMixin"
   ],
   "client": [
   ],

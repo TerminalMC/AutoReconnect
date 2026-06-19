@@ -53,19 +53,19 @@ public class AutoReconnectNeoForge {
     static class ClientEventHandler {
 
         /**
-         * Registers client after-tick event.
-         */
-        @SubscribeEvent
-        public static void registerAfterClientTick(ClientTickEvent.Post event) {
-            AutoReconnect.afterClientTick(Minecraft.getInstance());
-        }
-
-        /**
          * Registers all client commands.
          */
         @SubscribeEvent
         public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
             Commands.register(event.getDispatcher(), event.getBuildContext());
+        }
+
+        /**
+         * Registers client after-tick event.
+         */
+        @SubscribeEvent
+        public static void registerAfterClientTick(ClientTickEvent.Post event) {
+            AutoReconnect.afterClientTick(Minecraft.getInstance());
         }
     }
 }

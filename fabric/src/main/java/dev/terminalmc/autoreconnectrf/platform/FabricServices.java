@@ -19,6 +19,7 @@ package dev.terminalmc.autoreconnectrf.platform;
 
 import dev.terminalmc.autoreconnectrf.platform.services.PlatformServices;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
@@ -32,6 +33,19 @@ public class FabricServices implements PlatformServices {
     @Override
     public boolean isModLoaded(String modId) {
         return FabricLoader.getInstance().isModLoaded(modId);
+    }
+
+    @Override
+    public boolean hasNamedLogger() {
+        return false;
+    }
+
+    @Override
+    public @Nullable String getModVersion(String modId) {
+        return FabricLoader.getInstance()
+                .getModContainer(modId)
+                .map(mod -> mod.getMetadata().getVersion().getFriendlyString())
+                .orElse(null);
     }
 
     @Override

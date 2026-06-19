@@ -22,7 +22,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 @SuppressWarnings("unused")
-public final class Localization {
+public class Localization {
+
+    private Localization() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
 
     public static String translationKey(String path) {
         return AutoReconnect.MOD_ID + "." + path;

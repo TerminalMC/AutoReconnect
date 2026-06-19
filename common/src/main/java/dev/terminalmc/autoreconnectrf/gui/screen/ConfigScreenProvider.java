@@ -33,6 +33,10 @@ import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
  */
 public class ConfigScreenProvider {
 
+    private ConfigScreenProvider() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     public static Screen getConfigScreen(Screen parent) {
         try {
             return YaclScreenProvider.getConfigScreen(parent);

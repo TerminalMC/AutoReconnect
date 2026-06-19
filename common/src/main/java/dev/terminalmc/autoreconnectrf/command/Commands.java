@@ -28,8 +28,7 @@ import net.minecraft.commands.CommandBuildContext;
 import static dev.terminalmc.autoreconnectrf.util.Localization.localized;
 import static net.minecraft.commands.Commands.literal;
 
-@SuppressWarnings("unchecked")
-public class Commands<S> extends CommandDispatcher<S> {
+public class Commands {
 
     private Commands() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");

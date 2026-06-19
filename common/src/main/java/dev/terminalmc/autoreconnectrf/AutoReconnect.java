@@ -22,8 +22,8 @@ import com.mojang.realmsclient.RealmsMainScreen;
 import dev.terminalmc.autoreconnectrf.config.Config;
 import dev.terminalmc.autoreconnectrf.reconnect.ReconnectStrategy;
 import dev.terminalmc.autoreconnectrf.reconnect.WorldReconnectStrategy;
+import dev.terminalmc.autoreconnectrf.util.Logging;
 import dev.terminalmc.autoreconnectrf.util.MessageUtil;
-import dev.terminalmc.autoreconnectrf.util.ModLogger;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DisconnectedScreen;
@@ -32,6 +32,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.network.chat.Component;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +52,7 @@ public class AutoReconnect {
 
     public static final String MOD_ID = "autoreconnectrf";
     public static final String MOD_NAME = "AutoReconnect";
-    public static final ModLogger LOG = new ModLogger(MOD_NAME);
+    public static final Logger LOG = Logging.getLogger(MOD_ID);
     public static final Component PREFIX = Component.empty()
             .append(Component.literal("[").withStyle(ChatFormatting.DARK_GRAY))
             .append(Component.literal(MOD_NAME).withStyle(ChatFormatting.GOLD))
@@ -74,6 +75,10 @@ public class AutoReconnect {
 
     private static @Nullable ReconnectStrategy reconnectStrategy = null;
     private static boolean hasFullyConnected = false;
+
+    private AutoReconnect() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
 
     /**
      * Client initialization.

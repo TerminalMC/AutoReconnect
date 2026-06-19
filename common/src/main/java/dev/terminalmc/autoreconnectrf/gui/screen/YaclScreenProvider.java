@@ -53,6 +53,10 @@ public class YaclScreenProvider {
 
     static boolean regexIdsTemp;
 
+    private YaclScreenProvider() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
      * Builds and returns a YACL options screen.
      *
@@ -381,7 +385,7 @@ public class YaclScreenProvider {
             Minecraft.getInstance().setScreen(newScreen);
         } catch (Exception e) {
             Minecraft.getInstance().setScreen(parent);
-            AutoReconnect.LOG.error("YACL reload hack failed with exception\n{}", e);
+            AutoReconnect.LOG.error("YACL reload hack failed with exception:", e);
         }
     }
 

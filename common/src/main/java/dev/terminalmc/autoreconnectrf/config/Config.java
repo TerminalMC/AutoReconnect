@@ -58,13 +58,13 @@ public class Config {
 
     public static class Options {
 
-        public static final Supplier<List<Integer>> delaysDefault = () -> new ArrayList<>(List.of(
-                3,
-                10,
-                30,
-                60
+        public static final Supplier<List<Float>> delaysDefault = () -> new ArrayList<>(List.of(
+                3F,
+                10F,
+                30F,
+                60F
         ));
-        public List<Integer> delays = delaysDefault.get();
+        public List<Float> delays = delaysDefault.get();
 
         public static final boolean initialDefault = false;
         public boolean initial = initialDefault;
@@ -127,11 +127,16 @@ public class Config {
     // Utils
 
     public int getDelayForAttempt(int attempt) {
+        float delay = getDelayForAttemptSeconds(attempt);
+        return delay < 0F ? -1 : Math.round(delay);
+    }
+
+    public float getDelayForAttemptSeconds(int attempt) {
         if (attempt < options.delays.size())
             return options.delays.get(attempt);
         if (options.infinite)
             return options.delays.getLast(); // repeat last
-        return -1; // no more attempts configured
+        return -1F; // no more attempts configured
     }
 
     public boolean hasAttempts() {
@@ -196,7 +201,7 @@ public class Config {
         if (options.delays == null) {
             options.delays = Options.delaysDefault.get();
         } else if (!options.delays.isEmpty()) {
-            options.delays = options.delays.stream().filter(i -> i > 0).toList();
+            options.delays = options.delays.stream().filter(i -> i > 0F).toList();
         }
         if (options.autoMessages == null) {
             options.autoMessages = Options.autoMessagesDefault.get();

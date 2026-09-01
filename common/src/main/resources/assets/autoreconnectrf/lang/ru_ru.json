@@ -10,7 +10,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Экран конфигурации недоступен в этой версии.",
 
   "message.autoreconnectrf.reconnect": "Переподключиться",
-  "message.autoreconnectrf.reconnectIn": "Переподключение через %d...",
+  "message.autoreconnectrf.reconnectIn": "Переподключение через %s...",
   "message.autoreconnectrf.reconnectFailed": "Не удалось переподключиться!",
 
   "message.autoreconnectrf.debug.disconnected": "Отключено отладочной командой!",

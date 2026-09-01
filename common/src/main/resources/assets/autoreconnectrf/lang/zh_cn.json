@@ -6,7 +6,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "重新连接",
-  "message.autoreconnectrf.reconnectIn": "在 %d 秒后重新连接...",
+  "message.autoreconnectrf.reconnectIn": "在 %s 秒后重新连接...",
   "message.autoreconnectrf.reconnectFailed": "无法重新连接！",
 
   "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",

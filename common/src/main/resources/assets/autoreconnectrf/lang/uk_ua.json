@@ -6,7 +6,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "Перепід'єднатися",
-  "message.autoreconnectrf.reconnectIn": "Перепід'єднання через %d...",
+  "message.autoreconnectrf.reconnectIn": "Перепід'єднання через %s...",
   "message.autoreconnectrf.reconnectFailed": "Не вдалося перепід'єднатися!",
 
   "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",

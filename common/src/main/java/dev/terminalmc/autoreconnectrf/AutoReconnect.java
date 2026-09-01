@@ -42,6 +42,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -210,12 +211,18 @@ public class AutoReconnect {
      * Initiates the countdown for the next reconnect attempt, if any.
      */
     public static void startCountdown(final IntConsumer callback) {
-        int delay = Config.get().getDelayForAttempt(reconnectStrategy.nextAttempt());
-        if (delay >= 0) {
-            countdown(delay, callback);
+        startCountdownPrecise(seconds -> callback.accept(
+                seconds < 0D ? -1 : (int) Math.ceil(seconds)
+        ));
+    }
+
+    public static void startCountdownPrecise(final DoubleConsumer callback) {
+        float delay = Config.get().getDelayForAttemptSeconds(reconnectStrategy.nextAttempt());
+        if (delay >= 0F) {
+            countdown(Math.round(delay * 1000D), callback);
         } else {
             // No more attempts configured
-            callback.accept(-1);
+            callback.accept(-1D);
         }
     }
 
@@ -233,19 +240,20 @@ public class AutoReconnect {
     /**
      * Simulated reconnect countdown timer using delayed recursion.
      */
-    private static void countdown(int seconds, final IntConsumer callback) {
+    private static void countdown(long remainingMillis, final DoubleConsumer callback) {
         if (reconnectStrategy == null)
             return; // Should not happen
-        if (seconds == 0) {
+        if (remainingMillis <= 0L) {
             // Execute on main thread
             Minecraft.getInstance().execute(AutoReconnect::reconnect);
         } else {
-            callback.accept(seconds);
+            callback.accept(remainingMillis / 1000D);
+            long stepMillis = Math.min(1000L, remainingMillis);
             synchronized (countdown) { // Just to be sure
                 countdown.set(schedule(
-                        () -> countdown(seconds - 1, callback),
-                        1,
-                        TimeUnit.SECONDS
+                        () -> countdown(remainingMillis - stepMillis, callback),
+                        stepMillis,
+                        TimeUnit.MILLISECONDS
                 ));
             }
         }

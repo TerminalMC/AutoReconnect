@@ -9,7 +9,7 @@
   "message.autoreconnectrf.configScreenDisabled": "此版本無法使用設定畫面。",
 
   "message.autoreconnectrf.reconnect": "重新連線",
-  "message.autoreconnectrf.reconnectIn": "將在 %d 秒後重新連線...",
+  "message.autoreconnectrf.reconnectIn": "將在 %s 秒後重新連線...",
   "message.autoreconnectrf.reconnectFailed": "無法重新連線！",
 
   "message.autoreconnectrf.debug.disconnected": "因偵錯指令而斷線！",

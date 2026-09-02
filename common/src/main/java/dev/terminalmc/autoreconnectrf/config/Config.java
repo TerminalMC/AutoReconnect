@@ -126,12 +126,7 @@ public class Config {
 
     // Utils
 
-    public int getDelayForAttempt(int attempt) {
-        float delay = getDelayForAttemptSeconds(attempt);
-        return delay < 0F ? -1 : Math.round(delay);
-    }
-
-    public float getDelayForAttemptSeconds(int attempt) {
+    public float getDelayForAttempt(int attempt) {
         if (attempt < options.delays.size())
             return options.delays.get(attempt);
         if (options.infinite)

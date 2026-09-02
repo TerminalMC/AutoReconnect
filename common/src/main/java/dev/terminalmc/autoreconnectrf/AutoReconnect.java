@@ -42,8 +42,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.DoubleConsumer;
-import java.util.function.IntConsumer;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -210,19 +209,13 @@ public class AutoReconnect {
     /**
      * Initiates the countdown for the next reconnect attempt, if any.
      */
-    public static void startCountdown(final IntConsumer callback) {
-        startCountdownPrecise(seconds -> callback.accept(
-                seconds < 0D ? -1 : (int) Math.ceil(seconds)
-        ));
-    }
-
-    public static void startCountdownPrecise(final DoubleConsumer callback) {
-        float delay = Config.get().getDelayForAttemptSeconds(reconnectStrategy.nextAttempt());
+    public static void startCountdown(final Consumer<Float> callback) {
+        float delay = Config.get().getDelayForAttempt(reconnectStrategy.nextAttempt());
         if (delay >= 0F) {
             countdown(Math.round(delay * 1000D), callback);
         } else {
             // No more attempts configured
-            callback.accept(-1D);
+            callback.accept(-1F);
         }
     }
 
@@ -240,15 +233,15 @@ public class AutoReconnect {
     /**
      * Simulated reconnect countdown timer using delayed recursion.
      */
-    private static void countdown(long remainingMillis, final DoubleConsumer callback) {
+    private static void countdown(long remainingMillis, final Consumer<Float> callback) {
         if (reconnectStrategy == null)
             return; // Should not happen
         if (remainingMillis <= 0L) {
             // Execute on main thread
             Minecraft.getInstance().execute(AutoReconnect::reconnect);
         } else {
-            callback.accept(remainingMillis / 1000D);
-            long stepMillis = Math.min(1000L, remainingMillis);
+            callback.accept(remainingMillis / 1000F);
+            long stepMillis = Math.min(100L, remainingMillis);
             synchronized (countdown) { // Just to be sure
                 countdown.set(schedule(
                         () -> countdown(remainingMillis - stepMillis, callback),

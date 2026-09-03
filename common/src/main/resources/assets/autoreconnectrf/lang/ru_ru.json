@@ -10,7 +10,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Экран конфигурации недоступен в этой версии.",
 
   "message.autoreconnectrf.reconnect": "Переподключиться",
-  "message.autoreconnectrf.reconnectIn": "Переподключение через %d...",
+  "message.autoreconnectrf.reconnectIn": "Переподключение через %s...",
   "message.autoreconnectrf.reconnectFailed": "Не удалось переподключиться!",
 
   "message.autoreconnectrf.debug.disconnected": "Отключено отладочной командой!",
@@ -38,7 +38,7 @@
 
   "option.autoreconnectrf.messages": "Автосообщения",
   "option.autoreconnectrf.messages.tooltip": "Сообщения для отправки после успешного автоматического переподключения.",
-  "option.autoreconnectrf.messages.instance": "Автосообщение %d",
+  "option.autoreconnectrf.messages.instance": "Автосообщение %s",
   "option.autoreconnectrf.messages.instance.tooltip": "Одиночный объект автосообщений для конкретного сервера, реалма или мира.",
   "option.autoreconnectrf.messages.instance.id": "Идентификатор подключения",
   "option.autoreconnectrf.messages.instance.id.tooltip": "IP-адрес сервера, название реалма или название мира, для которого применяется это автосообщение.",

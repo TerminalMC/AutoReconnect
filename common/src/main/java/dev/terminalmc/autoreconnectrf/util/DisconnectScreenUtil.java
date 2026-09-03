@@ -60,14 +60,17 @@ public class DisconnectScreenUtil {
      */
     public static void startCountdown(Button reconnectButton) {
         AutoReconnect.startCountdown((seconds) -> {
-            if (seconds < 0) {
+            if (seconds < 0F) {
                 // Out of attempts; deactivate button
                 reconnectButton.setMessage(localized("message", "reconnectFailed")
                         .withStyle(s -> s.withColor(ChatFormatting.RED)));
                 reconnectButton.active = false;
             } else {
                 // Attempts ongoing; update time on button
-                reconnectButton.setMessage(localized("message", "reconnectIn", seconds)
+                String secondsStr = seconds >= 10
+                        ? String.valueOf(seconds.intValue()) // %d (down)
+                        : String.valueOf((int) (seconds * 10) / 10F); // %.1f effective (down)
+                reconnectButton.setMessage(localized("message", "reconnectIn", secondsStr)
                         .withStyle(s -> s.withColor(ChatFormatting.GREEN)));
             }
         });

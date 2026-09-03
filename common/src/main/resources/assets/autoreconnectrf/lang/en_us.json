@@ -6,7 +6,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "Reconnect",
-  "message.autoreconnectrf.reconnectIn": "Reconnecting in %d...",
+  "message.autoreconnectrf.reconnectIn": "Reconnecting in %s...",
   "message.autoreconnectrf.reconnectFailed": "Could not reconnect!",
 
   "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",
@@ -34,7 +34,7 @@
 
   "option.autoreconnectrf.messages": "AutoMessages",
   "option.autoreconnectrf.messages.tooltip": "Messages to send after a successful automatic reconnect.",
-  "option.autoreconnectrf.messages.instance": "AutoMessage %d",
+  "option.autoreconnectrf.messages.instance": "AutoMessage %s",
   "option.autoreconnectrf.messages.instance.tooltip": "A single AutoMessage object for a specific server, realm or world.",
   "option.autoreconnectrf.messages.instance.id": "Connection ID",
   "option.autoreconnectrf.messages.instance.id.tooltip": "The server IP, realm name, or world name on which this AutoMessage should be used.",

@@ -75,7 +75,7 @@ public class YaclScreenProvider {
         ConfigCategory.Builder attemptsCat =
                 ConfigCategory.createBuilder().name(localized("option", "attempts"));
 
-        attemptsCat.group(ListOption.<Integer>createBuilder()
+        attemptsCat.group(ListOption.<Float>createBuilder()
                 .name(localized("option", "attempts.delays"))
                 .description(OptionDescription.of(localized("option", "attempts.delays.tooltip")))
                 .binding(
@@ -83,9 +83,9 @@ public class YaclScreenProvider {
                         () -> options.delays,
                         val -> options.delays = val
                 )
-                .controller(option -> IntegerFieldControllerBuilder.create(option).min(1)
+                .controller(option -> FloatFieldControllerBuilder.create(option).min(0.001F)
                         .formatValue((val) -> localized("option", "attempts.delays.value", val)))
-                .initial(0)
+                .initial(0F)
                 .insertEntriesAtEnd(true)
                 .minimumNumberOfEntries(1)
                 .build());

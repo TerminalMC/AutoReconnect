@@ -6,7 +6,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "重新连接",
-  "message.autoreconnectrf.reconnectIn": "在 %d 秒后重新连接...",
+  "message.autoreconnectrf.reconnectIn": "在 %s 秒后重新连接...",
   "message.autoreconnectrf.reconnectFailed": "无法重新连接！",
 
   "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",
@@ -34,7 +34,7 @@
 
   "option.autoreconnectrf.messages": "自动消息规则",
   "option.autoreconnectrf.messages.tooltip": "自动重新连接服务器成功后发送的聊天消息。",
-  "option.autoreconnectrf.messages.instance": "实例 %d",
+  "option.autoreconnectrf.messages.instance": "实例 %s",
   "option.autoreconnectrf.messages.instance.tooltip": "单独针对一个特定世界，服务器或 Realms 的自动消息对象。",
   "option.autoreconnectrf.messages.instance.id": "Connection ID",
   "option.autoreconnectrf.messages.instance.id.tooltip": "The server IP, realm name, or world name on which this AutoMessage should be used.",

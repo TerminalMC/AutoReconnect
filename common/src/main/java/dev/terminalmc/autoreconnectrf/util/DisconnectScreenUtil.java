@@ -67,7 +67,10 @@ public class DisconnectScreenUtil {
                 reconnectButton.active = false;
             } else {
                 // Attempts ongoing; update time on button
-                reconnectButton.setMessage(localized("message", "reconnectIn", seconds)
+                String secondsStr = seconds >= 10
+                        ? String.valueOf(seconds.intValue()) // %d (down)
+                        : String.valueOf((int) (seconds * 10) / 10F); // %.1f effective (down)
+                reconnectButton.setMessage(localized("message", "reconnectIn", secondsStr)
                         .withStyle(s -> s.withColor(ChatFormatting.GREEN)));
             }
         });

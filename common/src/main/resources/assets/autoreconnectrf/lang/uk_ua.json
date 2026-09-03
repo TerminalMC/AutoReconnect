@@ -6,7 +6,7 @@
   "message.autoreconnectrf.configScreenDisabled": "Config screen is not available on this version.",
 
   "message.autoreconnectrf.reconnect": "Перепід'єднатися",
-  "message.autoreconnectrf.reconnectIn": "Перепід'єднання через %f...",
+  "message.autoreconnectrf.reconnectIn": "Перепід'єднання через %s...",
   "message.autoreconnectrf.reconnectFailed": "Не вдалося перепід'єднатися!",
 
   "message.autoreconnectrf.debug.disconnected": "Disconnected by debug command!",
@@ -34,7 +34,7 @@
 
   "option.autoreconnectrf.messages": "АвтоПовідомлення",
   "option.autoreconnectrf.messages.tooltip": "Повідомлення для надсилання після успішного автоматичного перепід'єднання.",
-  "option.autoreconnectrf.messages.instance": "Об'єкт АвтоПовідомлень %d",
+  "option.autoreconnectrf.messages.instance": "Об'єкт АвтоПовідомлень %s",
   "option.autoreconnectrf.messages.instance.tooltip": "Окремий об'єкт АвтоПовідомлень для конкретного світу, сервера чи реалму.",
   "option.autoreconnectrf.messages.instance.id": "Connection ID",
   "option.autoreconnectrf.messages.instance.id.tooltip": "The server IP, realm name, or world name on which this AutoMessage should be used.",

@@ -64,7 +64,10 @@ public class AutoReconnect {
     public static @Nullable String lastDcReasonKey = null;
 
     private static final ScheduledThreadPoolExecutor EXECUTOR_SERVICE =
-            new ScheduledThreadPoolExecutor(1);
+            new ScheduledThreadPoolExecutor(
+                    1,
+                    Thread.ofVirtual().name(MOD_ID + "-countdown").factory()
+            );
 
     static {
         EXECUTOR_SERVICE.setRemoveOnCancelPolicy(true);

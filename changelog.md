@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.103.2
+
+- Fixed a sporadic hang on shutdown
+
 ## 3.103.1
 
 - Added support for decimal second reconnect delays (Sn0wo2) (#18)

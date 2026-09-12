@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.102.4
+
+- Added support for decimal second reconnect delays (Sn0wo2) (#18)
+
 ## 3.102.3
 
 - Reset `mc` version counter to 1 at mc1.0.0

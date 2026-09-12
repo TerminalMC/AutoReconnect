@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.103.1
+
+- Added support for decimal second reconnect delays (Sn0wo2) (#18)
+
 ## 3.103.0
 
 - Updated to mc26.2
